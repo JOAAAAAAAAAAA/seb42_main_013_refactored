@@ -8,6 +8,7 @@ config.autoAddCss = false
 
 const nanumGothic = Nanum_Gothic({ 
   weight: '400',
+  subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
