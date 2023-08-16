@@ -18,12 +18,12 @@
 }
 .IntroAsideCard {
   width: 340px;
-  height: 100%; 
+  aspect-ratio: 3/4;
   margin-top: var(--gap-lg);
   background-image: url(/backgrounds/background5.jpg);
   background-size: cover;
-  background-position: center;
   border-radius: 7px;
+  background-position: top 30px;
 }
 .content {
   font-size: 18px;
@@ -32,18 +32,18 @@
   left: 24px;
 }
 .content p {
-  margin: var(--gap-sm) 0;
+  gap : var(--gap-sm);
 }
 
 .descriptionMain {
   font-size: 28px;
-  margin: var(--gap-lg) 0;
+  margin: var(--gap-lg) 0 !important;
 }
 .descriptionMain strong {
   color: var(--blue-100);
 
 }
-.teamdiv {
+.team {
   width: 100%;
   margin-top: var(--gap-md);
   padding-top: var(--gap-md);
@@ -83,6 +83,6 @@
   font-weight: 600;
   margin-bottom: 4px;
 }
-.teamPosition a {
-  margin-right: 36px;
+.teamMember a {
+  margin-right: var(--gap-sm);
 }

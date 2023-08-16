@@ -32,8 +32,8 @@ function WebAside() {
       </div>
     </div>
     <div className={styles.team}>
-      <div className={styles.teamMate}>
-        <div className="team-title">🍙양반김에 양조간장🥢</div>
+      <div className={styles.teamName}>
+        <div className={styles.teamTitle}>🍙양반김에 양조간장🥢</div>
         <a href="https://github.com/codestates-seb/seb42_main_013" className="team-github">
           <FontAwesomeIcon icon={faGithub} className="icon-github" />
           Team Github
