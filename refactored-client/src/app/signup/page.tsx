@@ -80,21 +80,8 @@ function Signup() {
   // }, [login])
 
   return (
-    <div className="container
-    display: flex;
-    padding: 0 36px;
-    height: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    gap: 32px;
-    h1 {
-      color: var(--black-100);
-      font-size: 28px;
-    }
-    ">
-      <div className="flex"><Image src="/images/icon--ipu.png" alt="I PILL U logo" width={40} height={40}/><p className="text-3xl font-semibold tracking-wide ml-2.5">I Pill U</p></div>
+    <div className="container flex-col  px-9 h-full items-center justify-center gap-8">
+      <div className="flex items-center justify-center"><Image src="/images/icon--ipu.png" alt="I PILL U logo" width={40} height={40}/><p className="text-3xl font-semibold tracking-wide ml-2.5">I Pill U</p></div>
       {/* <LoginBox onSubmit={handleSubmit(onSubmit, onError)}>
         <Errorspan>{errors.email && errors.email.message}</Errorspan>
         <FakeInput isFocus={isFocus1} isValid={errors.email?false:true}>
