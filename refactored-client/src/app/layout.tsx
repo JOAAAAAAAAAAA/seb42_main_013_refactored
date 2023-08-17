@@ -9,12 +9,14 @@ config.autoAddCss = false
 const nanumGothic = Nanum_Gothic({ 
   weight: ['400','700'],
   subsets: ['latin'],
+  variable: '--font-NanumGothic',
 })
 
 
 const roboto = Roboto({
   weight: ['400','700'],
   subsets: ['latin'],
+  variable: '--font-Roboto',
 })
 
 export const metadata: Metadata = {
