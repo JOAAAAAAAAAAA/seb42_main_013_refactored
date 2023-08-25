@@ -4,6 +4,7 @@ import getConfig from "next/config";
 
 const {publicRuntimeConfig} = getConfig();
 
+//TODO 이건 옛날 방식 같음 env.local ??
 const FirebaseConfig = { 
   apiKey: publicRuntimeConfig.apiKey,
   authDomain: publicRuntimeConfig.authDomain,
@@ -22,8 +23,12 @@ export default class FirebaseClient {
     const apps = getApps();
     if(apps.length === 0) {
       console.info("Firebase Client init start");
+      // 1. Firebase를 초기화하고 Firebase 앱 객체 생성
+      // Initialize Firebase
       initializeApp(FirebaseConfig);
    }
+   // 2. Authentication SDK 추가 및 초기화
+   // Initialize Firebase Authentication and get a reference to the service
    this.auth = getAuth();
    console.log('firebase auth')
   }
@@ -32,6 +37,7 @@ export default class FirebaseClient {
     if (!FirebaseClient.instance) {
       FirebaseClient.instance = new FirebaseClient();
     }
+    return FirebaseClient.instance; 
   }
 
   private get Auth(): Auth {
