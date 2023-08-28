@@ -9,6 +9,7 @@
   background-image: url("/backgrounds/background1.jpg");
   background-size: auto 100%;
   background-position: center;
+  font-family: var(--font-NanumGothic);
 }
 
 .logo{
