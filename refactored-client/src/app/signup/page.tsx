@@ -6,7 +6,7 @@
 // import { Link, useNavigate } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import Image from 'next/image'
-import CustomInput from '../components/CustomInput';
+import CustomInput from '../components/FormInput';
 import SignupForm from '../components/SignupForm';
 
 

@@ -107,33 +107,22 @@ function FormInput<TFormValue extends keyof FieldValues>({
         className={`font-bold text-[--black-200] text-base after:content-[${register.required ? "*" : ""}]`}
       >{label}</label>}
       <div className={`flex flex-1 border 
-        ${isValid ? "focus-within:border-2 focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5, 145,255, .1)] border-[--black-400]" :"border-[--red-100]"} 
-        rounded-[5px] py-2 relative 
+        ${isValid ? "focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)] border-[--black-400]" :"border-[--red-100]"} 
+        rounded-[5px] px-2 relative 
         hover:bg-[#F7F9FA] transition-colors 
         after:absolute after:left-0 after:bottom-[-18px] after:font-xs after:text-rose-500 after:content-[${validityState}]`}
       >
         <input 
-        className="border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
+        className={`border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
         placeholder:text-[--black-400]
-        "
+        ${type==="date" && `before:absolute before:left-0 before:text-[--black-400] before:content-[${placeholder}] w-full focus:hidden`}
+        ${type==="time" &&  "mind-w-full" }
+        `}
         type={type}
         placeholder={placeholder}
         id={register.name}
         {...register}
         />
-        {/* <RealInput
-          onFocus={()=>setIsFocus(true)}
-          onBlur={blurHandler}
-          type={type} 
-          value={data[name]}
-          onChange={changeHandler} 
-          placeholder={placeholder}
-          required={required}
-          min={min}
-          max={max}
-          name={name}
-          onInvalid={messageStopper}
-        /> */}
         {/* { name === "ingredientAmount" &&
           <DeleteBtn>mg</DeleteBtn>
         } */}
