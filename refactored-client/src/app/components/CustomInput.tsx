@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { FieldError, RegisterOptions } from "react-hook-form";
+import { FieldError, FieldValues, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
 
 
 
@@ -75,15 +75,21 @@ import { FieldError, RegisterOptions } from "react-hook-form";
 //   opacity : ${(props) => props.isValid ? "0" : "1"};
 // `
 
-type CustomInputProps = {
+type FormInputProps<TFormValue extends keyof FieldValues> = {
   type: string;
-  name: string;
   placeholder: string;
-  error : FieldError | undefined;
-  register: RegisterOptions;
-}
+  label?: string;
+  error?: FieldError;
+  register: UseFormRegisterReturn;
+};
 
-function CustomInput ({type, placeholder, error, register}:CustomInputProps) {
+function CustomInput<TFormValue extends keyof FieldValues>({
+  type,
+  placeholder,
+  label,
+  error,
+  register,
+}: FormInputProps<TFormValue>) {
   // focus 대신 focus-within 사용하면 상태 props 전달 필요 없음
   // const [isFocus, setIsFocus] = useState(false)
   const [isValid, setIsValid] = useState(true)
@@ -93,33 +99,28 @@ function CustomInput ({type, placeholder, error, register}:CustomInputProps) {
   //   setData({...data,[name]:""})
   // }
   console.log(register)
+  console.log(error)
   return (
     <div>
-      {/* <label
-        htmlFor={name}
-        className={`font-bold text-[--black-200] text-base after:content-[${required ? "*" : ""}]`}
-      >{name}</label> */}
+      {label && <label
+        htmlFor={register.name}
+        className={`font-bold text-[--black-200] text-base after:content-[${register.required ? "*" : ""}]`}
+      >{label}</label>}
       <div className={`flex flex-1 border 
         ${isValid ? "focus-within:border-2 focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5, 145,255, .1)] border-[--black-400]" :"border-[--red-100]"} 
         rounded-[5px] py-2 relative 
         hover:bg-[#F7F9FA] transition-colors 
         after:absolute after:left-0 after:bottom-[-18px] after:font-xs after:text-rose-500 after:content-[${validityState}]`}
       >
-        {/* <input 
+        <input 
         className="border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
         placeholder:text-[--black-400]
         "
-        required={required}
-        min={min}
-        max={max}
         type={type}
-        id={name}
-        name={name}
         placeholder={placeholder}
-        onChange={changeHandler}
-        onBlur={blurHandler}
-        onInvalid={messageStopper}
-        /> */}
+        id={register.name}
+        {...register}
+        />
         {/* <RealInput
           onFocus={()=>setIsFocus(true)}
           onBlur={blurHandler}
