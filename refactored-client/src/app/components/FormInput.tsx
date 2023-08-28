@@ -4,8 +4,6 @@ import { FieldError, FieldValues, UseFormRegister, UseFormRegisterReturn } from 
 
 
 
-
-
 type FormInputProps<TFormValue extends keyof FieldValues> = {
   type: string;
   placeholder: string;
@@ -35,7 +33,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
         className={`font-bold text-[--black-200] text-base after:content-[${register.required ? "*" : ""}]`}
       >{label}</label>}
       <div className={`flex flex-1 border 
-        ${!error ? "focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)] border-[--black-400]" : `border-[--red-100] after:content-[${error?.message}] after:opacity-[${error ? "1" : "0"}]`} 
+        ${!error ? "focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)] border-[--black-400]" : "border-[--red-100]"} 
         rounded-[5px] px-2 relative 
         hover:bg-[#F7F9FA] transition-colors 
         after:absolute after:left-0 after:bottom-[-18px] after:font-xs after:text-rose-500`}
@@ -69,6 +67,11 @@ function FormInput<TFormValue extends keyof FieldValues>({
         </>
         } */}
       </div>
+      {error && (
+        <p className="text-[--red-100] text-[12px]">
+          {error.message}
+        </p>
+      )}
     </div>
   )
 }
