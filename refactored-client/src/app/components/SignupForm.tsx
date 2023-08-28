@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { signupSchema, signupData } from '@/zodSchema/signup';
 import FormInput from './FormInput';
-import Link from 'next/link';
 import { BlueButton } from './Buttons';
 
 
@@ -39,10 +38,10 @@ export default function SignupForm() {
   // };
 
   return(
-    <form className="container"
+    <form className="flex flex-col gap-[--gap-md] w-full [&>div>div]:py-[--gap-sm]" 
       onSubmit={handleSubmit(onSubmit)}
     >
-      <FormInput type="text" placeholder="이메일" error={errors.email} 
+      <FormInput type="text" placeholder="이메일" error={errors?.email} 
       register={register("email",{
         required:"이메일을 입력해주세요.",
         pattern: {
@@ -50,7 +49,7 @@ export default function SignupForm() {
           message: "이메일 형식이 아닙니다."
         }
         })}/>
-      <FormInput type="text" placeholder="이메일" error={errors.email} 
+      <FormInput type="text" placeholder="닉네임" error={errors?.displayName} 
       register={register("displayName", {
         required: "닉네임을 입력해 주세요.",
         minLength: {
@@ -58,16 +57,15 @@ export default function SignupForm() {
           message: "닉네임은 최소 4글자 이상이어야 합니다."
         }
       })}/>
-      <FormInput type="text" placeholder="이메일" error={errors.email} 
+      <FormInput type="text" placeholder="비밀번호" error={errors?.password} 
       register={register("password", {
         required: "비밀번호를 입력해 주세요.",
-        minLength: {
-          value: 6,
-          message: "password must be longer than 6 characters."
+        pattern: {
+          value: /^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,16}$/g,
+          message: "8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요."
         }
       })}/>
         <BlueButton>회원가입</BlueButton>
-        <div>계정이 있으신가요?<Link href="/login" >로그인</Link></div>
     </form>
   )
 }
