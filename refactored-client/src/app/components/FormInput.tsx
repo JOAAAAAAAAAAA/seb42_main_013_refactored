@@ -83,7 +83,7 @@ type FormInputProps<TFormValue extends keyof FieldValues> = {
   register: UseFormRegisterReturn;
 };
 
-function CustomInput<TFormValue extends keyof FieldValues>({
+function FormInput<TFormValue extends keyof FieldValues>({
   type,
   placeholder,
   label,
@@ -156,4 +156,4 @@ function CustomInput<TFormValue extends keyof FieldValues>({
   )
 }
 
-export default CustomInput;
+export default FormInput;

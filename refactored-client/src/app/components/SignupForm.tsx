@@ -2,7 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { signupSchema, signupData } from '@/zodSchema/signup';
-import CustomInput from './CustomInput';
+import FormInput from './FormInput';
+
 
 
 
@@ -37,7 +38,7 @@ export default function SignupForm() {
 
   return(
     <div className="container">
-      <CustomInput type="text" placeholder="이메일" error={errors.email} register={register("email",{required:"이메일을 입력해주세요."})}/>
+      <FormInput type="text" placeholder="이메일" error={errors.email} register={register("email",{required:"이메일을 입력해주세요."})}/>
             {/* <LoginBox onSubmit={handleSubmit(onSubmit, onError)}>
         <Errorspan>{errors.email && errors.email.message}</Errorspan>
         <FakeInput isFocus={isFocus1} isValid={errors.email?false:true}>
