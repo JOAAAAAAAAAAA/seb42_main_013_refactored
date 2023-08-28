@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Nanum_Gothic, Roboto,  } from 'next/font/google'
+import { Nanum_Gothic, Roboto} from 'next/font/google'
 import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -11,7 +11,6 @@ const nanumGothic = Nanum_Gothic({
   subsets: ['latin'],
   variable: '--font-NanumGothic',
 })
-
 
 const roboto = Roboto({
   weight: ['400','700'],
@@ -31,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${nanumGothic.className} ${roboto.className}`}>
+      <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <div className='root-container'>
           <WebAside />
           <div className='app-container'>

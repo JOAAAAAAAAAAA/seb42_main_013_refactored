@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator{
+    position:absolute;
+      /* 부모 relative - 자식 absolute */
+      /* 부모 relative 지정 안해주면 전체 화면 cover된다 */
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    color: transparent;
+    background: transparent;
+    cursor: pointer;
+  }
+  input[type="date"]::-webkit-datetime-edit{
+    display: inline-block;
+  }
+  input[type="date"]:focus::-webkit-datetime-edit{
+    display: none;
+  }
+}
 
 :root {
     /* color */
