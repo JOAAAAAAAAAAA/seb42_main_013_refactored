@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FieldError, RegisterOptions } from "react-hook-form";
 
 
 
@@ -76,34 +77,35 @@ import { useState } from "react";
 
 type CustomInputProps = {
   type: string;
+  name: string;
   placeholder: string;
-  register:
+  error : FieldError | undefined;
+  register: RegisterOptions;
 }
 
-
-function CustomInput ({type, placeholder, register}:CustomInputProps) {
+function CustomInput ({type, placeholder, error, register}:CustomInputProps) {
   // focus 대신 focus-within 사용하면 상태 props 전달 필요 없음
   // const [isFocus, setIsFocus] = useState(false)
   const [isValid, setIsValid] = useState(true)
   const [validityState, setValidityState] = useState("")
   
-  const clear = () => {
-    setData({...data,[name]:""})
-  }
-
+  // const clear = () => {
+  //   setData({...data,[name]:""})
+  // }
+  console.log(register)
   return (
     <div>
-      <label
+      {/* <label
         htmlFor={name}
         className={`font-bold text-[--black-200] text-base after:content-[${required ? "*" : ""}]`}
-      >{name}</label>
+      >{name}</label> */}
       <div className={`flex flex-1 border 
         ${isValid ? "focus-within:border-2 focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5, 145,255, .1)] border-[--black-400]" :"border-[--red-100]"} 
         rounded-[5px] py-2 relative 
         hover:bg-[#F7F9FA] transition-colors 
         after:absolute after:left-0 after:bottom-[-18px] after:font-xs after:text-rose-500 after:content-[${validityState}]`}
       >
-        <input 
+        {/* <input 
         className="border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
         placeholder:text-[--black-400]
         "
@@ -117,7 +119,7 @@ function CustomInput ({type, placeholder, register}:CustomInputProps) {
         onChange={changeHandler}
         onBlur={blurHandler}
         onInvalid={messageStopper}
-        />
+        /> */}
         {/* <RealInput
           onFocus={()=>setIsFocus(true)}
           onBlur={blurHandler}

@@ -7,33 +7,37 @@ import CustomInput from './CustomInput';
 
 
 export default function SignupForm() {
-  // const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm<signupData>({
+    resolver: zodResolver(signupSchema),
+  });
+  // useForm 사용으로 필요 없음
   // const [data, setData] = useState({ email: '', password: '', displayName: '' });
-  // const onSubmit = async (data) => {
-    // console.log(data);
-  //   await axios({
-  //     method: 'post',
-  //     // url: `/users`,
-  //     // url: `${process.env.REACT_APP_API_URL}/users`,
-  //     url: `http://ec2-3-35-105-108.ap-northeast-2.compute.amazonaws.com:8080/users`,
-  //     params: {},
-  //     data: data,
-  //   }, { withCredentials: true })
+  const onSubmit = async (data:signupData) => {
+    console.log(data);
+    // await axios({
+    //   method: 'post',
+    //   // url: `/users`,
+    //   // url: `${process.env.REACT_APP_API_URL}/users`,
+    //   url: `http://ec2-3-35-105-108.ap-northeast-2.compute.amazonaws.com:8080/users`,
+    //   params: {},
+    //   data: data,
+    // }, { withCredentials: true })
 
-  //     .then((res) => {
-  //       alert('회원가입 완료')
-  //       window.location.href = '/signupDone'
-  //       // console.log(res)
-  //     })
-  //     .catch((err) => { console.log(err) })
-  // };
+    //   .then((res) => {
+    //     alert('회원가입 완료')
+    //     window.location.href = '/signupDone'
+    //     // console.log(res)
+    //   })
+    //   .catch((err) => { console.log(err) })
+  };
+  
   // const onError = (error) => {
   //   console.log(error);
   // };
 
   return(
     <div className="container">
-      <CustomInput type="text" placeholder="이메일" />
+      <CustomInput type="text" name="email" placeholder="이메일" error={errors.email} {...register("email",{required:true})}/>
             {/* <LoginBox onSubmit={handleSubmit(onSubmit, onError)}>
         <Errorspan>{errors.email && errors.email.message}</Errorspan>
         <FakeInput isFocus={isFocus1} isValid={errors.email?false:true}>
