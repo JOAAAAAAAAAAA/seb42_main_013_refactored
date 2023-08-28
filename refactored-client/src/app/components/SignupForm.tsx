@@ -7,7 +7,29 @@ import CustomInput from './CustomInput';
 
 
 export default function SignupForm() {
+  // const { register, handleSubmit, formState: { errors } } = useForm();
+  // const [data, setData] = useState({ email: '', password: '', displayName: '' });
+  // const onSubmit = async (data) => {
+    // console.log(data);
+  //   await axios({
+  //     method: 'post',
+  //     // url: `/users`,
+  //     // url: `${process.env.REACT_APP_API_URL}/users`,
+  //     url: `http://ec2-3-35-105-108.ap-northeast-2.compute.amazonaws.com:8080/users`,
+  //     params: {},
+  //     data: data,
+  //   }, { withCredentials: true })
 
+  //     .then((res) => {
+  //       alert('회원가입 완료')
+  //       window.location.href = '/signupDone'
+  //       // console.log(res)
+  //     })
+  //     .catch((err) => { console.log(err) })
+  // };
+  // const onError = (error) => {
+  //   console.log(error);
+  // };
 
   return(
     <div className="container">
