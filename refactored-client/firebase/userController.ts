@@ -4,7 +4,7 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore/lite";
 
 
 export const addUserToFirestore = async (user: User) => {
-  const userRef = doc(firestore, "uesrs", user.uid);
+  const userRef = doc(firestore, "users", user.uid);
   //doc parameter (reference to the document, path, pathSegments)
 
   await setDoc(
