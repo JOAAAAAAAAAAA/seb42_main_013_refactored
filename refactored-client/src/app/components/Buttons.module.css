@@ -10,9 +10,134 @@
   text-align: center;
 }
 .blueButton:hover{
-  background-color: #6b91ed;
+  background-color: hsl(223, 78%, 62%);
+}
+.blueButton:active{
+  background-color: hsl(223, 78%, 62%);
+}
+.blueButton:focus{
+  box-shadow: 0 0 0 4px hsla(223, 78%, 62%,0.1);
 }
 
-.blueButton:active{
-  background-color: #6b91ed;
+
+.google{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid hsl(210,8%,85%);
+  border-radius: 6px;
+  background-color: hsl(0,0%,100%);
+  box-shadow: none;
+  color: hsl(210,8%,25%);
+  font-size: 13px;
+  padding: .8em;
+  cursor: pointer;
+  line-height: 18px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  text-transform: capitalize;
+}
+.google:hover{
+  color: hsl(210,8%,15%);
+  background-color: hsl(210,8%,97.5%);
+}
+.google:active{
+  color:hsl(210,8%,5%);
+  background-color: hsl(210,8%,95%);
+}
+.google:focus{
+ box-shadow: 0 0 0 4px hsla(210,8%,15%,0.1);
+}
+
+.github{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: hsl(210,8%,20%);
+  box-shadow: none;
+  color: hsl(0,0%,100%);
+  font-size: 13px;
+  padding: .8em;
+  cursor: pointer;
+  line-height: 18px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  text-transform: capitalize;
+}
+.github:active{
+  background-color: hsl(210,8%,5%);
+}
+.github:hover{
+  background-color: hsl(210,8%,15%);
+}
+.github:focus{
+ box-shadow: 0 0 0 4px hsla(210,8%,15%,0.1);
+}
+
+.facebook{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: #385499;
+  box-shadow: none;
+  color: #ffffff;
+  font-size: 13px;
+  padding: .8em;
+  cursor: pointer;
+  line-height: 18px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  text-transform: capitalize;
+}
+.facebook:hover{
+  background-color: #314a86;
+}
+.facebook:active{
+  background-color: #2a4074;
+}
+.facebook:focus{
+ box-shadow: 0 0 0 4px hsla( 206 , 100% , 40% , .15);
+}
+
+.kakao{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: hsl(54, 100%, 50%);
+  box-shadow: none;
+  color: hsl(210,8%,25%);
+  font-size: 13px;
+  padding: .8em;
+  cursor: pointer;
+  line-height: 18px;
+  position: relative;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  text-transform: capitalize;
+}
+.kakao:hover{
+  background-color: hsl(54, 100%, 48%);
+}
+.kakao:active{
+  background-color: hsl(54, 100%, 45%);
+}
+.kakao:focus{
+ box-shadow: 0 0 0 4px hsla(54, 100%, 45%,0.1);
 }
