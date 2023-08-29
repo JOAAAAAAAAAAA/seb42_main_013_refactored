@@ -6,11 +6,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['var(--font-mono)'],
-        sans: ['var(--font-gothic)'],
+        nanumGothic: ['var(--font-NanumGothic)'],
+        roboto: ['var(--font-Roboto)'],
     },
   }
   },
   plugins: [],
 }
-

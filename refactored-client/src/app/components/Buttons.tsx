@@ -19,18 +19,16 @@ export const BlueButton = ({ children, onClick, type, disabled }: BlueButtonProp
 }
 
 interface SignupButtonProps {
-  children?: ReactNode;
   onClick?: () => void;
   oauthProvider: 'facebook' | 'google' | 'kakao' | 'github';
 }
 
-export const SignupButton = ({ children, onClick, oauthProvider }: SignupButtonProps) => {
+export const SignupButton = ({ onClick, oauthProvider }: SignupButtonProps) => {
   return (
     //! 변수 사용시 []로 감싸야 함
     <button className={styles[oauthProvider]} onClick={onClick}>
       <Image src={`/svg/${oauthProvider}.svg`} alt={`${oauthProvider} icon`} width={18} height={18}/>
       {oauthProvider} 계정으로 시작하기
-      {children}
     </button>
   )
 }

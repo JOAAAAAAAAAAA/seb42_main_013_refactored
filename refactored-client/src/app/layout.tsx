@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description: '당신을 위한 영양제 맞춤 서비스',
 }
 
+
 export default function RootLayout({
   children,
 }: {

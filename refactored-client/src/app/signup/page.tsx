@@ -10,6 +10,10 @@ import CustomInput from '../components/FormInput';
 import SignupForm from '../components/SignupForm';
 import Link from 'next/link';
 import { SignupButton } from '../components/Buttons';
+import { auth, googleAuthProvider } from '../../../firebase/firebaseApp';
+import { signInWithPopup, signInWithRedirect } from 'firebase/auth';
+import { addUserToFirestore } from '../../../firebase/userController';
+import { Router, useRouter } from 'next/router';
 
 
 // const Title=({href})=>{
@@ -49,18 +53,42 @@ import { SignupButton } from '../components/Buttons';
 function Signup() {
   // const { login } = useSelector(state => state.loginInfoReducer);
   // const navigate = useNavigate();
+  const router = useRouter();
   // within 사용으로 필요 없음
   // const [isFocus1, setIsFocus1] = useState(false);
   // const [isFocus2, setIsFocus2] = useState(false);
   // const [isFocus3, setIsFocus3] = useState(false);
-
-
-
   // useEffect(() => {
   //   if(login) {
   //     navigate("/suggest");
   //   }
   // }, [login])
+
+  const googleSignin = () => {
+    signInWithPopup(auth, googleAuthProvider)
+      .then((result) => {
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const credential = googleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        addUserToFirestore(user);
+        router.push('/suggest');
+
+        console.log(result);
+      }).catch((error) => {
+        console.error(error)
+        // Handle Errors here.
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // The email of the user's account used.
+        // const email = error.customData.email;
+        // The AuthCredential type that was used.
+        // const credential = googleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
 
   return (
     <div className="container flex flex-col w-full font-nanumGothic px-9 h-full items-center justify-center gap-8">
@@ -68,12 +96,11 @@ function Signup() {
       <SignupForm />
       <div className="flex w-full items-center tracking-wide justify-center text-center text-[--black-300]">계정이 있으신가요?<Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link></div>
       <div className="flex flex-col shrink-0 w-full gap-[4px]">
-      <SignupButton oauthProvider='google'/>
-      <SignupButton oauthProvider='github'/>
-      <SignupButton oauthProvider='facebook'/>
-      <SignupButton oauthProvider='kakao'/>
+        <SignupButton oauthProvider='google' onClick={googleSignin}/>
+        <SignupButton oauthProvider='github' />
+        <SignupButton oauthProvider='facebook' />
+        <SignupButton oauthProvider='kakao' />
       </div>
-      {/* <div className="flex px-2	gap-6"><Image src="/images/btn_google_signin_light_normal_web@2x.png" alt="google icon" width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }} /></div> */}
     </div>
   )
 }
