@@ -39,15 +39,18 @@ export default function SignupForm() {
   // };
 
   return (
-    <form className="flex flex-col w-full [&>div>div]:py-[--gap-sm]"
+    <form
+      className="flex flex-col w-full [&>div>div]:py-[--gap-sm]"
       onSubmit={handleSubmit(onSubmit)}
     >
       <FormInput type="text" placeholder="이메일" error={errors?.email}
         register={register("email")} />
-      <FormInput type="text" placeholder="닉네임" error={errors?.displayName}
+      <FormInput type="text" placeholder="닉네임(2~12자)" error={errors?.displayName}
         register={register("displayName")} />
-      <FormInput type="password" placeholder="비밀번호(8~32자리)" error={errors?.password}
+      <FormInput type="password" placeholder="비밀번호(8~32자리)" error={errors?.password} autocomplete="false"
         register={register("password")} />
+      <FormInput type="password" placeholder="비밀번호 확인" error={errors?.confirmPassword} autocomplete="false"
+        register={register("confirmPassword")} />
       <BlueButton type="submit" disabled={isSubmitting} >회원가입</BlueButton>
     </form>
   )

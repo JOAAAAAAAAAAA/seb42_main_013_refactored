@@ -10,6 +10,7 @@ type FormInputProps<TFormValue extends keyof FieldValues> = {
   label?: string;
   error?: FieldError;
   register: UseFormRegisterReturn;
+  autocomplete?: string;
 };
 
 function FormInput<TFormValue extends keyof FieldValues>({
@@ -18,6 +19,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
   label,
   error,
   register,
+  autocomplete,
 }: FormInputProps<TFormValue>) {
   // focus 대신 focus-within 사용하면 상태 props 전달 필요 없음
   // const [isFocus, setIsFocus] = useState(false)
@@ -45,6 +47,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
           type={type}
           placeholder={placeholder}
           id={register.name}
+          autoComplete={autocomplete}
           {...register}
         />
         {/* { name === "ingredientAmount" &&
