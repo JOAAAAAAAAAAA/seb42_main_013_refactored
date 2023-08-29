@@ -1,73 +1,18 @@
-"use client";
-// import DataInput, { FakeInput, RealInput, SocialBtn } from "../components/DataInput";
-// import { useForm } from "react-hook-form";
-// import { CurrentBtn } from "../styles/Buttons";
-// import axios from "axios";
-// import { Link, useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import Image from 'next/image'
-import CustomInput from '../components/FormInput';
 import SignupForm from '../components/SignupForm';
 import Link from 'next/link';
 import { SignupButton } from '../components/Buttons';
 import { auth, googleAuthProvider } from '../../../firebase/firebaseApp';
 import { signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { addUserToFirestore } from '../../../firebase/userController';
-import { Router, useRouter } from 'next/router';
-
-
-// const Title=({href})=>{
-// return (
-//   <div style={{display:"flex"}}>
-//    <img src={href} alt="아이콘" width="40px"/>
-//    <div style={{fontSize:"40px", fontFamily:"NanumBarunGothicBold", letterSpacing:"1px", marginLeft:"10px"}}>I Pill U</div>
-//   </div>
-// )
-// }
-
-// export const LoginBox = styled.form`
-//   width: 100%;
-//   >div{
-//     padding-top: 8px;
-//     padding-bottom: 8px;
-//     margin-bottom: 16px;
-//   }
-//   >div:nth-last-child(1){
-//     padding: 16px 0;
-//   }
-//   >div:last-child{
-//     text-align: center;
-//     color: var(--black-300);
-//     span{
-//       color: var(--blue-100)
-//     }
-//   }
-// `;
-// const Errorspan = styled.span`
-//   color:red;  
-//   font-size: 12px;
-// `;
-
-// const onClick=()=>{ window.location.href = '/login'};
+import { useRouter } from 'next/router';
 
 function Signup() {
-  // const { login } = useSelector(state => state.loginInfoReducer);
-  // const navigate = useNavigate();
   const router = useRouter();
-  // within 사용으로 필요 없음
-  // const [isFocus1, setIsFocus1] = useState(false);
-  // const [isFocus2, setIsFocus2] = useState(false);
-  // const [isFocus3, setIsFocus3] = useState(false);
-  // useEffect(() => {
-  //   if(login) {
-  //     navigate("/suggest");
-  //   }
-  // }, [login])
 
   const googleSignin = () => {
     signInWithPopup(auth, googleAuthProvider)
       .then((result) => {
-
         // This gives you a Google Access Token. You can use it to access the Google API.
         // const credential = googleAuthProvider.credentialFromResult(result);
         // const token = credential.accessToken;
