@@ -25,9 +25,8 @@ function FormInput<TFormValue extends keyof FieldValues>({
   // const clear = () => {
   //   setData({...data,[name]:""})
   // }
-  console.log(error?.message)
   return (
-    <div>
+    <div className={error ?"" :"mb-[22px]"}>
       {label && <label
         htmlFor={register.name}
         className={`font-bold text-[--black-200] text-base after:content-[${register.required ? "*" : ""}]`}
@@ -35,8 +34,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
       <div className={`flex flex-1 border 
         ${!error ? "focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)] border-[--black-400]" : "border-[--red-100]"} 
         rounded-[5px] px-2 relative 
-        hover:bg-[#F7F9FA] transition-colors 
-        after:absolute after:left-0 after:bottom-[-18px] after:font-xs after:text-rose-500`}
+        hover:bg-[#F7F9FA] transition-colors`}
       >
         <input
           className={`border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
@@ -68,7 +66,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
         } */}
       </div>
       {error && (
-        <p className="text-[--red-100] text-[12px]">
+        <p className="text-[--red-100] text-[12px] mb-[4px]">
           {error.message}
         </p>
       )}

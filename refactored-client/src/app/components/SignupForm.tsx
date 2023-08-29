@@ -9,12 +9,13 @@ import { BlueButton } from './Buttons';
 
 
 export default function SignupForm() {
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm<signupData>({
+  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitting } } = useForm<signupData>({
     resolver: zodResolver(signupSchema),
   });
   // useForm 사용으로 필요 없음
   // const [data, setData] = useState({ email: '', password: '', displayName: '' });
-  const onSubmit = async (data:signupData) => {
+  const onSubmit = async (data: signupData) => {
+    console.log(isSubmitting)
     console.log(data);
     // await axios({
     //   method: 'post',
@@ -32,40 +33,22 @@ export default function SignupForm() {
     //   })
     //   .catch((err) => { console.log(err) })
   };
-  
+
   // const onError = (error) => {
   //   console.log(error);
   // };
 
-  return(
-    <form className="flex flex-col gap-[--gap-md] w-full [&>div>div]:py-[--gap-sm]" 
+  return (
+    <form className="flex flex-col w-full [&>div>div]:py-[--gap-sm]"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <FormInput type="text" placeholder="이메일" error={errors?.email} 
-      register={register("email",{
-        required:"이메일을 입력해주세요.",
-        pattern: {
-          value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
-          message: "이메일 형식이 아닙니다."
-        }
-        })}/>
-      <FormInput type="text" placeholder="닉네임" error={errors?.displayName} 
-      register={register("displayName", {
-        required: "닉네임을 입력해 주세요.",
-        minLength: {
-          value: 4,
-          message: "닉네임은 최소 4글자 이상이어야 합니다."
-        }
-      })}/>
-      <FormInput type="text" placeholder="비밀번호" error={errors?.password} 
-      register={register("password", {
-        required: "비밀번호를 입력해 주세요.",
-        pattern: {
-          value: /^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,16}$/g,
-          message: "8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요."
-        }
-      })}/>
-        <BlueButton>회원가입</BlueButton>
+      <FormInput type="text" placeholder="이메일" error={errors?.email}
+        register={register("email")} />
+      <FormInput type="text" placeholder="닉네임" error={errors?.displayName}
+        register={register("displayName")} />
+      <FormInput type="password" placeholder="비밀번호(8~32자리)" error={errors?.password}
+        register={register("password")} />
+      <BlueButton type="submit" disabled={isSubmitting} >회원가입</BlueButton>
     </form>
   )
 }
