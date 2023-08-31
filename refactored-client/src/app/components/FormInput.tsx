@@ -1,6 +1,4 @@
-"use client";
-import { useState } from "react";
-import { FieldError, FieldValues, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
+import { FieldError, FieldValues, UseFormRegisterReturn } from "react-hook-form";
 
 
 

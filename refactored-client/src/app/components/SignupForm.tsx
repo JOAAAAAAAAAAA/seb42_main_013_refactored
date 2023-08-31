@@ -1,14 +1,14 @@
+"use client"
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { signupSchema, signupData } from '@/zodSchema/signup';
+import { signupSchema} from '@/zodSchema/signup';
 import FormInput from './FormInput';
 import { BlueButton } from './Buttons';
-
-
-
+import { signupData } from '@/types';
 
 export default function SignupForm() {
+
   const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitting } } = useForm<signupData>({
     resolver: zodResolver(signupSchema),
   });

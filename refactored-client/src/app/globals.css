@@ -43,7 +43,7 @@
     --gap-md: 16px;
     --gap-lg: 24px;
     --vh: 1vh;
-    --100vh: calc(var(--vh, 1vh) * 100);
+    --100vh: calc(var(--vh,1vh)*100);
 }
 
 
@@ -96,7 +96,6 @@ a {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
   max-width: 428px;
   min-height: var(--100vh);
   padding-left: 0;

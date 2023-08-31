@@ -6,15 +6,6 @@ import Link from "next/link"
 
 
 function WebAside() {
-  // const { login } = useSelector(state => state.loginInfoReducer);
-
-  // const logiClickHandler = () => {
-  //   if(login) {
-  //     window.location.href = "/suggest"
-  //   } else {
-  //     window.location.href = "/"
-  //   }
-  // }
 
   return (
     <div className={styles.container}>

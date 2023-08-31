@@ -36,6 +36,7 @@ export default function RootLayout({
   login: React.ReactNode
 }) {
   const isLoggedin = auth.currentUser;
+
   return (
 
     <html lang="en">
