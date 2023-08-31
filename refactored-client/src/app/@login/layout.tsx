@@ -10,12 +10,16 @@ export default async function LoginLayout({
   children: React.ReactNode
 }) {
 
-  const result = await getRedirectResult(auth)
-  console.log("result", result)
-  const user = result?.user;
-  if(user){
-      await addUserToFirestore(user);
-      redirect('/')
+  try {
+    const result = await getRedirectResult(auth)
+    console.log("result", result)
+    const user = result?.user;
+    if(user){
+        await addUserToFirestore(user);
+        redirect('/')
+    }
+  }catch(error){
+    console.error(error)
   }
 
 
