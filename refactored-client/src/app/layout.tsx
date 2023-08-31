@@ -4,9 +4,11 @@ import { Nanum_Gothic, Roboto } from 'next/font/google'
 import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import { Suspense } from 'react'
+import { Children, Suspense } from 'react'
 import { auth } from '../../firebase/firebaseApp'
 import Loading from './loading'
+import HeaderProvider from './HeaderProvider'
+import { redirect } from 'next/navigation'
 
 config.autoAddCss = false
 
@@ -31,12 +33,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   dashboard,
   login,
+  header,
 }: {
   dashboard: React.ReactNode
   login: React.ReactNode
+  header: React.ReactNode
 }) {
   const isLoggedin = auth.currentUser;
-
+  console.log("root layout")
   return (
 
     <html lang="en">
@@ -45,6 +49,8 @@ export default function RootLayout({
           <WebAside />
           <Suspense fallback={<Loading />}>
             <div className='app-container'>
+              {/* <HeaderProvider /> */}
+              {header}
               {isLoggedin ? dashboard : login}
             </div>
           </Suspense>

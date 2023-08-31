@@ -18,28 +18,28 @@ function Signup() {
   const googleSignin = async () => {
     await signInWithRedirect(auth, googleAuthProvider);
     const result = await getRedirectResult(auth)
-    result
-    .then((result) => {
-      console.log("triggered")
-      console.log(result)
-      const user = result?.user;
-      const operationType = result?.operationType;
-      if(user){
-        addUserToFirestore(user);
-        redirect('/')
-      }
-    }).catch((error) => {
-      console.error(error)
-    });
+
+    // .then((result) => {
+    //   console.log("triggered")
+    //   console.log(result)
+    //   const user = result?.user;
+    //   const operationType = result?.operationType;
+    //   if(user){
+    //     addUserToFirestore(user);
+    //     redirect('/')
+    //   }
+    // }).catch((error) => {
+    //   console.error(error)
+    // });
     
   } 
 
 
 
   return (
-    <div className="container flex flex-col w-full font-nanumGothic px-9 h-full items-center justify-center gap-8">
+    <div className="flex flex-col px-[20px] justify-around overflow overflow-hidden h-full">
       <SignupForm />
-      <div className="flex w-full items-center tracking-wide justify-center h-full text-center text-[--black-300]">계정이 있으신가요?<Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link></div>
+      <div className="flex w-full items-center tracking-wide justify-center text-center text-[--black-300]">계정이 있으신가요?<Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link></div>
       <div className="flex flex-col shrink-0 w-full gap-[4px]">
         <SignupButton authProvider='google' onClickHandler={googleSignin}/>
         <SignupButton authProvider='github' />

@@ -60,3 +60,7 @@
 //     </AuthUserContext.Provider>
 //   )
 // }
+
+
+//context 사용하면 server side rendering이 안됨
+//보류
