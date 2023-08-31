@@ -4,6 +4,8 @@ import { Nanum_Gothic, Roboto} from 'next/font/google'
 import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import { Suspense } from 'react'
+import Loading from './Loading'
 config.autoAddCss = false
 
 const nanumGothic = Nanum_Gothic({ 
@@ -34,9 +36,11 @@ export default function RootLayout({
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <div className='root-container'>
           <WebAside />
+          <Suspense fallback={<Loading />}>
           <div className='app-container'>
             {children}
           </div>
+          </Suspense>
         </div>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
       </body>
