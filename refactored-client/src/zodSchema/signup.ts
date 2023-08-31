@@ -42,6 +42,6 @@ export const signupSchema = z
   message: "비밀번호가 일치하지 않습니다.",
 });
 
-export type signupData = z.infer<typeof signupSchema>;
+
 
 

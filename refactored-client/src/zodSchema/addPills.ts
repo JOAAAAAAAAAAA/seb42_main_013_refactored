@@ -16,4 +16,28 @@ export const addPillSchema = z.object({
   dosageInterval: z.number(),
 });
 
-export type Pill = z.infer<typeof addPillSchema>;
+
+
+// const validationMessage = (validityState) => {
+//   let message = ''
+//   switch(validityState) {
+//     case "rangeOverflow" :
+//       message = "전체 용량보다 적어야 합니다."
+//     break;
+//     case "valueMissing" :
+//       message = "필수 입력 항목입니다."
+//     break;
+//     case "rangeUnderflow" :
+//       message = "0 이상의 숫자를 입력해주세요."
+//     break;
+//     case "customError" :
+//       message = "잔여 알 수 보다 많아야 합니다."
+//     break;
+//     case "badInput" :
+//       message = "유효한 값을 입력해주세요."
+//     break;
+//     default:
+//       message = ""
+//   }
+//   return message
+// }
