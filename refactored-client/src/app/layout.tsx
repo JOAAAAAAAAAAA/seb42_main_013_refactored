@@ -34,13 +34,16 @@ export default function RootLayout({
   dashboard,
   login,
   header,
+  childeren,
 }: {
   dashboard: React.ReactNode
   login: React.ReactNode
   header: React.ReactNode
+  childeren: React.ReactNode
 }) {
-  const isLoggedin = auth.currentUser;
+  const isLoggedin = auth.currentUser
   console.log("root layout")
+  console.log("isLoggedin", isLoggedin)
   return (
 
     <html lang="en">
@@ -51,6 +54,7 @@ export default function RootLayout({
             <div className='app-container'>
               {/* <HeaderProvider /> */}
               {header}
+              {childeren}
               {isLoggedin ? dashboard : login}
             </div>
           </Suspense>

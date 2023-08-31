@@ -14,10 +14,9 @@ import { SignupButton } from '@/app/components/SignupButton';
 // user가 navigate 시 page를 reload 하지 않고 해당 route segments에서 변화한 부분만 re-render
 
 function Signup() {
-  // const router = useRouter();
-  const googleSignin = async () => {
-    await signInWithRedirect(auth, googleAuthProvider);
-    const result = await getRedirectResult(auth)
+  const router = useRouter();
+  const googleSignin = () => {
+    signInWithRedirect(auth, googleAuthProvider);
 
     // .then((result) => {
     //   console.log("triggered")
@@ -33,7 +32,6 @@ function Signup() {
     // });
     
   } 
-
 
 
   return (

@@ -5,11 +5,9 @@ import Link from 'next/link'
 import { auth } from '../../../firebase/firebaseApp'
 
 
-export default async function Loggedin() {
+export default function Loggedin() {
   // await document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
-  const isLoggedin = auth.currentUser;
-  console.log("isLoggedin", isLoggedin)
-  
+
   return (
     <main className={styles.container}>
       <div className={styles.logo}>
