@@ -1,21 +1,23 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Nanum_Gothic, Roboto} from 'next/font/google'
+import { Nanum_Gothic, Roboto } from 'next/font/google'
 import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Suspense } from 'react'
-import Loading from './Loading'
+import { auth } from '../../firebase/firebaseApp'
+import Loading from './loading'
+
 config.autoAddCss = false
 
-const nanumGothic = Nanum_Gothic({ 
-  weight: ['400','700'],
+const nanumGothic = Nanum_Gothic({
+  weight: ['400', '700'],
   subsets: ['latin'],
   variable: '--font-NanumGothic',
 })
 
 const roboto = Roboto({
-  weight: ['400','700'],
+  weight: ['400', '700'],
   subsets: ['latin'],
   variable: '--font-Roboto',
 })
@@ -27,19 +29,23 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  children,
+  dashboard,
+  login,
 }: {
-  children: React.ReactNode
+  dashboard: React.ReactNode
+  login: React.ReactNode
 }) {
+  const isLoggedin = auth.currentUser;
   return (
+
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <div className='root-container'>
           <WebAside />
           <Suspense fallback={<Loading />}>
-          <div className='app-container'>
-            {children}
-          </div>
+            <div className='app-container'>
+              {isLoggedin ? dashboard : login}
+            </div>
           </Suspense>
         </div>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
