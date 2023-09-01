@@ -1,15 +1,10 @@
-import { getRedirectResult } from "firebase/auth";
-import Header from "../@header/page"
-import { auth } from "../../../firebase/firebaseApp";
-import { addUserToFirestore } from "../../../firebase/userController";
-import { redirect } from "next/navigation";
-
-export default function LoginLayout({
+export default async function LoginLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
 
+  console.log('login layout')
   return (
     <main className="main">
       {children}

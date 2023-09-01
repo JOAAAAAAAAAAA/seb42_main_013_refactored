@@ -1,8 +1,5 @@
-
-import Image from 'next/image'
 import Link from 'next/link';
-import { getRedirectResult, signInWithRedirect } from 'firebase/auth';
-import { addUserToFirestore } from '../../../../firebase/userController';
+
 // import { useRouter } from 'next/router'; v13 이전 page directory에서 사용
 // app directory에서는
 import SignupForm from '@/app/components/SignupForm';
@@ -14,16 +11,6 @@ import { redirect } from 'next/navigation';
 // user가 navigate 시 page를 reload 하지 않고 해당 route segments에서 변화한 부분만 re-render
 
 async function Signup() {
-
-    // const result = await getRedirectResult(auth)
-    // const user = result?.user;
-    // if(user){
-    //     await addUserToFirestore(user);
-    //     redirect('/')
-    // }
-  // }catch(error){
-    // console.error(error)
-  // }
   return (
     <div className="flex flex-col px-[20px] justify-around overflow overflow-hidden h-full">
       <SignupForm />

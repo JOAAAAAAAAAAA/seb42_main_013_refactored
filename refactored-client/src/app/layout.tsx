@@ -4,11 +4,10 @@ import { Nanum_Gothic, Roboto } from 'next/font/google'
 import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import { Children, Suspense } from 'react'
+import { Suspense } from 'react'
 import { auth } from '../../firebase/firebaseApp'
 import Loading from './loading'
-import HeaderProvider from './HeaderProvider'
-import { redirect } from 'next/navigation'
+
 
 config.autoAddCss = false
 
@@ -31,12 +30,10 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  dashboard,
   login,
   header,
   children,
 }: {
-  dashboard: React.ReactNode
   login: React.ReactNode
   header: React.ReactNode
   children: React.ReactNode

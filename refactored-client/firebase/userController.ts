@@ -1,12 +1,11 @@
-import { User } from "firebase/auth";
-import { firestore } from "./firebaseApp";
+import { User, getRedirectResult } from "firebase/auth";
+import { auth, firestore } from "./firebaseApp";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore/lite";
 
 
 export const addUserToFirestore = async (user: User) => {
   const userRef = doc(firestore, "users", user.uid);
   //doc parameter (reference to the document, path, pathSegments)
-
   await setDoc(
     userRef,
     {
