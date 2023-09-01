@@ -1,7 +1,7 @@
+import { auth, googleAuthProvider } from '@/firebase/firebaseApp';
+import { addUserToFirestore } from '@/firebase/userController';
 import { getRedirectResult, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
-import { auth, googleAuthProvider } from '../../../../firebase/firebaseApp';
-import { addUserToFirestore } from '../../../../firebase/userController';
 
 // export const handleGoogleSignIn = (router:AppRouterInstance) => {
 //   signInWithPopup(auth, googleAuthProvider)
@@ -24,6 +24,8 @@ export const getRedirectResultFromGoogle = async (router:AppRouterInstance) => {
  const result =  await getRedirectResult(auth)
   if(result && result.user){
     addUserToFirestore(result.user)
+    const isLogin = auth.currentUser
+    console.log("isLogin",isLogin)
     router.push("/")
   }
 }

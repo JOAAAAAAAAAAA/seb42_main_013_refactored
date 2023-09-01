@@ -1,8 +1,9 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PillDataFilter, PillDataSort } from "@/types.js";
 import Modal from "@/app/components/Modal";
 import SortbyModalWindow from "@/app/components/SortbyModalWindow";
+import { AuthContext } from "@/context/AuthProvider";
 
 
 
@@ -14,7 +15,9 @@ function Summary () {
   const [isdeleteOpen, setIsdeleteOpen] = useState(false);
   const [data, setData] = useState([])
 
-  
+  const {authUser, isLoggedIn} = useContext(AuthContext);
+  console.log("authUser", authUser)
+  console.log("isLoggedIn", isLoggedIn)
 
   return (
     <div className="flex flex-col h-full py-[24px] px-[20px]">

@@ -8,10 +8,12 @@ import { addPillSchema } from "./zodSchema/addPills";
 export interface AuthUser {
   uid: string;
   email: string | null;
-  name: string | null;
+  displayName: string | null;
+  phoneNumber: string | null;
   photoURL: string | null;
-  lastLoginAt: Timestamp;
 }
+
+
 
 export type signupData = z.infer<typeof signupSchema>;
 export type Pill = z.infer<typeof addPillSchema>;

@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import styles from "./Buttons.module.css";
-import { useRouter } from "next/navigation";
+
 
 
 
@@ -11,7 +11,7 @@ interface SignupButtonProps {
 }
 
 export const SignupButton = ({ onClickHandler, authProvider }: SignupButtonProps) => {
-  const router = useRouter();
+
   return (
     //! 변수 사용시 []로 감싸야 함
     <button className={styles[authProvider]} onClick={()=>onClickHandler()}>

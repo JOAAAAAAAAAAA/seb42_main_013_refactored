@@ -3,7 +3,6 @@ import Link from 'next/link';
 // import { useRouter } from 'next/router'; v13 이전 page directory에서 사용
 // app directory에서는
 import SignupForm from '@/app/components/SignupForm';
-import { auth, googleAuthProvider } from '../../../../firebase/firebaseApp';
 import SignupButtons from '@/app/components/SignupButtons';
 import { redirect } from 'next/navigation';
 // server 에서 route segments 단위로 code-split

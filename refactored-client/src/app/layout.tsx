@@ -5,8 +5,9 @@ import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Suspense } from 'react'
-import { auth } from '../../firebase/firebaseApp'
 import Loading from './loading'
+import { auth } from '@/firebase/firebaseApp'
+
 
 
 config.autoAddCss = false
@@ -30,19 +31,18 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  login,
+  unAuthenticated,
   header,
   children,
 }: {
-  login: React.ReactNode
+  unAuthenticated: React.ReactNode
   header: React.ReactNode
   children: React.ReactNode
 }) {
-  const isLoggedin = auth.currentUser
-  console.log("root layout")
-  console.log("isLoggedin", isLoggedin)
-  return (
+  const isLoggedin = auth.currentUser ? true : false
+  console.log('isLoggedin', isLoggedin) 
 
+  return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <div className='root-container'>
@@ -51,8 +51,9 @@ export default function RootLayout({
             <div className='app-container'>
               {/* <HeaderProvider /> */}
               {header}
-              {isLoggedin ?children : login}
+              {isLoggedin ?children : unAuthenticated}
             </div>
+
           </Suspense>
         </div>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
