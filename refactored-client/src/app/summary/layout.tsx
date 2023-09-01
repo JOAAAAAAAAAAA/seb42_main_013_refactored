@@ -1,4 +1,4 @@
-import Header from "@/app/@header/page"
+
 
 
 
@@ -9,7 +9,6 @@ export default function SummaryLayout({
 }) {
   return (
     <section>
-      <Header />
       {children}
     </section>
   )

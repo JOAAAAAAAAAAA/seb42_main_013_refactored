@@ -1,49 +1,34 @@
-"use client"
+
 import Image from 'next/image'
 import Link from 'next/link';
 import { getRedirectResult, signInWithRedirect } from 'firebase/auth';
 import { addUserToFirestore } from '../../../../firebase/userController';
 // import { useRouter } from 'next/router'; v13 이전 page directory에서 사용
 // app directory에서는
-import { redirect, useRouter } from 'next/navigation'
 import SignupForm from '@/app/components/SignupForm';
 import { auth, googleAuthProvider } from '../../../../firebase/firebaseApp';
-import { SignupButton } from '@/app/components/SignupButton';
+import SignupButtons from '@/app/components/SignupButtons';
+import { redirect } from 'next/navigation';
 // server 에서 route segments 단위로 code-split
 // client 에서는 해당 코드를 prefetch 후 route segments 단위로 caching
 // user가 navigate 시 page를 reload 하지 않고 해당 route segments에서 변화한 부분만 re-render
 
-function Signup() {
-  const router = useRouter();
-  const googleSignin = () => {
-    signInWithRedirect(auth, googleAuthProvider);
+async function Signup() {
 
-    // .then((result) => {
-    //   console.log("triggered")
-    //   console.log(result)
-    //   const user = result?.user;
-    //   const operationType = result?.operationType;
-    //   if(user){
-    //     addUserToFirestore(user);
+    // const result = await getRedirectResult(auth)
+    // const user = result?.user;
+    // if(user){
+    //     await addUserToFirestore(user);
     //     redirect('/')
-    //   }
-    // }).catch((error) => {
-    //   console.error(error)
-    // });
-    
-  } 
-
-
+    // }
+  // }catch(error){
+    // console.error(error)
+  // }
   return (
     <div className="flex flex-col px-[20px] justify-around overflow overflow-hidden h-full">
       <SignupForm />
       <div className="flex w-full items-center tracking-wide justify-center text-center text-[--black-300]">계정이 있으신가요?<Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link></div>
-      <div className="flex flex-col shrink-0 w-full gap-[4px]">
-        <SignupButton authProvider='google' onClickHandler={googleSignin}/>
-        <SignupButton authProvider='github' />
-        <SignupButton authProvider='facebook' />
-        <SignupButton authProvider='kakao' />
-      </div>
+      <SignupButtons />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import blueButtonStyles from '../components/Buttons.module.css'
 import Link from 'next/link'
 
 
-export default function Intro() {
+export default function IntroDefault() {
   // await document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
 
   return (
