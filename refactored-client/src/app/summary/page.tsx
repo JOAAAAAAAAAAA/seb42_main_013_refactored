@@ -16,8 +16,7 @@ function Summary () {
   const [data, setData] = useState([])
 
   const {authUser, isLoggedIn} = useContext(AuthContext);
-  console.log("authUser", authUser)
-  console.log("isLoggedIn", isLoggedIn)
+
 
   return (
     <div className="flex flex-col h-full py-[24px] px-[20px]">

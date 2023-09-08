@@ -24,3 +24,9 @@ const auth = getAuth();
 const firestore = getFirestore(app);
 
 export { app, googleAuthProvider, auth, firestore };
+
+
+//SDK는 serverless serverless app architectures where clients connect directly to your Firebase database.
+//https://firebase.google.com/docs/firestore/manage-data/enable-offline
+//클라이언트에서 로그인 후 서버에서 conditional routing을 하는 법은 ?
+//어떻게 전달하지... ?

@@ -2,11 +2,14 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import blueButtonStyles from '../components/Buttons.module.css'
 import Link from 'next/link'
+import { auth } from '@/firebase/firebaseApp'
 
 
 export default function Intro() {
   // await document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
+  const isLoggedin = auth.currentUser ? true : false
 
+  
   return (
     <main className={styles.container}>
       <div className={styles.logo}>

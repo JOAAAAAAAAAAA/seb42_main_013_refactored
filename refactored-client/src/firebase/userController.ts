@@ -11,7 +11,6 @@ export const addUserToFirestore = async (user: User) => {
     {
       uid: user.uid,
       email: user.email,
-      phoneNumber: user.phoneNumber,
       displayName: user.displayName,
       photoURL: user.photoURL,
       lastLoginAt: serverTimestamp(),

@@ -25,7 +25,7 @@ export const getRedirectResultFromGoogle = async (router:AppRouterInstance) => {
   if(result && result.user){
     addUserToFirestore(result.user)
     const isLogin = auth.currentUser
-    console.log("isLogin",isLogin)
+
     router.push("/")
   }
 }

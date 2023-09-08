@@ -15,8 +15,7 @@ export default function SignupForm() {
   // useForm 사용으로 필요 없음
   // const [data, setData] = useState({ email: '', password: '', displayName: '' });
   const onSubmit = async (data: signupData) => {
-    console.log(isSubmitting)
-    console.log(data);
+
     // await axios({
     //   method: 'post',
     //   // url: `/users`,

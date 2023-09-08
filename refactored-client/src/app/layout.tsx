@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 
-export default function RootLayout({
+export default async function RootLayout({
   unAuthenticated,
   header,
   children,
@@ -39,8 +39,11 @@ export default function RootLayout({
   header: React.ReactNode
   children: React.ReactNode
 }) {
+
+  // const result = await fetch("http://localhost:3000/auth/search");
+  // console.log('result', result)
   const isLoggedin = auth.currentUser ? true : false
-  console.log('isLoggedin', isLoggedin) 
+
 
   return (
     <html lang="en">
