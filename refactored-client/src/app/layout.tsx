@@ -6,7 +6,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Suspense } from 'react'
 import Loading from './loading'
-import { auth } from '@/firebase/firebaseApp'
+import { cookies } from 'next/headers'
 
 
 
@@ -40,10 +40,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-  // const result = await fetch("http://localhost:3000/auth/search");
-  // console.log('result', result)
-  const isLoggedin = auth.currentUser ? true : false
 
+  const isLoggedin = cookies().has("session")
 
   return (
     <html lang="en">
@@ -55,7 +53,6 @@ export default async function RootLayout({
               {/* <HeaderProvider /> */}
               {header}
               {isLoggedin ?children : unAuthenticated}
-              {/* {children} */}
             </div>
             
 
