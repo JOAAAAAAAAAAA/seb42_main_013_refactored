@@ -55,7 +55,9 @@ export default async function RootLayout({
               {/* <HeaderProvider /> */}
               {header}
               {isLoggedin ?children : unAuthenticated}
+              {/* {children} */}
             </div>
+            
 
           </Suspense>
         </div>

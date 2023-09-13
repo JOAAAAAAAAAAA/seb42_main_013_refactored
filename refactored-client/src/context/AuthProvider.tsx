@@ -14,7 +14,8 @@ type AuthContextType = {
   signUp: (user: User) => void;
   signOut: () => void;
   signInwithGoogle: () => void;
-  getRedirectResultFromGoogle: () => Promise<void>;
+  sessionLogin: () => Promise<void>;
+
 }
 
 
@@ -24,15 +25,16 @@ const initialState: AuthContextType = {
   signUp: (user: User) => { },
   signOut: () => { },
   signInwithGoogle: () => { },
-  getRedirectResultFromGoogle: () => Promise.resolve(),
+  sessionLogin: () => Promise.resolve(),
+
 }
 
 export const AuthContext = createContext<AuthContextType>(initialState);
 
 //reducer 엔 상태
 type AuthAction =
-  | { type: "signin"; authUser: AuthUser; isLoggedIn: boolean }
-  | { type: "signOut" }
+  | { type: "login"; authUser: AuthUser; isLoggedIn: boolean }
+  | { type: "logout" }
   | { type: "setLoading"; isLoading: boolean }
   | { type: "updateUser"; authUser: AuthUser }
 
@@ -45,9 +47,9 @@ type AuthState = {
 
 const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
-    case "signin":
+    case "login":
       return { ...state, isLoggedIn: action.isLoggedIn, authUser: action.authUser };
-    case "signOut":
+    case "logout":
       return { ...state, isLoggedIn: false, authUser: null };
     case "setLoading":
       return { ...state, isLoading: action.isLoading };
@@ -66,8 +68,6 @@ export default function AuthProvider({
   children: React.ReactNode
 }) {
 
-  //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
-  setPersistence(auth, inMemoryPersistence)
 
   const [state, dispatch] = useReducer(authReducer, {
     isLoggedIn: false,
@@ -84,8 +84,8 @@ export default function AuthProvider({
   }
   //!2. signInWithRedirect는 리턴값이 없음 getRedirectResult로 받아야함
   //아니면 그냥 firebase.auth().currentUser.getIdToken()으로 받아도 될 것 같음
-  const getRedirectResultFromGoogle = async () => {
-    try{
+  const sessionLogin = async () => {
+    try {
       const userCredential = await getRedirectResult(auth)
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
@@ -98,63 +98,67 @@ export default function AuthProvider({
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
         const idToken = await userCredential.user.getIdToken();
 
-        // const csrfToken = (Math.random()*100000000000000000).toString()
-        //TODO csrf 해야하는데.. 작년부터 막힘... nextauth를 사용하는게 좋을 것 같은데 일단 하던거 마저 해보자
-        //TODO 임의로 csrfToken을 생성해서 서버로 보내자
-   
+        //!4. csrf      
+        //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
+        //csrfToken은 session단위로 생성되어야 한다. no timestamps
+        const headers = new Headers({
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        })
 
-        const response = await fetch("/auth/login", {
+        const csrfToken = await fetch(`http://localhost:3000/api/auth/csrf`)
+        // const cookie = res.headers.get('set-cookie')
+        // if(cookie){        
+        //   headers.append('set-cookie', cookie)
+        // }
+        const body = await csrfToken.json()
+        const response = await fetch("/auth/sessionLogin", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-            "Content-Type": "application/json",
-          },
-          // body: JSON.stringify({
-          //   user: userCredential.user //verify 후 firestore에 저장할 user 정보도 첨부
-
-          // }),
-          //decodeIdToken을 사용하면 user 정보를 가져올 수 있으므로 해당 코드 삭제
+          headers,
+          body: JSON.stringify(body),
         });
-
-        if (response.status === 200) {
-          router.push("/");
+        if (response.ok) {
+          const user = await response.json()
+          dispatch({ type: "login", authUser:user, isLoggedIn: true })
+          //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
+          setPersistence(auth, inMemoryPersistence)
+          auth.signOut()
+          router.push("/")
         }
       }
-    }catch (error) {
-      console.error(error);
+    }catch(error){
+      console.error(error)
     }
-  };
+  }
 
 
 
+  const signOut = () => {
+    auth.signOut()
+    dispatch({ type: "logout" })
+  }
+  const signUp = (user: User) => {
+    // addUserToFirestore(user)
+  }
 
-const signOut = () => {
-  auth.signOut()
-  dispatch({ type: "signOut" })
-}
-const signUp = (user: User) => {
-  // addUserToFirestore(user)
-  dispatch({ type: "signin", authUser: user, isLoggedIn: true })
-}
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch({ type: "updateUser", authUser: user })
+      } else {
+        // dispatch({ type: "signOut" });
+        // router.push("/login")
+      }
+      dispatch({ type: "setLoading", isLoading: false });
+    });
+    return () => unsubscribe();
+  }, []);
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      dispatch({ type: "updateUser", authUser: user })
-    } else {
-      // dispatch({ type: "signOut" });
-      // router.push("/login")
-    }
-    dispatch({ type: "setLoading", isLoading: false });
-  });
-  return () => unsubscribe();
-}, []);
-
-return (
-  <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, getRedirectResultFromGoogle, signOut }}>
-    {state.isLoading ? <div>Loading...</div> : children}
-  </AuthContext.Provider>
-)
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, sessionLogin, signOut }}>
+      {state.isLoading ? <div>Loading...</div> : children}
+    </AuthContext.Provider>
+  )
 
 
 }
