@@ -9,9 +9,7 @@ export default async function LoginLayout({
   //! Provider 은 꼭 layout 안에 있어야 함
   return (
     <main className="main">
-      <AuthProvider>
         {children}
-      </AuthProvider>
     </main>
   )
 }

@@ -12,9 +12,9 @@ type AuthContextType = {
   isLoggedIn: boolean;
   authUser: AuthUser | null;
   signUp: (user: User) => void;
-  signOut: () => void;
   signInwithGoogle: () => void;
   sessionLogin: () => Promise<void>;
+  sessionLogout: () => Promise<void>;
 
 }
 
@@ -23,10 +23,9 @@ const initialState: AuthContextType = {
   isLoggedIn: false,
   authUser: null,
   signUp: (user: User) => { },
-  signOut: () => { },
   signInwithGoogle: () => { },
   sessionLogin: () => Promise.resolve(),
-
+  sessionLogout: () => Promise.resolve(),
 }
 
 export const AuthContext = createContext<AuthContextType>(initialState);
@@ -102,41 +101,40 @@ export default function AuthProvider({
         //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
         //csrfToken은 session단위로 생성되어야 한다. no timestamps
         const headers = new Headers({
-          Authorization: `Bearer ${idToken}`,
+          "Authorization": `Bearer ${idToken}`,
           "Content-Type": "application/json",
         })
 
         const csrfToken = await fetch(`http://localhost:3000/api/auth/csrf`)
-        // const cookie = res.headers.get('set-cookie')
-        // if(cookie){        
-        //   headers.append('set-cookie', cookie)
-        // }
         const body = await csrfToken.json()
-        const response = await fetch("/auth/sessionLogin", {
+        const response = await fetch("/auth/sessionlogin", {
           method: "POST",
           headers,
           body: JSON.stringify(body),
         });
         if (response.ok) {
           const user = await response.json()
-          dispatch({ type: "login", authUser:user, isLoggedIn: true })
+          dispatch({ type: "login", authUser: user, isLoggedIn: true })
           //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
           setPersistence(auth, inMemoryPersistence)
           auth.signOut()
           router.push("/")
         }
       }
-    }catch(error){
+    } catch (error) {
       console.error(error)
     }
   }
 
-
-
-  const signOut = () => {
-    auth.signOut()
+  const sessionLogout = async () => {
+    console.log('fefefef')
+    const res = await fetch(`/auth/sessionlogout`, {
+      method: 'POST',
+    })
+    if (res.ok) router.push("/")
     dispatch({ type: "logout" })
   }
+
   const signUp = (user: User) => {
     // addUserToFirestore(user)
   }
@@ -155,7 +153,7 @@ export default function AuthProvider({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, sessionLogin, signOut }}>
+    <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, sessionLogin, sessionLogout }}>
       {state.isLoading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   )

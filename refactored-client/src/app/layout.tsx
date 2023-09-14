@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Suspense } from 'react'
 import Loading from './loading'
 import { cookies } from 'next/headers'
+import AuthProvider from '@/context/AuthProvider'
 
 
 
@@ -42,11 +43,14 @@ export default async function RootLayout({
 
 
   const isLoggedin = cookies().has("session")
+  console.log('session', isLoggedin)
 
   return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <div className='root-container'>
+          <AuthProvider>
+
           <WebAside />
           <Suspense fallback={<Loading />}>
             <div className='app-container'>
@@ -54,9 +58,9 @@ export default async function RootLayout({
               {header}
               {isLoggedin ?children : unAuthenticated}
             </div>
-            
-
           </Suspense>
+          </AuthProvider>
+
         </div>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
       </body>

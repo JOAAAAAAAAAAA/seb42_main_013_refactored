@@ -21,6 +21,7 @@ import { redirect } from "next/navigation";
 
 // 기존 함수
 export async function POST(req: NextRequest) {
+  console.log('customreq!!!!!!!!!!!!!!!!!!!!!!!!!!', req)
 
   const authorization = req.headers.get("Authorization");
   if (!authorization) return NextResponse.json({ message: "no idToken found" }, { status: 401 })
