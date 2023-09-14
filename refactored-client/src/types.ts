@@ -3,6 +3,7 @@ import { Timestamp } from "firebase/firestore/lite";
 import { signupSchema } from "./zodSchema/signup";
 import { z } from "zod";
 import { addPillSchema } from "./zodSchema/addPills";
+import { loginSchema } from "./zodSchema/login";
 
 
 export interface AuthUser {
@@ -25,6 +26,7 @@ export interface decodedUser {
 
 export type signupData = z.infer<typeof signupSchema>;
 export type Pill = z.infer<typeof addPillSchema>;
+export type loginData = z.infer<typeof loginSchema>
 
 
 export type PillDataFilter = "all" | "supplement" | "drug"

@@ -3,9 +3,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { signupSchema} from '@/zodSchema/signup';
-import FormInput from './FormInput';
-import { BlueButton } from './Buttons';
+import FormInput from '../../components/FormInput';
+import { BlueButton } from '../../components/Buttons';
 import { signupData } from '@/types';
+import Link from 'next/link';
 
 export default function SignupForm() {
 
@@ -51,6 +52,11 @@ export default function SignupForm() {
       <FormInput type="password" placeholder="비밀번호 확인" error={errors?.confirmPassword} autocomplete="false"
         register={register("confirmPassword")} />
       <BlueButton type="submit" disabled={isSubmitting} >회원가입</BlueButton>
+      <div className="flex mt-[22px] w-full items-center tracking-wide justify-center text-center text-[--black-300]">
+        계정이 있으신가요?
+        <Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link>
+      </div>
+
     </form>
   )
 }
