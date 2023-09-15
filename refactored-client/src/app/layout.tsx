@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import Loading from './loading'
 import { cookies } from 'next/headers'
 import AuthProvider from '@/context/AuthProvider'
+import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
 
 
 
@@ -48,8 +49,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
-        <div className='root-container'>
+    <ThemeRegistry>
           <AuthProvider>
+        <div className='root-container'>
 
           <WebAside />
           <Suspense fallback={<Loading />}>
@@ -59,9 +61,9 @@ export default async function RootLayout({
               {isLoggedin ?children : unAuthenticated}
             </div>
           </Suspense>
-          </AuthProvider>
-
         </div>
+          </AuthProvider>
+          </ThemeRegistry>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
       </body>
     </html>
