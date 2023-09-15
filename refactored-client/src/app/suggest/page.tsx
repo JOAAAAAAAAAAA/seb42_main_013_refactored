@@ -113,7 +113,24 @@ export default function Suggest() {
       </Paper>
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] p-[--gap-sm]">
         <h1 className="mt-[--gap-md] font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양 찾기</h1>
-      <ScrollBar concerns={concerns} />
+        <ScrollBarContainer>
+          <Swiper
+            spaceBetween={4}
+            slidesPerView={5}
+          >
+            {health.map(el => {
+              return (
+                <SwiperSlide key={el.id} className={el.id === selectedConcern ? "selected-area category" : "category"} onClick={clickHandler} id={el.id}>
+                  <CategoryIconDiv className={el.id === selectedConcern ? "category-select" : ""}>
+                    <img src={el.src} alt="health-icon" />
+                  </CategoryIconDiv>
+                  <div>{el.title}</div>
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
+        </ScrollBarContainer>
+
       </Paper>
 
 
