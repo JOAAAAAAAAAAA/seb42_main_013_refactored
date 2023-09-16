@@ -15,7 +15,7 @@ import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
 config.autoAddCss = false
 
 const nanumGothic = Nanum_Gothic({
-  weight: ['400', '700'],
+  weight: ['400', '700','800'],
   subsets: ['latin'],
   variable: '--font-NanumGothic',
 })
@@ -54,13 +54,13 @@ export default async function RootLayout({
         <div className='root-container'>
 
           <WebAside />
-          <Suspense fallback={<Loading />}>
+          {/* <Suspense fallback={<Loading />}> */}
             <div className='app-container'>
               {/* <HeaderProvider /> */}
               {header}
               {isLoggedin ?children : unAuthenticated}
             </div>
-          </Suspense>
+          {/* </Suspense> */}
         </div>
           </AuthProvider>
           </ThemeRegistry>

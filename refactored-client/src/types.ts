@@ -33,3 +33,18 @@ export type PillDataFilter = "all" | "supplement" | "drug"
 
 export type PillDataSort = "AtoZ" | "pillsLeftAscending" | "pillsLeftDescending" | "expiryDate"
 
+export type TabType = {
+  id: number;
+}
+
+type Supplement = {
+  supplementName : string;
+  imageURL : string;
+}
+
+export interface Concern {
+  id: number;
+  title: string;
+  supplementsList: Supplement[];
+  contents : string[];
+}

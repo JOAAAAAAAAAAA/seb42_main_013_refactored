@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore/lite";
 import { firestore } from "@/firebase/firebaseApp";
-import { cookies, headers } from "next/headers";
 import { adminAuth } from "@/firebase/firebaseAdmin";
-import { AuthUser, decodedUser } from "@/types";
-import { auth } from "@/auth"
 import { createCSRFToken } from '/Users/bella/Coding/seb42_main_013/refactored-client/node_modules/@auth/core/lib/csrf-token';
-import { redirect } from "next/navigation";
 
 
 

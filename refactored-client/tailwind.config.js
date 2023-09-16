@@ -11,9 +11,11 @@ module.exports = {
     },
   }
   },
-  important: '#app',
-  // https://tailwindcss.com/docs/configuration#important
-  // https://mui.com/material-ui/guides/interoperability/#tailwind-css
-  // tailwind 로 mui를 override하기 위해 사용
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   plugins: [],
 }
+// https://tailwindcss.com/docs/configuration#important
+// https://mui.com/material-ui/guides/interoperability/#tailwind-css
+// tailwind 로 mui를 override하기 위해 사용
