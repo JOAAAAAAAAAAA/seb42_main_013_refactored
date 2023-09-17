@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Suspense, useState } from 'react';
 import { Skeleton } from '@mui/material';
+import { FallbackImage } from './FallbackImage';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,7 +76,12 @@ export default function ConcerTab() {
         >
           {health.map((el, idx) => {
             return (
-              <Tab key={el.id} icon={<Image src={el.src} width={32} height={32} alt="health-icon" />} color="secondary" className="flex flex-col rounded" aria-label={el.title} label={el.title} {...a11yProps(idx)} />
+              <Tab 
+              key={el.id} 
+              icon={<FallbackImage src={el.src} width="80%" alt="health-icon" />} 
+              color="secondary" 
+              className="flex flex-col rounded" 
+              aria-label={el.title} label={el.title} {...a11yProps(idx)} />
             )
           })}
         </Tabs>
@@ -89,18 +95,13 @@ export default function ConcerTab() {
                   filteredEle.supplementsList.map((ele, index) => (
                     <Grid xs={6} key={index} className="">
                       <Item className='flex flex-col items-center h-32'>
-                        <div className='flex relative w-[calc(8rem-40px)] h-full justify-center items-center'>
                           {/* //Todo image fetching 해오는거는 skeleton 내부이미지는 blur 처리하기 */}
-                          <Suspense fallback={<Skeleton variant="rectangular" width="100%" height="100%"/>}>
-                          <Image
+                          <FallbackImage
                             src={ele.imageURL}
-                            fill
-                            sizes="100vw"
-                            className='object-contain'
-                            alt="supplement-icon"
+                            fallback="/images/NoSupplementData.png"
+                            alt="supplement-img"
+                            width="calc(8rem-40px)"
                           />
-                          </Suspense>
-                        </div>
                         <span className='mt-[4px]'>{ele.supplementName}</span>
                       </Item>
                     </Grid>
