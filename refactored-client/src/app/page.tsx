@@ -10,9 +10,11 @@ export default function Home() {
   const { sessionLogout } = useContext(AuthContext);
 
   return (
-    <div className='islogedin'>
-      <BlueButton onClick={sessionLogout}>로그아웃하기</BlueButton>
+    // <div className='islogedin'>
+    //   <BlueButton onClick={sessionLogout}>로그아웃하기</BlueButton>
+    // </div>
+    <div>
+      메인
     </div>
-
   )
 }

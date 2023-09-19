@@ -105,7 +105,7 @@ export default function AuthProvider({
           "Content-Type": "application/json",
         })
 
-        const csrfToken = await fetch(`http://localhost:3000/api/auth/csrf`)
+        const csrfToken = await fetch("/api/auth/csrf")
         const body = await csrfToken.json()
         const response = await fetch("/auth/sessionlogin", {
           method: "POST",
@@ -129,7 +129,6 @@ export default function AuthProvider({
   }
 
   const sessionLogout = async () => {
-    console.log('fefefef')
     const res = await fetch(`/auth/sessionlogout`, {
       method: 'POST',
     })

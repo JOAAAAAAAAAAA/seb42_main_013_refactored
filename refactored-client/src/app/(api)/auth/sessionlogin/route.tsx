@@ -96,12 +96,14 @@ export async function POST(req: NextRequest) {
     secure: true,
     path: "/",
   });
-  res.cookies.set("next-auth.csrf-token", cookieValue, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    secure: true,
-})
+  res.cookies.delete("next-auth.csrf-token")
+  res.cookies.delete("next-auth.callback-url")
+//   res.cookies.set("next-auth.csrf-token", cookieValue, {
+//     httpOnly: true,
+//     sameSite: "lax",
+//     path: "/",
+//     secure: true,
+// })
   return res
 }
 

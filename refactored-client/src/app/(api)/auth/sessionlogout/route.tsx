@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   // redirect 는 307
   // const res =  NextResponse.redirect(`${process.env.AUTH_URL}/signup`)
   // const res = new NextResponse('',{status: 302, headers: {Location: redirectURL.toString()}})
-  const res =NextResponse.redirect(new URL("/login", req.url))
+  const res = NextResponse.redirect(new URL("/login", req.url))
   res.cookies.delete("session")
   res.cookies.delete("next-auth.csrf-token")
   res.cookies.delete("next-auth.callback-url")
