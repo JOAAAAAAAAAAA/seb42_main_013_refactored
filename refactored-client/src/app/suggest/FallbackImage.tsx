@@ -2,11 +2,10 @@ import { Skeleton } from '@mui/material'
 import Image from 'next/image'
 import { Suspense, useEffect, useState } from 'react'
 
-export const FallbackImage = ({ src, fallback, alt, width, ...rest }: {
+export const FallbackImage = ({ src, fallback, alt, ...rest }: {
   src: string
   fallback: string
   alt: string
-  width: string
 }) => {
   const [imgSrc, setImgSrc] = useState(src)
 
@@ -16,13 +15,15 @@ export const FallbackImage = ({ src, fallback, alt, width, ...rest }: {
 
   return (
     <Suspense fallback={<Skeleton variant="rectangular" width="100%" height="100%" />}>
-      <div className={`flex relative justify-center items-center w-[${width || `100%`}] h-full`}>
+        <div className={`relative flex aspect-square h-full items-center justify-center`}>
         <Image
           {...rest}
           alt={alt}
           fill
+          // TODO : 100vw로 하면 이미지가 너무 커짐
+          sizes="100vw"
           className='object-contain'
-          src={imgSrc ? imgSrc : fallback}
+          src={imgSrc}
           onError={() => {
             setImgSrc(fallback)
           }}

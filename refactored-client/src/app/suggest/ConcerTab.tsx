@@ -78,7 +78,7 @@ export default function ConcerTab() {
             return (
               <Tab 
               key={el.id} 
-              icon={<FallbackImage src={el.src} width="80%" alt="health-icon" />} 
+              icon={<FallbackImage src={el.src} alt="health-icon" fallback="/images/NoSupplementData.png" />} 
               color="secondary" 
               className="flex flex-col rounded" 
               aria-label={el.title} label={el.title} {...a11yProps(idx)} />
@@ -94,13 +94,12 @@ export default function ConcerTab() {
                 concern.filter((ele) => ele.id === value + 1).map((filteredEle) =>
                   filteredEle.supplementsList.map((ele, index) => (
                     <Grid xs={6} key={index} className="">
-                      <Item className='flex flex-col items-center h-32'>
+                      <Item className='flex h-32 flex-col items-center'>
                           {/* //Todo image fetching 해오는거는 skeleton 내부이미지는 blur 처리하기 */}
                           <FallbackImage
                             src={ele.imageURL}
                             fallback="/images/NoSupplementData.png"
                             alt="supplement-img"
-                            width="calc(8rem-40px)"
                           />
                         <span className='mt-[4px]'>{ele.supplementName}</span>
                       </Item>
