@@ -26,7 +26,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ pt: 1 }}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
@@ -78,9 +78,9 @@ export default function ConcerTab() {
             return (
               <Tab 
               key={el.id} 
-              icon={<FallbackImage src={el.src} alt="health-icon" fallback="/images/NoSupplementData.png" />} 
+              icon={<FallbackImage src={el.src} alt="health-icon" />} 
               color="secondary" 
-              className="flex flex-col rounded" 
+              className="flex flex-col gap-[4px]" 
               aria-label={el.title} label={el.title} {...a11yProps(idx)} />
             )
           })}
@@ -98,7 +98,6 @@ export default function ConcerTab() {
                           {/* //Todo image fetching 해오는거는 skeleton 내부이미지는 blur 처리하기 */}
                           <FallbackImage
                             src={ele.imageURL}
-                            fallback="/images/NoSupplementData.png"
                             alt="supplement-img"
                           />
                         <span className='mt-[4px]'>{ele.supplementName}</span>

@@ -4,10 +4,10 @@ import { Suspense, useEffect, useState } from 'react'
 
 export const FallbackImage = ({ src, fallback, alt, ...rest }: {
   src: string
-  fallback: string
   alt: string
 }) => {
   const [imgSrc, setImgSrc] = useState(src)
+  const temfallback = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
 
   useEffect(() => {
     setImgSrc(src)
@@ -21,7 +21,7 @@ export const FallbackImage = ({ src, fallback, alt, ...rest }: {
           alt={alt}
           fill
           // TODO : 100vw로 하면 이미지가 너무 커짐
-          sizes="100vw"
+          sizes="100%"
           className='object-contain'
           src={imgSrc}
           onError={() => {
