@@ -1,4 +1,3 @@
-"use client"
 import { Box, Button, Card, CardContent, IconButton, Input, InputBase, Paper, Typography } from '@mui/material';
 
 

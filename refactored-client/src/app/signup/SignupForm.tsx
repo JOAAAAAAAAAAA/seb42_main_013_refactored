@@ -3,8 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { signupSchema} from '@/zodSchema/signup';
-import FormInput from '../../components/FormInput';
-import { BlueButton } from '../../components/Buttons';
+import FormInput from '../components/FormInput'
+import { BlueButton } from '../components/Buttons';
 import { signupData } from '@/types';
 import Link from 'next/link';
 
@@ -40,7 +40,7 @@ export default function SignupForm() {
 
   return (
     <form
-      className="flex flex-col w-full [&>div>div]:py-[--gap-sm]"
+      className="flex w-full flex-col [&>div>div]:py-[--gap-sm]"
       onSubmit={handleSubmit(onSubmit)}
     >
       <FormInput type="text" placeholder="이메일" error={errors?.email}
@@ -52,9 +52,9 @@ export default function SignupForm() {
       <FormInput type="password" placeholder="비밀번호 확인" error={errors?.confirmPassword} autocomplete="false"
         register={register("confirmPassword")} />
       <BlueButton type="submit" disabled={isSubmitting} >회원가입</BlueButton>
-      <div className="flex mt-[22px] w-full items-center tracking-wide justify-center text-center text-[--black-300]">
+      <div className="mt-[22px] flex w-full items-center justify-center text-center tracking-wide text-[--black-300]">
         계정이 있으신가요?
-        <Link href="/login" className="text-[--blue-100] ml-0.5" >로그인</Link>
+        <Link href="/login" className="ml-0.5 text-[--blue-100]" >로그인</Link>
       </div>
 
     </form>

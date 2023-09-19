@@ -8,8 +8,8 @@ function Login() {
 
   return (
 
-    <div className="flex flex-col px-[20px] justify-center overflow overflow-hidden h-full items-center gap-[--gap-lg]">
-      <div className="text-[40px] ml-[10px]">Welcome!</div>
+    <div className="flex h-full flex-col items-center justify-center gap-[--gap-lg] overflow-hidden px-[20px]">
+      <div className="ml-[10px] text-[40px]">Welcome!</div>
       <LoginForm />
       <SignupButtons />
 

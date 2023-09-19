@@ -9,6 +9,7 @@ import Loading from './loading'
 import { cookies } from 'next/headers'
 import AuthProvider from '@/context/AuthProvider'
 import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
+import HeaderProvider from './HeaderProvider'
 
 
 
@@ -32,19 +33,17 @@ export const metadata: Metadata = {
 }
 
 
-export default async function RootLayout({
-  unAuthenticated,
-  header,
+export default function RootLayout({
+  intro,
+  suggest,
   children,
 }: {
-  unAuthenticated: React.ReactNode
-  header: React.ReactNode
+  intro: React.ReactNode
+  suggest: React.ReactNode
   children: React.ReactNode
 }) {
 
-
-  const isLoggedin = cookies().has("session")
-  console.log('session', isLoggedin)
+  const isloggedin = cookies().has('session')
 
   return (
     <html lang="en">
@@ -56,9 +55,9 @@ export default async function RootLayout({
           <WebAside />
           {/* <Suspense fallback={<Loading />}> */}
             <div className='app-container'>
-              {/* <HeaderProvider /> */}
-              {header}
-              {isLoggedin ?children : unAuthenticated}
+              <HeaderProvider />
+              {isloggedin ? suggest : intro}
+              {children}
             </div>
           {/* </Suspense> */}
         </div>

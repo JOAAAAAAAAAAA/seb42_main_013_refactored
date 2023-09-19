@@ -118,7 +118,7 @@ export default function AuthProvider({
           //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
           setPersistence(auth, inMemoryPersistence)
           auth.signOut()    
-          router.push("/")
+          window.location.href = "/"
         }
       }else{
         console.log("no userCredential")
@@ -132,7 +132,9 @@ export default function AuthProvider({
     const res = await fetch(`/auth/sessionlogout`, {
       method: 'POST',
     })
-    if (res.ok) router.push("/")
+    if (res.ok) {
+      window.location.href = "/"
+    }
     dispatch({ type: "logout" })
   }
 
