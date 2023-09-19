@@ -20,7 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length ?getApps()[0] :initializeApp(firebaseConfig);
 const googleAuthProvider = new GoogleAuthProvider();
-const auth = getAuth();
+const auth = getAuth(app);
 const firestore = getFirestore(app);
 
 export { app, googleAuthProvider, auth, firestore };

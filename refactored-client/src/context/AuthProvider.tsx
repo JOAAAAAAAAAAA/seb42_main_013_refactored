@@ -86,6 +86,7 @@ export default function AuthProvider({
   const sessionLogin = async () => {
     try {
       const userCredential = await getRedirectResult(auth)
+      console.log('userCredential', userCredential)
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
       // idToken 수명은 1시간으로 매우 짧다.
@@ -96,7 +97,7 @@ export default function AuthProvider({
       if (userCredential) {
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
         const idToken = await userCredential.user.getIdToken();
-
+        console.log('idToken', idToken)
         //!4. csrf      
         //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
         //csrfToken은 session단위로 생성되어야 한다. no timestamps
@@ -112,14 +113,20 @@ export default function AuthProvider({
           headers,
           body: JSON.stringify(body),
         });
+        console.log('response', response)
         if (response.ok) {
+          console.log('response.ok', response.ok)
           const user = await response.json()
           dispatch({ type: "login", authUser: user, isLoggedIn: true })
           //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
           setPersistence(auth, inMemoryPersistence)
           auth.signOut()
+          console.log('user', user)
+    
           router.push("/")
         }
+      }else{
+        console.log("no userCredential")
       }
     } catch (error) {
       console.error(error)
