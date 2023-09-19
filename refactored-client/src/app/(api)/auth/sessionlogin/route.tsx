@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore/lite";
-import { firestore } from "@/firebase/firebaseApp";
+import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { adminAuth } from "@/firebase/firebaseAdmin";
 import { createCSRFToken } from '/Users/bella/Coding/seb42_main_013/refactored-client/node_modules/@auth/core/lib/csrf-token';
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   //xx const decodedToken = await auth().verifyIdToken(idToken);
   const decodedToken = await adminAuth.verifyIdToken(idToken);
 
-  if (!decodedToken) return NextResponse.json({ message: "UNAUTHORIZED REQUEST" }, { status: 401 })
+   if (!decodedToken) return NextResponse.json({ message: "UNAUTHORIZED REQUEST" }, { status: 401 })
 
   //csrfToken 검증
   const isPost = req.method === 'POST'
@@ -59,12 +59,12 @@ export async function POST(req: NextRequest) {
   }
   //유저 정보 저장
   try {
-    const userRef = doc(firestore, "users", decodedToken.uid);
+
+    
+    const userRef = adminFirestore.collection('users').doc(decodedToken.uid);
+
     //doc parameter (reference to the document, path, pathSegments)
-    await setDoc(
-      //setDoc parameter (reference to the document, data to write, SetOptions)
-      userRef,
-      user,
+    await userRef.set(
       { merge: true }
       //SetOptions parameter (merge: boolean, mergeFields: string[])
       //기존 데이터에 덮어쓰거나 없으면 신규 데이터 생성
