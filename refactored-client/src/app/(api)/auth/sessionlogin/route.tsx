@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore/lite";
+import { FieldValue } from 'firebase-admin/firestore';
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { adminAuth } from "@/firebase/firebaseAdmin";
 import { createCSRFToken } from '/Users/bella/Coding/seb42_main_013/refactored-client/node_modules/@auth/core/lib/csrf-token';
@@ -49,13 +49,13 @@ export async function POST(req: NextRequest) {
 
   if (!csrfTokenVerified) return NextResponse.json({ message: "Invalid idToken" }, { status: 403 })
 
-
+  //https://googleapis.dev/nodejs/firestore/latest/FieldValue.html#.serverTimestamp
   const user = {
     uid: decodedToken.uid,
     email: decodedToken.email,
     displayName: decodedToken.name,
     photoURL: decodedToken.picture,
-    lastLoginAt: serverTimestamp(),
+    lastLoginAt: FieldValue.serverTimestamp(),
   }
   //유저 정보 저장
   try {
@@ -65,6 +65,7 @@ export async function POST(req: NextRequest) {
 
     //doc parameter (reference to the document, path, pathSegments)
     await userRef.set(
+      user,
       { merge: true }
       //SetOptions parameter (merge: boolean, mergeFields: string[])
       //기존 데이터에 덮어쓰거나 없으면 신규 데이터 생성
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
   });
   const resbody = {
     user,
-    message: "Login success",
+    message: "login success",
   }
 
   const res = new NextResponse(JSON.stringify(resbody),{
@@ -104,23 +105,23 @@ export async function POST(req: NextRequest) {
   return res
 }
 
-// //유저 authenticate
-// export async function GET(req: NextRequest) {
-//   //https://firebase.google.com/docs/auth/admin/manage-cookies#verify_session_cookie_and_check_permissions
-//   //case 1 session cookie가 없는 경우
-//   const session = cookies().get("session")?.value || "";
-//   if (!session) {
-//     return NextResponse.json({ isLogged: false }, { status: 401 });
-//   }
-//   //case 2 session cookie가 있지만, 만료된 경우
-//   const decodedClaims = await auth().verifySessionCookie(session, true);
-//   //verifySessionCookie(sessionCookie: string, checkRevoked?: boolean): Promise<DecodedIdToken>;
-//   if (!decodedClaims) {
-//     return NextResponse.json({ isLogged: false }, { status: 401 });
-//   }
-
-//   return NextResponse.json({ isLogged: true }, { status: 200 });
-
-// })
-
-
+//유저 authenticate
+export async function GET(req: NextRequest) {
+  //https://firebase.google.com/docs/auth/admin/manage-cookies#verify_session_cookie_and_check_permissions
+  //case 1 session cookie가 없는 경우
+  const session = req.cookies.get("session")?.value || "";
+  if (!session) {
+    return NextResponse.json({ message: "no session cookie" }, { status: 401 });
+  }
+  //case 2 session cookie가 있지만, 만료된 경우
+  try {
+    const decodedClaims = await adminAuth.verifySessionCookie(session, true);
+    if (!decodedClaims) {
+      return NextResponse.json({ message: "session cookie expired" }, { status: 401 });
+    }
+    return NextResponse.json({ isLogin: true }, { status: 200 });
+  } catch (error) {
+    //verifySessionCookie(sessionCookie: string, checkRevoked?: boolean): Promise<DecodedIdToken>;
+    return NextResponse.json(error, { status: 401 });
+  }
+}
