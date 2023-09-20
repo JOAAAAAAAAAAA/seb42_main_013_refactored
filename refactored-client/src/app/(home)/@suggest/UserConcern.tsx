@@ -6,19 +6,24 @@ import Image from "next/image"
 import Link from "next/link"
 
 export default async function UserConcern() {
-  //no cache for dynamic redner
-  const sessionCookie = cookies().get('session')
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/user`,{ 
-    cache: 'no-store',
-    headers: {
-      cookie: `session=${sessionCookie}`,
-    } })
-  // const authUser = await res.json()
-  console.log('userconcern', res)
-  return (
-    <>
+  if(cookies().has('session')) {
+    const sessionCookie = cookies().get('session')?.value || ""
+    //no cache for dynamic redner
+    const authUser = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/user`, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+        'cookie': `session=${sessionCookie}`,
+      }
+    })
+  }
 
-      {/* <div className="px-[20px] text-[14px]">환영합니다, <span>{authUser?.displayName}</span>님!</div>
+// const authUser = await res.json()
+return (
+  <>
+
+    {/* <div className="px-[20px] text-[14px]">환영합니다, <span>{authUser?.displayName}</span>님!</div>
       <Card variant='outlined'>
         <CardContent>
           <div className="mb-[--gap-md]" ><span className="font-[--blue-100]">{authUser?.displayName}</span>님을 위한 영양제 추천</div>
@@ -36,9 +41,9 @@ export default async function UserConcern() {
           </div>
         </CardContent>
       </Card> */}
-    </>
+  </>
 
 
-  )
+)
 
 }

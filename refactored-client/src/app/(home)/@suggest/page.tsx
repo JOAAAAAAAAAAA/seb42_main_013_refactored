@@ -11,8 +11,7 @@ import UserConcern from './UserConcern';
 export default async function Suggest() {  
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
-      서제스트입니다.
-      {/* <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
+      <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <div className='flex w-full border-b border-[#999999]'>
           <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
           <IconButton type="submit" aria-label="search" size="small">
@@ -89,9 +88,8 @@ export default async function Suggest() {
               <p>{"짠 음식 섭취는 혈압을 높게 만들어요"}</p>
             </Paper>
           </Grid>
-
         </Grid>
-      </Paper> */}
+      </Paper>
     </div>
 
   )

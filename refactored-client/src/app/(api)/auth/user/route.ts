@@ -5,7 +5,12 @@ import type { NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {
   console.log('get user!!!!!!!!!!!!!!')
-  const session = request.cookies.get("session")?.value || "";
+  console.log('request',request)
+  console.log('cookies',request.cookies)
+  console.log('sessioncookie',request.cookies.get("session"))
+  console.log('.value',request.cookies.get("session")?.value)
+  const session = request.cookies.get("session")?.value || '';
+  console.log('session',session)
   // 아래 리다이렉트는 server-side redirect 만 발생한다 
   if (!session) {
     console.log('session cookie not found')

@@ -118,7 +118,7 @@ export default function AuthProvider({
           headers,
           body: JSON.stringify(body),
         });
-        if (response.ok) {
+        if (response.status === 200) {
           // window.location.href = "/"
           const res = await response.json()
           console.log('login success')

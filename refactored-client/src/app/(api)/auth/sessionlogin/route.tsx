@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
   const sessionCookie = await adminAuth.createSessionCookie(idToken, {
     expiresIn,
   });
+  console.log('세션쿠키 만듬', sessionCookie)
   const resbody = {
     user,
     message: "login success",
@@ -96,7 +97,6 @@ export async function POST(req: NextRequest) {
     maxAge: expiresIn,
     httpOnly: true,
     secure: true,
-    path: "/",
   });
   res.cookies.delete("next-auth.csrf-token")
   res.cookies.delete("next-auth.callback-url")
