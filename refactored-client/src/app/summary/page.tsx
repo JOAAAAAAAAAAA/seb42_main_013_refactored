@@ -1,21 +1,22 @@
 
-import { useContext, useEffect, useState } from "react";
-import { PillDataFilter, PillDataSort } from "@/types.js";
-import Modal from "@/app/components/Modal";
-import SortbyModalWindow from "@/app/components/SortbyModalWindow";
-import { AuthContext } from "@/context/AuthProvider";
+// import { useContext, useEffect, useState } from "react";
+// import { PillDataFilter, PillDataSort } from "@/types.js";
+// import Modal from "@/app/components/Modal";
+// import SortbyModalWindow from "@/app/components/SortbyModalWindow";
+// import { AuthContext } from "@/context/AuthProvider";
 
 
 
 
 function Summary () {
-  const [sortby, setSortby] = useState<PillDataSort>("pillsLeftAscending");
-  const [tab, setTab] = useState<PillDataFilter>("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isdeleteOpen, setIsdeleteOpen] = useState(false);
-  const [data, setData] = useState([])
+  console.log('서버액션으로 리디랙션은 진행중')
+  // const [sortby, setSortby] = useState<PillDataSort>("pillsLeftAscending");
+  // const [tab, setTab] = useState<PillDataFilter>("all");
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isdeleteOpen, setIsdeleteOpen] = useState(false);
+  // const [data, setData] = useState([])
 
-  const {authUser, isLoggedIn} = useContext(AuthContext);
+  // const {authUser, isLoggedIn} = useContext(AuthContext);
 
 
   return (

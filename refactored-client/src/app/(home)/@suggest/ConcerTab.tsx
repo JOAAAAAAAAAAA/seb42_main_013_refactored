@@ -1,17 +1,13 @@
-
+"use client"
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
 import { concern, health } from '@/data';
-import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Suspense, useState } from 'react';
-import { Skeleton } from '@mui/material';
+import { useState } from 'react';
 import { FallbackImage } from './FallbackImage';
 
 function CustomTabPanel(props) {

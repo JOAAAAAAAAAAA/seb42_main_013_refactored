@@ -16,7 +16,7 @@ import HeaderProvider from './HeaderProvider'
 config.autoAddCss = false
 
 const nanumGothic = Nanum_Gothic({
-  weight: ['400', '700','800'],
+  weight: ['400', '700', '800'],
   subsets: ['latin'],
   variable: '--font-NanumGothic',
 })
@@ -34,34 +34,27 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  intro,
-  suggest,
   children,
 }: {
-  intro: React.ReactNode
-  suggest: React.ReactNode
   children: React.ReactNode
 }) {
-
-  const isloggedin = cookies().has('session')
 
   return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
-    <ThemeRegistry>
-          <AuthProvider>
-        <div className='root-container'>
-
-          <WebAside />
-          {/* <Suspense fallback={<Loading />}> */}
-            <div className='app-container'>
-              <HeaderProvider />
-              {children}
-            </div>
-          {/* </Suspense> */}
-        </div>
-          </AuthProvider>
-          </ThemeRegistry>
+        <ThemeRegistry>
+          <div className='root-container'>
+            <WebAside />
+            <Suspense fallback={<Loading />}>
+              <div className='app-container'>
+                <AuthProvider>
+                  <HeaderProvider />
+                  {children}
+                </AuthProvider>
+              </div>
+            </Suspense>
+          </div>
+        </ThemeRegistry>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
       </body>
     </html>

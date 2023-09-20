@@ -81,12 +81,17 @@ export async function POST(req: NextRequest) {
     message: "login success",
   }
 
+
+
+  // const res = NextResponse.redirect(new URL("/summary", req.url))
+  
   const res = new NextResponse(JSON.stringify(resbody),{
     status: 200,
     headers: {
       "Content-Type": "application/json",
     }
   })
+
   res.cookies.set("session", sessionCookie, {
     maxAge: expiresIn,
     httpOnly: true,

@@ -1,5 +1,3 @@
-
-
 import { SignupButtons } from '../components/SignupButtons';
 import SignupForm from './SignupForm';
 

@@ -6,6 +6,8 @@ import { app, auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { addUserToFirestore } from "../firebase/userController";
 import { useRouter } from "next/navigation";
 import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
+import { revalidatePath } from "next/cache";
+import Loading from "@/app/loading";
 
 
 //context 엔 전달할 값만 loading 필요없음
@@ -18,7 +20,6 @@ type AuthContextType = {
   sessionLogout: () => Promise<void>;
 
 }
-
 
 const initialState: AuthContextType = {
   isLoggedIn: false,
@@ -72,7 +73,7 @@ export default function AuthProvider({
   const [state, dispatch] = useReducer(authReducer, {
     isLoggedIn: false,
     authUser: null,
-    isLoading: true,
+    isLoading: false,
   });
   //provider 엔 전달할 값 빼기
   const { isLoggedIn, authUser } = state
@@ -86,9 +87,9 @@ export default function AuthProvider({
   //!2. signInWithRedirect는 리턴값이 없음 getRedirectResult로 받아야함
   //아니면 그냥 firebase.auth().currentUser.getIdToken()으로 받아도 될 것 같음
   const sessionLogin = async () => {
-    try {
+    dispatch({ type: "setLoading", isLoading: true })
+      try {
       const userCredential = await getRedirectResult(auth)
-
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
       // idToken 수명은 1시간으로 매우 짧다.
@@ -119,12 +120,19 @@ export default function AuthProvider({
         });
         if (response.ok) {
           // window.location.href = "/"
-          dispatch({ type: "login", authUser: userCredential.user, isLoggedIn: true })
+          const res = await response.json()
+          console.log('login success')
+          dispatch({ type: "login", authUser: res.user, isLoggedIn: true })
           //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
+          console.log('aaaaa')
           setPersistence(auth, inMemoryPersistence)
+          console.log('bbbbb')
           auth.signOut() 
+          console.log('ccccc')
           dispatch({ type: "setLoading", isLoading: false })   
+          console.log('ddddd')
           router.push("/")
+          console.log('fffff')
         }
       }
       dispatch({ type: "setLoading", isLoading: false })
@@ -138,32 +146,20 @@ export default function AuthProvider({
       method: 'POST',
     })
     if (res.ok) {
+      // revalidatePath('/')
       router.push("/login")
+      dispatch({ type: "logout" })
     }
-    dispatch({ type: "logout" })
   }
 
   const signUp = (user: User) => {
     // addUserToFirestore(user)
   }
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       dispatch({ type: "updateUser", authUser: user })
-  //     } else {
-  //       dispatch({ type: "signOut" });
-  //       router.push("/login")
-  //     }
-  //     dispatch({ type: "setLoading", isLoading: false });
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, sessionLogin, sessionLogout }}>
-
-      {children}
+      {state.isLoading ?<Loading /> :children}
     </AuthContext.Provider>
   )
 

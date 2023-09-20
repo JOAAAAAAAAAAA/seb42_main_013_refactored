@@ -8,6 +8,8 @@ export default function SummaryLayout({
 }: {
   children: React.ReactNode
 }) {
+  console.log('summaryLayout발동')
+
   return (
     <section>
       <AuthProvider>

@@ -11,7 +11,8 @@ export interface AuthUser {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  // lastLoginAt: Timestamp;
+  lastLoginAt: Timestamp;
+  concerns: string[] | null;
 }
 
 export interface decodedUser {

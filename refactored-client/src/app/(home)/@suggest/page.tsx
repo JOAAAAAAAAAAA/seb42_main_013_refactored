@@ -1,29 +1,17 @@
-import { Box, Button, Card, CardContent, IconButton, Input, InputBase, Paper, Typography } from '@mui/material';
-
-
+import { IconButton,InputBase, Paper } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from 'react';
-import { AuthContext } from '@/context/AuthProvider';
 import Image from 'next/image';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-// import Swiper and modules styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import Banner from './Banner';
-import ConcerTab, { Item } from './ConcerTab';
+import ConcerTab from './ConcerTab';
 import Grid from '@mui/material/Unstable_Grid2';
 import UserConcern from './UserConcern';
 
 
-export default async function Suggest() {
-  // const getuser = await fetch('/auth/user')
-  
+export default async function Suggest() {  
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
+      서제스트입니다.
       {/* <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <div className='flex w-full border-b border-[#999999]'>
           <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
@@ -32,7 +20,6 @@ export default async function Suggest() {
           </IconButton>
         </div>
         <UserConcern />
-        
         <Banner />
       </Paper>
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
