@@ -56,7 +56,6 @@ export default function RootLayout({
           {/* <Suspense fallback={<Loading />}> */}
             <div className='app-container'>
               <HeaderProvider />
-              {isloggedin ? suggest : intro}
               {children}
             </div>
           {/* </Suspense> */}

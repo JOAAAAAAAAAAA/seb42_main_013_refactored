@@ -3,6 +3,11 @@ import { getApps, initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 
+import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
+
+
+
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,7 +25,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length ?getApps()[0] :initializeApp(firebaseConfig);
 const googleAuthProvider = new GoogleAuthProvider();
-const auth = getAuth(app);
+// const auth = initializeAuth(app, {
+//   persistence: [indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence],
+//   popupRedirectResolver: browserPopupRedirectResolver,
+// });
+const auth = getAuth(app)
 const firestore = getFirestore(app);
 
 export { app, googleAuthProvider, auth, firestore };

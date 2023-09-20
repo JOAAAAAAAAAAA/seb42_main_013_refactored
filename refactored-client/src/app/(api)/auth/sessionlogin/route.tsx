@@ -16,22 +16,18 @@ import { createCSRFToken } from '/Users/bella/Coding/seb42_main_013/refactored-c
 
 
 // 기존 함수
-export async function POST(req: NextRequest) {
-  console.log('customreq!!!!!!!!!!!!!!!!!!!!!!!!!!', req)
 
+
+// TODO: 최적화하기 너무 오래걸림
+export async function POST(req: NextRequest) {
   const authorization = req.headers.get("Authorization");
   if (!authorization) return NextResponse.json({ message: "no idToken found" }, { status: 401 })
 
   const cookieValue = req.cookies.get("next-auth.csrf-token")?.value
   if (!cookieValue) return NextResponse.json({ message: "no csrfToken found" }, { status: 401 })
-
-
+  
   //idToken 검증
   const idToken = authorization.split("Bearer ")[1];
-  //xx const decodedToken = await auth().verifyIdToken(idToken);
-  const decodedToken = await adminAuth.verifyIdToken(idToken);
-
-   if (!decodedToken) return NextResponse.json({ message: "UNAUTHORIZED REQUEST" }, { status: 401 })
 
   //csrfToken 검증
   const isPost = req.method === 'POST'
@@ -39,30 +35,31 @@ export async function POST(req: NextRequest) {
   const csrfOptions = {
     secret: process.env.AUTH_SECRET,
   }
-
-  const { csrfToken, cookie: csrfCookie, csrfTokenVerified, } = await createCSRFToken({
+  const [decodedIDToken, {csrfTokenVerified}] = await Promise.all([
+  adminAuth.verifyIdToken(idToken),
+  createCSRFToken({
     options: csrfOptions,
     cookieValue,
     isPost,
     bodyValue: reqbody.csrfToken,
   })
+  ])
 
+
+  if (!decodedIDToken) return NextResponse.json({ message: "UNAUTHORIZED REQUEST" }, { status: 401 })
   if (!csrfTokenVerified) return NextResponse.json({ message: "Invalid idToken" }, { status: 403 })
 
   //https://googleapis.dev/nodejs/firestore/latest/FieldValue.html#.serverTimestamp
   const user = {
-    uid: decodedToken.uid,
-    email: decodedToken.email,
-    displayName: decodedToken.name,
-    photoURL: decodedToken.picture,
+    uid: decodedIDToken.uid,
+    email: decodedIDToken.email,
+    displayName: decodedIDToken.name,
+    photoURL: decodedIDToken.picture,
     lastLoginAt: FieldValue.serverTimestamp(),
   }
   //유저 정보 저장
   try {
-
-    
-    const userRef = adminFirestore.collection('users').doc(decodedToken.uid);
-
+    const userRef = adminFirestore.collection('users').doc(decodedIDToken.uid);
     //doc parameter (reference to the document, path, pathSegments)
     await userRef.set(
       user,
@@ -98,12 +95,6 @@ export async function POST(req: NextRequest) {
   });
   res.cookies.delete("next-auth.csrf-token")
   res.cookies.delete("next-auth.callback-url")
-//   res.cookies.set("next-auth.csrf-token", cookieValue, {
-//     httpOnly: true,
-//     sameSite: "lax",
-//     path: "/",
-//     secure: true,
-// })
   return res
 }
 

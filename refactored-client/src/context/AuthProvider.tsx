@@ -1,10 +1,11 @@
 "use client"
 import { AuthUser } from "@/types";
-import { User, browserLocalPersistence, getRedirectResult, inMemoryPersistence, onAuthStateChanged, setPersistence, signInWithRedirect } from "firebase/auth";
+import { User, getRedirectResult, inMemoryPersistence, onAuthStateChanged, setPersistence, signInWithRedirect } from "firebase/auth";
 import React, { createContext, use, useEffect, useReducer, useState } from "react";
 import { app, auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { addUserToFirestore } from "../firebase/userController";
 import { useRouter } from "next/navigation";
+import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
 
 
 //context 엔 전달할 값만 loading 필요없음
@@ -79,6 +80,7 @@ export default function AuthProvider({
 
   //!1. 구글로 로그인&시작하기 onClickHandler
   const signInwithGoogle = () => {
+    dispatch({ type: "setLoading", isLoading: true })
     signInWithRedirect(auth, googleAuthProvider)
   }
   //!2. signInWithRedirect는 리턴값이 없음 getRedirectResult로 받아야함
@@ -86,7 +88,7 @@ export default function AuthProvider({
   const sessionLogin = async () => {
     try {
       const userCredential = await getRedirectResult(auth)
-      console.log('userCredential', userCredential)
+
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
       // idToken 수명은 1시간으로 매우 짧다.
@@ -96,16 +98,19 @@ export default function AuthProvider({
       // session cookie를 사용하자
       if (userCredential) {
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
-        const idToken = await userCredential.user.getIdToken();
         //!4. csrf      
+        //! 병렬처리
+        console.log('userCredential', userCredential)
+        const [idToken, csrfToken] = await Promise.all([
+          userCredential.user.getIdToken(),
+          fetch("/api/auth/csrf"),
+        ]);
         //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
         //csrfToken은 session단위로 생성되어야 한다. no timestamps
         const headers = new Headers({
           "Authorization": `Bearer ${idToken}`,
           "Content-Type": "application/json",
         })
-
-        const csrfToken = await fetch("/api/auth/csrf")
         const body = await csrfToken.json()
         const response = await fetch("/auth/sessionlogin", {
           method: "POST",
@@ -113,16 +118,16 @@ export default function AuthProvider({
           body: JSON.stringify(body),
         });
         if (response.ok) {
-          const res = await response.json()
-          dispatch({ type: "login", authUser: res.user, isLoggedIn: true })
+          // window.location.href = "/"
+          dispatch({ type: "login", authUser: userCredential.user, isLoggedIn: true })
           //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
           setPersistence(auth, inMemoryPersistence)
-          auth.signOut()    
-          window.location.href = "/"
+          auth.signOut() 
+          dispatch({ type: "setLoading", isLoading: false })   
+          router.push("/")
         }
-      }else{
-        console.log("no userCredential")
       }
+      dispatch({ type: "setLoading", isLoading: false })
     } catch (error) {
       console.error(error)
     }
@@ -133,7 +138,7 @@ export default function AuthProvider({
       method: 'POST',
     })
     if (res.ok) {
-      window.location.href = "/"
+      router.push("/login")
     }
     dispatch({ type: "logout" })
   }
@@ -142,22 +147,23 @@ export default function AuthProvider({
     // addUserToFirestore(user)
   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch({ type: "updateUser", authUser: user })
-      } else {
-        // dispatch({ type: "signOut" });
-        // router.push("/login")
-      }
-      dispatch({ type: "setLoading", isLoading: false });
-    });
-    return () => unsubscribe();
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       dispatch({ type: "updateUser", authUser: user })
+  //     } else {
+  //       dispatch({ type: "signOut" });
+  //       router.push("/login")
+  //     }
+  //     dispatch({ type: "setLoading", isLoading: false });
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, authUser, signUp, signInwithGoogle, sessionLogin, sessionLogout }}>
-      {state.isLoading ? <div>Loading...</div> : children}
+
+      {children}
     </AuthContext.Provider>
   )
 

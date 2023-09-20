@@ -16,35 +16,23 @@ import 'swiper/css/pagination';
 import Banner from './Banner';
 import ConcerTab, { Item } from './ConcerTab';
 import Grid from '@mui/material/Unstable_Grid2';
+import UserConcern from './UserConcern';
 
 
-export default function Suggest() {
-  const { authUser } = useContext(AuthContext);
-
-  const userconcern = ["락티움", "아연", "프로폴리스"]
+export default async function Suggest() {
+  // const getuser = await fetch('/auth/user')
+  
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
-      <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
+      {/* <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <div className='flex w-full border-b border-[#999999]'>
           <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
           <IconButton type="submit" aria-label="search" size="small">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </IconButton>
         </div>
-        <div className="px-[20px] text-[14px]">환영합니다, <span>{authUser?.displayName}</span>님!</div>
-        <Card variant='outlined'>
-          <CardContent>
-            <div className="mb-[--gap-md]" ><span className="font-[--blue-100]">{authUser?.displayName}</span>님을 위한 영양제 추천</div>
-            <div className="flex h-full w-full items-center justify-around">
-              {userconcern.map((ele, idx) => (
-                <div className="text-center" key={idx}>
-                  <Image src={`/images/icon-pill${idx}.png`} width={50} height={50} alt="supplement-icon" />
-                  <span className="text-xs">{ele}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <UserConcern />
+        
         <Banner />
       </Paper>
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
@@ -116,7 +104,7 @@ export default function Suggest() {
           </Grid>
 
         </Grid>
-      </Paper>
+      </Paper> */}
     </div>
 
   )

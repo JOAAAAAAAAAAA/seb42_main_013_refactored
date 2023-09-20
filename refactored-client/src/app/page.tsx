@@ -1,16 +1,17 @@
-'use client';
 import { useContext } from "react";
 import { BlueButton } from "./components/Buttons";
 import { AuthContext } from "@/context/AuthProvider";
 import Suggest from "./suggest/Suggest";
 import Intro from "./intro/Intro";
+import { cookies } from "next/headers";
 
 
 
-
-export default function Home() {
-  const { authUser } = useContext(AuthContext);
-
+export default async function Home() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/sessionlogin`,{ cache: 'no-store' })
+  const data = await res.json()
+  console.log('isLoggedin', data)
+  const sessionCookie = cookies().get('session')
 
   // Parallel Routes를 활용한 server-side conditioal rendering은 페이지를 reload 시켜야 함
   // 로그인 후 메인 Reload 
@@ -18,7 +19,7 @@ export default function Home() {
   // 그렇기 때문에 페이지 이동시마다 Reload 시켜줘야해서 사용자 경험을 저해시킬 수 있음 
   return (
     <>
-    {authUser ?<Suggest /> :<Intro />}
+    {sessionCookie ?<Suggest /> :<Intro />}
     </>
   )
 }
