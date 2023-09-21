@@ -1,6 +1,7 @@
+"use client"
 import { Card, Skeleton } from "@mui/material";
 
-Skeleton
+
 
 function UserConcernSkeleton() {
   return (

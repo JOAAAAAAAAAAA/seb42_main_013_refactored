@@ -15,14 +15,13 @@ export async function GET(req: NextRequest) {
   // console.log('health',decodedClaims)
   // return NextResponse.next()
 
-//  const batch = adminFirestore.batch()
-//  const healthRef = adminFirestore.collection('healthConcerns').doc('health')
-//   concern.forEach((concern,idx) => {
-//   const ref = adminFirestore.collection('healthConcerns').doc(concern.iconURL.slice(13,-4))
-//   batch.set(ref,{
-//     ...concern,
-//     id: idx
-//   })
-// })
-// batch.commit()
+ const batch = adminFirestore.batch()
+  concern.forEach((concern,idx) => {
+  const ref = adminFirestore.collection('health').doc(concern.iconURL.slice(13,-4))
+  batch.set(ref,{
+    ...concern,
+    id: idx
+  })
+})
+batch.commit()
 }

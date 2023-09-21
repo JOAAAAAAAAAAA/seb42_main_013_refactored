@@ -1,6 +1,8 @@
 import { Concern } from "./types"
 
 
+
+
 export const concern:Concern[] = [
     {
         "id": 0,
@@ -92,7 +94,7 @@ export const concern:Concern[] = [
       {
           "id": 3,
           "title": "관절/뼈건강",
-          "iconURL": `/healthicons/bone.png`,
+          "iconURL": `/healthicons/jointBone.png`,
           "supplementsList": [
               {
                   "supplementName": "칼슘",
@@ -150,7 +152,7 @@ export const concern:Concern[] = [
       {
           "id": 5,
           "title": "긴장완화",
-          "iconURL": `/healthicons/relax.png`,
+          "iconURL": `/healthicons/relaxation.png`,
           "supplementsList": [
               {
                   "supplementName": "L-테아닌",
@@ -208,7 +210,7 @@ export const concern:Concern[] = [
       {
           "id": 7,
           "title": "면역력",
-          "iconURL": `/healthicons/shield.png`,
+          "iconURL": `/healthicons/immunity.png`,
           "supplementsList": [
               {
                   "supplementName": "홍삼",
@@ -237,7 +239,7 @@ export const concern:Concern[] = [
       {
           "id": 8,
           "title": "성장발육",
-          "iconURL": `/healthicons/grow.png`,
+          "iconURL": `/healthicons/growth.png`,
           "supplementsList": [
               {
                   "supplementName": "키즈 비타민",
@@ -265,7 +267,7 @@ export const concern:Concern[] = [
       },
       {
           "id": 9,
-          "iconURL": `/healthicons/heart-rate.png`,
+          "iconURL": `/healthicons/stress.png`,
           "title": "스트레스 관리",
           "supplementsList": [
               {
@@ -325,7 +327,7 @@ export const concern:Concern[] = [
       {
           "id": 10,
           "title": "장건강",
-          "iconURL": `/healthicons/intestine.png`,
+          "iconURL": `/healthicons/gut.png`,
           "supplementsList": [
               {
                   "supplementName": "프로바이오틱스",
@@ -383,7 +385,7 @@ export const concern:Concern[] = [
       {
           "id": 7,
           "title": "체지방감소",
-          "iconURL": `/healthicons/weight.png`,
+          "iconURL": `/healthicons/diet.png`,
           "supplementsList": [
               {
                   "supplementName": "녹차카테킨",
@@ -499,7 +501,7 @@ export const concern:Concern[] = [
       {
           "id": 18,
           "title": "항산화",
-          "iconURL": `/healthicons/cell.png`,
+          "iconURL": `/healthicons/antioxidant.png`,
           "supplementsList": [
               {
                   "supplementName": "비타민C",
@@ -557,7 +559,7 @@ export const concern:Concern[] = [
       {
           "id": 8,
           "title": "혈행개선",
-          "iconURL": `/healthicons/blood.png`,
+          "iconURL": `/healthicons/bloodcirculation.png`,
           "supplementsList": [
               {
                   "supplementName": "비타민E",
