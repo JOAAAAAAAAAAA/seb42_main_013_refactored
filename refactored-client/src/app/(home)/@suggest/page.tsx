@@ -1,4 +1,4 @@
-import { IconButton,InputBase, Paper } from '@mui/material';
+import { IconButton, InputBase, Paper } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
@@ -6,9 +6,23 @@ import Banner from './Banner';
 import ConcerTab from './ConcerTab';
 import Grid from '@mui/material/Unstable_Grid2';
 import UserConcern from './UserConcern';
+import { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton } from './Skeletons';
+import { Suspense } from 'react';
+import { cookies } from 'next/headers';
 
 
-export default async function Suggest() {  
+export default async function Suggest() {
+
+  const sessionCookie = cookies().get('session')?.value || ""
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/health`,{
+    method: 'GET',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      'cookie': `session=${sessionCookie}`,
+    }
+  })
+  console.log('res',res)
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
@@ -18,12 +32,18 @@ export default async function Suggest() {
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </IconButton>
         </div>
-        <UserConcern />
-        <Banner />
+        <Suspense fallback={<UserConcernSkeleton />}>
+          <UserConcern />
+        </Suspense>
+        <Suspense fallback={<BannerSkeleton />}>
+          <Banner />
+        </Suspense>
       </Paper>
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>
-        <ConcerTab />
+        <Suspense fallback={<ConcernTabSkeleton />} >
+          <ConcerTab />
+        </Suspense>
       </Paper>
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold text-[--blue-100]">생활 건강 정보</h1>

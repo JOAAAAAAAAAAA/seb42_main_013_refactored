@@ -18,10 +18,9 @@ export default function Banner(){
     autoplay={{ delay: 3000 }}
     rewind={true}
     modules={[Pagination]}
-    className="[&>div>div>a]:align-center h-[5.5rem] rounded
-    font-semibold [&>div>div>a>div:nth-child(2)]:relative 	[&>div>div>a>div:nth-child(2)]:aspect-square [&>div>div>a>div:nth-child(2)]:w-[13%]
-    [&>div>div>a>div]:flex [&>div>div>a>div]:flex-col [&>div>div>a>div]:justify-center [&>div>div>a]:flex
-    [&>div>div>a]:items-center [&>div>div>a]:justify-around [&>div>div>a]:p-2 [&>div>div>a]:pt-3
+    className="h-[5.5rem] rounded font-semibold
+    [&>div>div>a>div:nth-child(2)]:relative [&>div>div>a>div:nth-child(2)]:aspect-square 	[&>div>div>a>div:nth-child(2)]:w-[13%] [&>div>div>a>div]:flex
+    [&>div>div>a>div]:flex-col [&>div>div>a>div]:justify-center [&>div>div>a]:flex [&>div>div>a]:items-center [&>div>div>a]:justify-around [&>div>div>a]:p-2 [&>div>div>a]:pt-3
     "
   >
     <SwiperSlide className="bg-[#ffedba]">

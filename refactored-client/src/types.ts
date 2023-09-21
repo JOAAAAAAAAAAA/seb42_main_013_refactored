@@ -1,18 +1,19 @@
-import { User } from "firebase/auth";
 import { Timestamp } from "firebase/firestore/lite";
 import { signupSchema } from "./zodSchema/signup";
 import { z } from "zod";
 import { addPillSchema } from "./zodSchema/addPills";
 import { loginSchema } from "./zodSchema/login";
 
-
-export interface AuthUser {
+export interface User {
   uid: string;
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  lastLoginAt: Timestamp;
   concerns: string[] | null;
+}
+
+export interface AuthUser extends User{
+  lastLoginAt: Timestamp;
 }
 
 export interface decodedUser {
@@ -47,5 +48,7 @@ export interface Concern {
   id: number;
   title: string;
   supplementsList: Supplement[];
+  iconURL: string;
   contents : string[];
 }
+

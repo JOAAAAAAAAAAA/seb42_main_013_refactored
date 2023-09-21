@@ -1,111 +1,40 @@
 import { Concern } from "./types"
 
-export const health = [
-  {
-    id: 1,
-    title: "영양보충",
-    src: `/healthicons/nutrition.png`,
-  },
-  {
-    id: 2,
-    title: "눈건강",
-    src: `/healthicons/eye.png`,
-  },
-  {
-    id: 3,
-    title: "면역력",
-    src: `/healthicons/shield.png`,
-  },
-  {
-    id: 4,
-    title: "간건강",
-    src: `/healthicons/liver.png`,
-  },
-  {
-    id: 5,
-    title: "피로회복",
-    src: `/healthicons/power.png`,
-  },
-  {
-    id: 6,
-    title: "장건강",
-    src: `/healthicons/intestine.png`,
-  },
-  {
-    id: 7,
-    title: "체지방감소",
-    src: `/healthicons/weight.png`,
-  },
-  {
-    id: 8,
-    title: "혈행개선",
-    src: `/healthicons/blood.png`,
-  },
-  {
-    id: 9,
-    title: "피부건강",
-    src: `/healthicons/moisture.png`,
-  },
-  {
-    id: 10,
-    title: "위건강",
-    src: `/healthicons/stomach.png`,
-  },
-  {
-    id: 11,
-    title: "관절/뼈건강",
-    src: `/healthicons/bone.png`,
-  },
-  {
-    id: 12,
-    title: "갱년기",
-    src: `/healthicons/menopause.png`,
-  },
-  {
-    id: 13,
-    title: "기억력개선",
-    src: `/healthicons/brain.png`,
-  },
-  {
-    id: 14,
-    title: "긴장완화",
-    src: `/healthicons/relax.png`,
-  },
-  {
-    id: 15,
-    title: "성장발육",
-    src: `/healthicons/grow.png`,
-  },
-  {
-    id: 16,
-    title: "혈당조절",
-    src: `/healthicons/bloodsugar.png`,
-  },
-  {
-    id: 17,
-    title: "혈압조절",
-    src: `/healthicons/heart-rate.png`,
-  },
-  {
-    id: 18,
-    title: "항산화",
-    src: `/healthicons/cell.png`,
-  },
-  {
-    id: 19,
-    title: "전립선",
-    src: `/healthicons/prostate.png`,
-  },
-  {
-    id: 20,
-    title: "콜레스테롤",
-    src: `/healthicons/cholesterol.png`,
-  },
-]
+
 export const concern:Concern[] = [
+    {
+        "id": 0,
+        "title": "영양보충",
+        "iconURL": `/healthicons/nutrition.png`,
+        "supplementsList": [
+            {
+                "supplementName": "종합비타민",
+                "imageURL": "https://shopping-phinf.pstatic.net/main_1735391/17353911012.20201120160601.jpg"
+            },
+            {
+                "supplementName": "비오틴",
+                "imageURL": "https://shopping-phinf.pstatic.net/main_3059076/30590766618.20221117103035.jpg"
+            },
+            {
+                "supplementName": "엽산",
+                "imageURL": "https://shopping-phinf.pstatic.net/main_3828576/38285763618.20230227090321.jpg"
+            },
+            {
+                "supplementName": "프로틴",
+                "imageURL": "https://shop-phinf.pstatic.net/20221124_121/1669270131010dflBp_PNG/70405976682551817_101234843.png"
+            }
+        ],
+        "contents": [
+            "맛있는 고기로 단백질도 잊지 말고 섭취해 주세요",
+            "든든하게 영양보충하고 집 앞 산책 30분 함께해요!",
+            "건강에 좋은 야채도 든든히 먹기!",
+            "배달음식 그만! 맛있는 집밥으로 영양도 챙겨요"
+        ]
+    },
       {
-          "id": 4,
+          "id": 1,
           "title": "간건강",
+          "iconURL": `/healthicons/liver.png`,
           "supplementsList": [
               {
                   "supplementName": "밀크씨슬",
@@ -132,8 +61,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 12,
+          "id": 2,
           "title": "갱년기",
+          "iconURL": `/healthicons/menopause.png`,
           "supplementsList": [
               {
                   "supplementName": "피크노제놀",
@@ -160,8 +90,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 11,
+          "id": 3,
           "title": "관절/뼈건강",
+          "iconURL": `/healthicons/bone.png`,
           "supplementsList": [
               {
                   "supplementName": "칼슘",
@@ -188,8 +119,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 13,
+          "id": 4,
           "title": "기억력개선",
+          "iconURL": `/healthicons/brain.png`,
           "supplementsList": [
               {
                   "supplementName": "은행잎추출물",
@@ -216,8 +148,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 14,
+          "id": 5,
           "title": "긴장완화",
+          "iconURL": `/healthicons/relax.png`,
           "supplementsList": [
               {
                   "supplementName": "L-테아닌",
@@ -244,8 +177,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 2,
+          "id": 6,
           "title": "눈건강",
+          "iconURL": `/healthicons/eye.png`,
           "supplementsList": [
               {
                   "supplementName": "루테인",
@@ -272,8 +206,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 3,
+          "id": 7,
           "title": "면역력",
+          "iconURL": `/healthicons/shield.png`,
           "supplementsList": [
               {
                   "supplementName": "홍삼",
@@ -300,8 +235,9 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 15,
+          "id": 8,
           "title": "성장발육",
+          "iconURL": `/healthicons/grow.png`,
           "supplementsList": [
               {
                   "supplementName": "키즈 비타민",
@@ -328,7 +264,8 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 17,
+          "id": 9,
+          "iconURL": `/healthicons/heart-rate.png`,
           "title": "스트레스 관리",
           "supplementsList": [
               {
@@ -355,37 +292,10 @@ export const concern:Concern[] = [
               "규칙적인 운동을 유지하여 스트레스를 줄여보세요"
           ]
       },
+
       {
-          "id": 1,
-          "title": "영양보충",
-          "supplementsList": [
-              {
-                  "supplementName": "종합비타민",
-                  "imageURL": "https://shopping-phinf.pstatic.net/main_1735391/17353911012.20201120160601.jpg"
-              },
-              {
-                  "supplementName": "비오틴",
-                  "imageURL": "https://shopping-phinf.pstatic.net/main_3059076/30590766618.20221117103035.jpg"
-              },
-              {
-                  "supplementName": "엽산",
-                  "imageURL": "https://shopping-phinf.pstatic.net/main_3828576/38285763618.20230227090321.jpg"
-              },
-              {
-                  "supplementName": "프로틴",
-                  "imageURL": "https://shop-phinf.pstatic.net/20221124_121/1669270131010dflBp_PNG/70405976682551817_101234843.png"
-              }
-          ],
-          "contents": [
-              "맛있는 고기로 단백질도 잊지 말고 섭취해 주세요",
-              "든든하게 영양보충하고 집 앞 산책 30분 함께해요!",
-              "건강에 좋은 야채도 든든히 먹기!",
-              "배달음식 그만! 맛있는 집밥으로 영양도 챙겨요"
-          ]
-      },
-      {
-          "id": 10,
           "title": "위건강",
+          "iconURL": `/healthicons/stomach.png`,
           "supplementsList": [
               {
                   "supplementName": "스페인감초",
@@ -414,6 +324,7 @@ export const concern:Concern[] = [
       {
           "id": 6,
           "title": "장건강",
+          "iconURL": `/healthicons/intestine.png`,
           "supplementsList": [
               {
                   "supplementName": "프로바이오틱스",
@@ -442,6 +353,7 @@ export const concern:Concern[] = [
       {
           "id": 19,
           "title": "전립선",
+          "iconURL": `/healthicons/prostate.png`,
           "supplementsList": [
               {
                   "supplementName": "쏘팔메토",
@@ -470,6 +382,7 @@ export const concern:Concern[] = [
       {
           "id": 7,
           "title": "체지방감소",
+          "iconURL": `/healthicons/weight.png`,
           "supplementsList": [
               {
                   "supplementName": "녹차카테킨",
@@ -498,6 +411,7 @@ export const concern:Concern[] = [
       {
           "id": 20,
           "title": "콜레스테롤",
+          "iconURL": `/healthicons/cholesterol.png`,
           "supplementsList": [
               {
                   "supplementName": "감마리놀렌산",
@@ -526,6 +440,7 @@ export const concern:Concern[] = [
       {
           "id": 5,
           "title": "피로회복",
+          "iconURL": `/healthicons/power.png`,
           "supplementsList": [
               {
                   "supplementName": "마그네슘",
@@ -554,6 +469,7 @@ export const concern:Concern[] = [
       {
           "id": 9,
           "title": "피부건강",
+          "iconURL": `/healthicons/moisture.png`,
           "supplementsList": [
               {
                   "supplementName": "콜라겐",
@@ -582,6 +498,7 @@ export const concern:Concern[] = [
       {
           "id": 18,
           "title": "항산화",
+          "iconURL": `/healthicons/cell.png`,
           "supplementsList": [
               {
                   "supplementName": "비타민C",
@@ -610,6 +527,7 @@ export const concern:Concern[] = [
       {
           "id": 16,
           "title": "혈당조절",
+          "iconURL": `/healthicons/bloodsugar.png`,
           "supplementsList": [
               {
                   "supplementName": "바나바잎추출물",
@@ -638,6 +556,7 @@ export const concern:Concern[] = [
       {
           "id": 8,
           "title": "혈행개선",
+          "iconURL": `/healthicons/blood.png`,
           "supplementsList": [
               {
                   "supplementName": "비타민E",

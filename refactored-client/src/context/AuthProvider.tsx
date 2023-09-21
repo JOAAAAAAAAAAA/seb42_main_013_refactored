@@ -101,7 +101,7 @@ export default function AuthProvider({
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
         //!4. csrf      
         //! 병렬처리
-        console.log('userCredential', userCredential)
+
         const [idToken, csrfToken] = await Promise.all([
           userCredential.user.getIdToken(),
           fetch("/api/auth/csrf"),

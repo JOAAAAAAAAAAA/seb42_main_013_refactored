@@ -3,14 +3,14 @@ import { firestore } from '@/firebase/firebaseApp';
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+interface Concern {
+  stringValue: string;
+  valueType: string;
+}
+
 export async function GET(request: NextRequest) {
-  console.log('get user!!!!!!!!!!!!!!')
-  console.log('request',request)
-  console.log('cookies',request.cookies)
-  console.log('sessioncookie',request.cookies.get("session"))
-  console.log('.value',request.cookies.get("session")?.value)
+
   const session = request.cookies.get("session")?.value || '';
-  console.log('session',session)
   // 아래 리다이렉트는 server-side redirect 만 발생한다 
   if (!session) {
     console.log('session cookie not found')
@@ -21,13 +21,26 @@ export async function GET(request: NextRequest) {
     console.log('session cookie expired')
     return NextResponse.json({ message: "session cookie expired" }, { status: 401 });
   }
-  console.log('decodedClaims',decodedClaims)
   const userRef = adminFirestore.collection('users').doc(decodedClaims.uid);
-  const user = await userRef.get();
-  console.log('user',user)
+  const {
+    _fieldsProto: {
+      uid: { stringValue: uid },
+      email: { stringValue: email },
+      displayName: { stringValue: displayName },
+      photoURL: { stringValue: photoURL },
+      concerns: { arrayValue: { values: concernsArray } }
+    }
+  } = await userRef.get();
 
-  // const res = new NextResponse({ body, status: 200 })
-  return new NextResponse()
+  const concerns = concernsArray.map((concern:Concern) => concern.stringValue);
+  const user = {
+    uid,
+    email,
+    displayName,
+    photoURL,
+    concerns
+  };
 
+  return NextResponse.json({ user });
 }
  
