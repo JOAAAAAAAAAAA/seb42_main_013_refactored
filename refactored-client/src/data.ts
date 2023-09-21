@@ -294,6 +294,7 @@ export const concern:Concern[] = [
       },
 
       {
+          "id": 10,
           "title": "위건강",
           "iconURL": `/healthicons/stomach.png`,
           "supplementsList": [
@@ -322,7 +323,7 @@ export const concern:Concern[] = [
           ]
       },
       {
-          "id": 6,
+          "id": 10,
           "title": "장건강",
           "iconURL": `/healthicons/intestine.png`,
           "supplementsList": [
