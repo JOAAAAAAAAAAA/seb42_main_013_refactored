@@ -8,13 +8,16 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton } from './Skeletons';
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
-
+import card1 from '../../../../public/cards/card1.jpg'
+import card2 from '../../../../public/cards/card2.jpg'
+import card3 from '../../../../public/cards/card3.jpg'
+import card4 from '../../../../public/cards/card4.jpg'
 
 export default async function Suggest() {
 
-  const { default : UserConcern } = await import('./UserConcern')
+  const { default: UserConcern } = await import('./UserConcern')
 
-  
+  // const sessionCookie = cookies().get('session')
   // const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/health`,{
   //   method: 'GET',
   //   cache: 'no-store',
@@ -37,7 +40,7 @@ export default async function Suggest() {
         <Suspense fallback={<UserConcernSkeleton />}>
           <UserConcern />
         </Suspense>
-        
+
         <Suspense fallback={<BannerSkeleton />}>
           <Banner />
         </Suspense>
@@ -69,10 +72,10 @@ export default async function Suggest() {
           <Grid xs={6}>
             <Paper variant="outlined" elevation={0}>
               <Image
-                src="/cards/card1.jpg"
+                src={card1}
                 fill
-                sizes="100%"
-                alt="tip background image"
+                alt="health info card"
+                placeholder="blur"
               />
               <p>{"술과 담배는 가급적 멀리해 주세요"}</p>
             </Paper>
@@ -80,22 +83,21 @@ export default async function Suggest() {
           <Grid xs={6}>
             <Paper variant="outlined" elevation={0}>
               <Image
-                src="/cards/card2.jpg"
+                src={card2}
                 fill
-                sizes="100%"
-                alt="tip background image"
-              // placeholder="blur"
-              ></Image>
+                alt="health info card"
+                placeholder="blur"
+              />
               <p>{"규칙적으로 꾸준히 운동을 진행해 주세요!"}</p>
             </Paper>
           </Grid>
           <Grid xs={6}>
             <Paper variant="outlined" elevation={0}>
               <Image
-                src="/cards/card3.jpg"
+                src={card3}
                 fill
-                sizes="100%"
-                alt="tip background image"
+                alt="health info card"
+                placeholder="blur"
               />
               <p>{"체중이 많이 나간다면 좀 더 가볍게 조절해 주세요"}</p>
             </Paper>
@@ -103,13 +105,11 @@ export default async function Suggest() {
           <Grid xs={6}>
             <Paper variant="outlined" elevation={0}>
               <Image
-                src="/cards/card4.jpg"
+                src={card4}
                 fill
-                //! sizes error...
-                // https://github.com/vercel/next.js/discussions/40643
-                sizes="100%"
+                placeholder="blur"
                 className="opacity-70"
-                alt="tip background image"
+                alt="health info card"
               />
               <p>{"짠 음식 섭취는 혈압을 높게 만들어요"}</p>
             </Paper>

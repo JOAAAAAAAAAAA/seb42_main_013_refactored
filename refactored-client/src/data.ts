@@ -1,8 +1,107 @@
 import { Concern } from "./types"
 
-
-
-
+export const health = [
+  {
+    id: 1,
+    title: "영양보충",
+    src: `/healthicons/nutrition.png`,
+  },
+  {
+    id: 2,
+    title: "눈건강",
+    src: `/healthicons/eye.png`,
+  },
+  {
+    id: 3,
+    title: "면역력",
+    src: `/healthicons/shield.png`,
+  },
+  {
+    id: 4,
+    title: "간건강",
+    src: `/healthicons/liver.png`,
+  },
+  {
+    id: 5,
+    title: "피로회복",
+    src: `/healthicons/power.png`,
+  },
+  {
+    id: 6,
+    title: "장건강",
+    src: `/healthicons/intestine.png`,
+  },
+  {
+    id: 7,
+    title: "체지방감소",
+    src: `/healthicons/weight.png`,
+  },
+  {
+    id: 8,
+    title: "혈행개선",
+    src: `/healthicons/blood.png`,
+  },
+  {
+    id: 9,
+    title: "피부건강",
+    src: `/healthicons/moisture.png`,
+  },
+  {
+    id: 10,
+    title: "위건강",
+    src: `/healthicons/stomach.png`,
+  },
+  {
+    id: 11,
+    title: "관절/뼈건강",
+    src: `/healthicons/bone.png`,
+  },
+  {
+    id: 12,
+    title: "갱년기",
+    src: `/healthicons/menopause.png`,
+  },
+  {
+    id: 13,
+    title: "기억력개선",
+    src: `/healthicons/brain.png`,
+  },
+  {
+    id: 14,
+    title: "긴장완화",
+    src: `/healthicons/relax.png`,
+  },
+  {
+    id: 15,
+    title: "성장발육",
+    src: `/healthicons/grow.png`,
+  },
+  {
+    id: 16,
+    title: "혈당조절",
+    src: `/healthicons/bloodsugar.png`,
+  },
+  {
+    id: 17,
+    title: "혈압조절",
+    src: `/healthicons/heart-rate.png`,
+  },
+  {
+    id: 18,
+    title: "항산화",
+    src: `/healthicons/cell.png`,
+  },
+  {
+    id: 19,
+    title: "전립선",
+    src: `/healthicons/prostate.png`,
+  },
+  {
+    id: 20,
+    title: "콜레스테롤",
+    src: `/healthicons/cholesterol.png`,
+  },
+]
 export const concern:Concern[] = [
     {
         "id": 0,
