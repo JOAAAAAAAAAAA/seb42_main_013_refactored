@@ -1,8 +1,25 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   experimental: {
     serverActions: true,
+
+    turbo: {
+      rules: {
+        // Option format
+        // '*.md': [
+        //   {
+        //     loader: '@mdx-js/loader',
+        //     options: {
+        //       format: 'md',
+        //     },
+        //   },
+        // ],
+        // Option-less format
+        '*.mdx': ['@svgr/webpack'],
+        //! svg 는 @svgr/webpack 로 처리
+      },
+    },
   },
   swcMinify: true,
   modularizeImports: {
@@ -11,8 +28,7 @@ const nextConfig = {
     },
   },
   images: {
-    deviceSizes: [768,1024],
-    // imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [768, 1024],
     remotePatterns: [
       {
         protocol: 'https',
@@ -34,6 +50,38 @@ const nextConfig = {
       },
     ],
   },
-}
 
-module.exports = nextConfig
+  webpack: (config, options) => {
+    // Grab the existing rule that handles SVG imports
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.('.svg'),
+    )
+
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        // issuer: /\.[jt]sx?$/, // js, ts 외에 css 에선 url로 작동
+        //! 윗줄 없어야 작동됨
+        //https://github.com/vercel/next.js/issues/48177#issuecomment-1506251112
+
+        resourceQuery: { not: /url/ }, // exclude if *.svg?url
+
+        //import svg from './assets/file.svg?url' 로 하면 url로 사용 가능
+
+        use: ['@svgr/webpack'],
+      },
+    )
+
+    // Modify the file loader rule to ignore *.svg, since we have it handled now.
+    fileLoaderRule.exclude = /\.svg$/i
+
+    return config
+  },
+}

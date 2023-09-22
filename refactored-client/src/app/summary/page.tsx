@@ -1,25 +1,32 @@
-import { useContext, useEffect, useState } from "react";
-import { PillDataFilter, PillDataSort } from "@/types.js";
-import SortbyModalWindow from "@/app/components/SortbyModalWindow";
-import { AuthContext } from "@/context/AuthProvider";
+// import { useContext, useEffect, useState } from "react";
+// import { PillDataFilter, PillDataSort } from "@/types.js";
+// import SortbyModalWindow from "@/app/components/SortbyModalWindow";
+// import { AuthContext } from "@/context/AuthProvider";
+
+import HealthSvgSprite from "../components/HealthSvgSprite";
+
+
 
 
 
 
 function Summary () {
-  console.log('서버액션으로 리디랙션은 진행중')
-  const [sortby, setSortby] = useState<PillDataSort>("pillsLeftAscending");
-  const [tab, setTab] = useState<PillDataFilter>("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isdeleteOpen, setIsdeleteOpen] = useState(false);
-  const [data, setData] = useState([])
+  // console.log('서버액션으로 리디랙션은 진행중')
+  // const [sortby, setSortby] = useState<PillDataSort>("pillsLeftAscending");
+  // const [tab, setTab] = useState<PillDataFilter>("all");
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isdeleteOpen, setIsdeleteOpen] = useState(false);
+  // const [data, setData] = useState([])
 
-  const {authUser, isLoggedIn} = useContext(AuthContext);
+  // const {authUser, isLoggedIn} = useContext(AuthContext);
 
 
   return (
-    <div className="flex flex-col h-full py-[24px] px-[20px]">
-      <div className="flex p-[3px] w-full justify-between bg-[--black-500] rounded-[24px] gap-[16px]">
+    <div className="flex h-full flex-col px-[20px] py-[24px]">
+      
+
+
+      {/* <div className="flex p-[3px] w-full justify-between bg-[--black-500] rounded-[24px] gap-[16px]">
         <div className={`text-center ${tab==="all" ?"bg-white shadow-[0_1px_3px_rgba(47,43,67,0.1)] shadow-[inset_0_-1px_0_rgba(47,43,67,0.1)] text-[--black-200]" :"bg-[--black-500] text-[--black-300]"} rounded-[21px] p-[4px] flex-1 cursor-pointer`} 
         onClick={() => setTab("all")}>
           종합
@@ -35,7 +42,7 @@ function Summary () {
       </div>
       <div className="flex justify-end items-center my-[4px] mx-0 relative">
           <SortbyModalWindow setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}  setSortby={setSortby} sortby={sortby}/>
-      </div>
+      </div> */}
       {/* <SummartLists>
         {(!data || data.length===0)&& <>
         <NoSupplementDataImg src={NoSupplementData}/>
