@@ -45,10 +45,9 @@ type Supplement = {
 }
 
 export interface Concern {
-  id: number;
+  id: string;
   title: string;
   supplementsList: Supplement[];
-  iconURL: string;
   contents : string[];
 }
 
