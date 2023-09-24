@@ -20,7 +20,7 @@ export default async function UserConcern() {
         {user?.concerns
           ? (
             <div className="flex flex-col">
-              <div className="mb-[--gap-sm] h-[calc(1.74*16+12)]" ><span className="font-bold text-[--blue-100]">{user?.displayName}</span>님을 위한 영양제 추천</div>
+              <div className="mb-[--gap-sm]" ><span className="font-bold text-[--blue-100]">{user?.displayName}</span>님을 위한 영양제 추천</div>
               <div className="relative flex h-[100px] w-full items-center justify-around">
                 {user.concerns.map((ele: string, idx: number) => (
                     <div className="text-center" key={idx}>

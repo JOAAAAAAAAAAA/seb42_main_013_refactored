@@ -10,6 +10,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { FallbackImage } from './FallbackImage';
 import Image from 'next/image';
+import { Concern } from '@/types';
+import HealthSvgSprite from './HealthSvgSprite';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,13 +54,15 @@ export const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export default function ConcerTab() {
+
+export default function ConcernTab({ data }: { data: Concern[] })  {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-
+  const health = data
+  console.log(health)
   return (
 
     <div className='container'>
@@ -73,11 +77,11 @@ export default function ConcerTab() {
           scrollButtons
           allowScrollButtonsMobile
         >
-          {health.map((el, idx) => {
+          {health?.map((el, idx) => {
             return (
               <Tab 
               key={el.id} 
-              icon={<FallbackImage src={el.src} alt="health-icon" />} 
+              icon={<HealthSvgSprite id={el.id} width="32.51" height="32.51" color="black"/>} 
               color="secondary" 
               className="flex flex-col gap-[4px]" 
               aria-label={el.title} label={el.title} {...a11yProps(idx)} />
@@ -85,12 +89,12 @@ export default function ConcerTab() {
           })}
         </Tabs>
       </Box>
-      {health.map((el, idx) => {
+      {health?.map((el, idx) => {
         return (
           <CustomTabPanel key={el.id} value={value} index={idx}>
             <Grid container spacing={2}>
               {
-                concern.filter((ele) => ele.id === value + 1).map((filteredEle) =>
+                health.filter((ele,idx) => idx === value).map((filteredEle) =>
                   filteredEle.supplementsList.map((ele, index) => (
                     <Grid xs={6} key={index} className="">
                       <Item className='flex h-32 flex-col items-center'>

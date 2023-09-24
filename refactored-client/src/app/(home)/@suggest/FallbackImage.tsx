@@ -15,10 +15,10 @@ export const FallbackImage = ({ src, alt, ...rest }: {
 
   return (
 
-    <Suspense fallback={
-      <Skeleton variant="rounded" width="100%" height="100%" />}
-    >
-      <div className={`relative flex aspect-square h-full items-center justify-center`}>
+    <div className={`relative flex aspect-square h-full items-center justify-center`}>
+        <Suspense fallback={
+        <Skeleton variant="rounded" width={30} height={30} />}
+        >
         <Image
           {...rest}
           alt={alt}
@@ -33,7 +33,7 @@ export const FallbackImage = ({ src, alt, ...rest }: {
             setImgSrc("/images/pills-bottle.png")
           }}
         />
-      </div>
     </Suspense>
+      </div>
   )
 }

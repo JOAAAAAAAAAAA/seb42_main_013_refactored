@@ -30,9 +30,8 @@ const googleAuthProvider = new GoogleAuthProvider();
 //   popupRedirectResolver: browserPopupRedirectResolver,
 // });
 const auth = getAuth(app)
-const firestore = getFirestore(app);
 
-export { app, googleAuthProvider, auth, firestore };
+export { app, googleAuthProvider, auth };
 
 
 //SDK는 serverless serverless app architectures where clients connect directly to your Firebase database.

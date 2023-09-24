@@ -44,8 +44,45 @@ type Supplement = {
   imageURL : string;
 }
 
+type HealthSvgSpriteID =
+  | "all"
+  | "anti_oxidant"
+  | "blood_glucose_control"
+  | "blood_improvement"
+  | "blood_pressure_control"
+  | "body_fat_reduction"
+  | "bone_health"
+  | "capsule"
+  | "chewable"
+  | "cholesterol"
+  | "climacteric"
+  | "eye_health"
+  | "family"
+  | "fatigue_recovery"
+  | "female"
+  | "growth_and_development"
+  | "gummy"
+  | "immunity"
+  | "improve_memory"
+  | "improve_sleep_quality"
+  | "infant_youth"
+  | "intestinal_health"
+  | "liquid"
+  | "liver_health"
+  | "male"
+  | "male_and_female"
+  | "nutritional_supplement"
+  | "powder"
+  | "pregnant_woman"
+  | "prostate"
+  | "relaxation_of_tension"
+  | "senior"
+  | "skin_health"
+  | "stomach_health"
+  | "tablet"
+
 export interface Concern {
-  id: string;
+  id: HealthSvgSpriteID;
   title: string;
   supplementsList: Supplement[];
   contents : string[];

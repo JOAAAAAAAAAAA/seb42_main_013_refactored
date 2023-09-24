@@ -14,7 +14,7 @@ export const getUser = async (sessionCookie: string) => {
 
   if (res.status === 200) {
     const data = await res.json()
-    const  { user }: { user: User } = data
+    const user = data.user as User
     return user
   }
   } catch (error) {

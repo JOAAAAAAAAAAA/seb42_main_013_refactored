@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { adminAuth } from "@/firebase/firebaseAdmin";
-import { createCSRFToken } from '/Users/bella/Coding/seb42_main_013/refactored-client/node_modules/@auth/core/lib/csrf-token';
+import { createCSRFToken } from '../../../../../node_modules/@auth/core/lib/csrf-token'
 
 
 

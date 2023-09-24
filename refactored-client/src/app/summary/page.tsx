@@ -3,7 +3,7 @@
 // import SortbyModalWindow from "@/app/components/SortbyModalWindow";
 // import { AuthContext } from "@/context/AuthProvider";
 
-import HealthSvgSprite from "../components/HealthSvgSprite";
+import HealthSvgSprite from "../(home)/@suggest/HealthSvgSprite";
 
 
 
@@ -11,6 +11,8 @@ import HealthSvgSprite from "../components/HealthSvgSprite";
 
 
 function Summary () {
+
+  
   // console.log('서버액션으로 리디랙션은 진행중')
   // const [sortby, setSortby] = useState<PillDataSort>("pillsLeftAscending");
   // const [tab, setTab] = useState<PillDataFilter>("all");

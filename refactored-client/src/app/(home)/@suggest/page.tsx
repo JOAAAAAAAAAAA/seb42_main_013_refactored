@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
 import Banner from './Banner';
-import ConcerTab from './ConcerTab';
+import ConcernTab from './ConcernTab';
 import Grid from '@mui/material/Unstable_Grid2';
 import { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton } from './Skeletons';
 import { Suspense } from 'react';
@@ -12,20 +12,13 @@ import card1 from '../../../../public/cards/card1.jpg'
 import card2 from '../../../../public/cards/card2.jpg'
 import card3 from '../../../../public/cards/card3.jpg'
 import card4 from '../../../../public/cards/card4.jpg'
+import Await from '@/app/components/Await';
+import { getHealthData } from '@/lib/health';
 
 export default async function Suggest() {
 
-  const { default: UserConcern } = await import('./UserConcern')
-
-  // const sessionCookie = cookies().get('session')
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/health`,{
-  //   method: 'GET',
-  //   cache: 'no-store',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'cookie': `session=${sessionCookie}`,
-  //   }
-  // })
+  const { default: UserConcern } = await import('./UserConcern')  
+  // let data = await getHealthData()
 
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
@@ -36,11 +29,9 @@ export default async function Suggest() {
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </IconButton>
         </div>
-
         <Suspense fallback={<UserConcernSkeleton />}>
           <UserConcern />
         </Suspense>
-
         <Suspense fallback={<BannerSkeleton />}>
           <Banner />
         </Suspense>
@@ -48,10 +39,12 @@ export default async function Suggest() {
       </Paper>
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>
-
         <Suspense fallback={<ConcernTabSkeleton />} >
-          <ConcerTab />
+        <Await promise={getHealthData()}>
+            {( data ) => <ConcernTab data={data} />}
+          </Await>        
         </Suspense>
+
 
       </Paper>
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
@@ -75,6 +68,7 @@ export default async function Suggest() {
                 src={card1}
                 fill
                 alt="health info card"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
                 placeholder="blur"
               />
               <p>{"술과 담배는 가급적 멀리해 주세요"}</p>
@@ -86,6 +80,7 @@ export default async function Suggest() {
                 src={card2}
                 fill
                 alt="health info card"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
                 placeholder="blur"
               />
               <p>{"규칙적으로 꾸준히 운동을 진행해 주세요!"}</p>
@@ -97,6 +92,7 @@ export default async function Suggest() {
                 src={card3}
                 fill
                 alt="health info card"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
                 placeholder="blur"
               />
               <p>{"체중이 많이 나간다면 좀 더 가볍게 조절해 주세요"}</p>
@@ -109,6 +105,7 @@ export default async function Suggest() {
                 fill
                 placeholder="blur"
                 className="opacity-70"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
                 alt="health info card"
               />
               <p>{"짠 음식 섭취는 혈압을 높게 만들어요"}</p>
