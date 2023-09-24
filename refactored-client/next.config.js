@@ -6,17 +6,8 @@ module.exports = {
 
     turbo: {
       rules: {
-        // Option format
-        // '*.md': [
-        //   {
-        //     loader: '@mdx-js/loader',
-        //     options: {
-        //       format: 'md',
-        //     },
-        //   },
-        // ],
-        // Option-less format
-        '*.mdx': ['@svgr/webpack'],
+        '*.svg': ['@svgr/webpack'],
+
         //! svg 는 @svgr/webpack 로 처리
       },
     },
@@ -64,6 +55,14 @@ module.exports = {
         test: /\.svg$/i,
         resourceQuery: /url/, // *.svg?url
       },
+
+      //?
+      // {
+      //   test: /\.svg$/i,
+      //   resourceQuery: /url/,  // *.svg?url
+      //   use: fileLoaderRule.use,
+      // },
+
       // Convert all other *.svg imports to React components
       {
         test: /\.svg$/i,
