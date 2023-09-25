@@ -106,6 +106,8 @@ a {
   -ms-flex: 1;
   flex: 1;
   background-color: #FFFFFF;
+  /* navbar */
+  padding-bottom: 64px;
 }
 
 .content{

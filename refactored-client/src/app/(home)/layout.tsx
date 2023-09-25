@@ -1,6 +1,7 @@
 import { cookies } from "next/headers"
 import { Suspense } from "react"
 import Loading from "../loading"
+import Navigation from "../components/Nav"
 
 
 
@@ -16,9 +17,11 @@ export default function HomeLayout({
   const sessionCookie = cookies().get('session')
 
   return (
-    <section className="main">
-      {sessionCookie ?suggest : intro}
-      {children}
-    </section>
+    <>
+      <section className="main">
+        {sessionCookie ? suggest : intro}
+        {children}
+      </section>
+    </>
   )
 }

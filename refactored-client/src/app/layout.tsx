@@ -10,6 +10,8 @@ import { cookies } from 'next/headers'
 import AuthProvider from '@/context/AuthProvider'
 import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
 import HeaderProvider from './HeaderProvider'
+import { usePathname } from 'next/navigation'
+import Navigation from './components/Nav'
 
 
 
@@ -38,7 +40,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
   return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
@@ -50,7 +51,9 @@ export default function RootLayout({
                 <AuthProvider>
                   <HeaderProvider />
                   {children}
+                  <Navigation/>
                 </AuthProvider>
+
               </div>
             </Suspense>
           </div>
