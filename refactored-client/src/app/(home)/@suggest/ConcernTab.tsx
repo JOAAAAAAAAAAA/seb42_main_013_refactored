@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Concern } from '@/types';
 import HealthSvgSprite from './HealthSvgSprite';
 import { FallbackImage } from './FallbackImage';
-import { Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 
 
