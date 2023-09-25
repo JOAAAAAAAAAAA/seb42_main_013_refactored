@@ -26,7 +26,7 @@ export const getHealthData = async (): Promise<Concern[]> => {
     })
     if(res.status === 200){
       const healthConcern :Concern[] = await res.json() 
-      const result = await new Promise ((resolve) => { setTimeout(resolve, 10000) })
+      // const result = await new Promise ((resolve) => { setTimeout(resolve, 10000) })
       return healthConcern
     }
     //다 throw 시켜서 <Await>에서 Generic으로 undefined 안받게 하기

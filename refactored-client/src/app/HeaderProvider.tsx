@@ -20,7 +20,12 @@ function HeaderProvider() {
 
     return (
       <header className="relative flex h-[48px] w-full max-w-[428px] items-center justify-center bg-[--blue-100]">
-        <Link href="/" className="relative h-full w-[160px] max-w-[428px]"><Image src="/images/logo_header.png" alt="logo" fill sizes="100%" className="mt-[2px] object-contain" /></Link>
+        <Link href="/" className="relative h-full w-[160px] max-w-[428px]">
+          <Image src="/images/logo_header.png" alt="logo" fill
+          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
+          className="mt-[2px] object-contain" 
+          />
+          </Link>
         <FontAwesomeIcon icon={faRightFromBracket} className="absolute right-[8px] h-full cursor-pointer text-[30px] text-white" onClick={sessionLogout}/>
       </header>
     )

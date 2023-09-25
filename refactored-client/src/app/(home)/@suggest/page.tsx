@@ -14,11 +14,15 @@ import card3 from '../../../../public/cards/card3.jpg'
 import card4 from '../../../../public/cards/card4.jpg'
 import Await from '@/app/components/Await';
 import { getHealthData } from '@/lib/health';
+import UserConcern from './UserConcern';
+import { healthToBase64 } from '@/lib/base64';
+
 
 export default async function Suggest() {
 
-  const { default: UserConcern } = await import('./UserConcern')  
-  // let data = await getHealthData()
+
+
+
 
   return (
     <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
@@ -40,9 +44,13 @@ export default async function Suggest() {
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>
         <Suspense fallback={<ConcernTabSkeleton />} >
-        <Await promise={getHealthData()}>
-            {( data ) => <ConcernTab data={data} />}
-          </Await>        
+          <Await promise={getHealthData()}>
+            {(data) =>
+              <Await promise={healthToBase64(data)}>
+                {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
+              </Await>
+            }
+          </Await>
         </Suspense>
 
 

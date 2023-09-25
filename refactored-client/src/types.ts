@@ -39,12 +39,12 @@ export type TabType = {
   id: number;
 }
 
-type Supplement = {
+export type Supplement = {
   supplementName : string;
   imageURL : string;
 }
 
-type HealthSvgSpriteID =
+export type HealthSvgSpriteID =
   | "all"
   | "anti_oxidant"
   | "blood_glucose_control"
