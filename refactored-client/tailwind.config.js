@@ -8,8 +8,8 @@ module.exports = {
       fontFamily: {
         nanumGothic: ['var(--font-NanumGothic)'],
         roboto: ['var(--font-Roboto)'],
-    },
-  }
+      },
+    }
   },
   future: {
     hoverOnlyWhenSupported: true,

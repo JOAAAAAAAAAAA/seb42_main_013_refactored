@@ -50,7 +50,9 @@ export default function RootLayout({
               <div className='app-container'>
                 <AuthProvider>
                   <HeaderProvider />
+                  <section className="main">
                   {children}
+                  </section>
                   <Navigation/>
                 </AuthProvider>
 

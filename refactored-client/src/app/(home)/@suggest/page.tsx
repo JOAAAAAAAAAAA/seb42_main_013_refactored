@@ -25,7 +25,7 @@ export default async function Suggest() {
 
 
   return (
-    <div className="container flex flex-col gap-[--gap-md] bg-[--black-500] font-nanumGothic">
+    <div className="container flex flex-col gap-[--gap-md] overflow-hidden bg-[--black-500] font-nanumGothic">
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <div className='flex w-full border-b border-[#999999]'>
           <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
