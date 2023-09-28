@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
-import { Concern } from '@/types';
+import { ConcernWithBase64 } from '@/types';
 import HealthSvgSprite from './HealthSvgSprite';
 import { FallbackImage } from './FallbackImage';
 import Paper from '@mui/material/Paper';
@@ -58,15 +58,10 @@ function a11yProps(index:number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-interface ConcernWithBase64 extends Concern{
-  supplementsList: {
-    supplementName: string;
-    imageURL: string;
-    base64: string;
-  }[]
-}
 
-export default function ConcernTab({ data }: { data: ConcernWithBase64[] }) {
+
+
+export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
   const [value, setValue] = useState<number>(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number)=> {
     setValue(newValue);

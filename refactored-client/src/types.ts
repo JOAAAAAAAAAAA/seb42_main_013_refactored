@@ -88,3 +88,11 @@ export interface Concern {
   contents : string[];
 }
 
+export interface ConcernWithBase64 extends Concern{
+  supplementsList: {
+    supplementName: string;
+    imageURL: string;
+    base64: string;
+  }[]
+}
+
