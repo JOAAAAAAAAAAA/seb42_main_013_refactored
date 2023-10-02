@@ -36,7 +36,7 @@ export const signupSchema = z
     message:"비밀번호는 최대 32글자 이하여야 합니다.",
   })
   .refine((data) => /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,32}$/.test(data), "영문, 숫자, 특수문자를 조합하여 설정해 주세요."),
-  confirmPassword: z.string().nonempty("확인을 위해 비밀번호를 한 번 더 입력해주세요."),
+  confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   path: ["confirmPassword"],
   message: "비밀번호가 일치하지 않습니다.",
