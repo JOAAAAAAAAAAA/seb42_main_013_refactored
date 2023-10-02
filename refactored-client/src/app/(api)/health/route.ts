@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     )
   }
   //csrfToken 검증
-  const cookieValue = req.cookies.get('next-auth.csrf-token')?.value
+  const cookieValue = req.cookies.get('csrf-token')?.value
   const isPost = req.method === 'POST'
   const reqbody = await req.json()
   const csrfOptions = {
@@ -53,12 +53,4 @@ export async function POST(req: NextRequest) {
   })
   batch.commit()
   return NextResponse.json({ message: 'success' }, { status: 200 })
-}
-
-export async function GET(req: NextRequest) {
-  const healthRef = adminFirestore.collection('health')
-  const snapshot = await healthRef.get()
-  const data = snapshot.docs.map((doc) => doc.data())
-  const serializedData = JSON.stringify(data)
-  return NextResponse.json(data, { status: 200 })
 }
