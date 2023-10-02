@@ -2,57 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input[type="date"]::-webkit-calendar-picker-indicator{
-    position:absolute;
-      /* 부모 relative - 자식 absolute */
-      /* 부모 relative 지정 안해주면 전체 화면 cover된다 */
-    left:0;
-    top:0;
-    width: 100%;
-    height: 100%;
-    color: transparent;
-    background: transparent;
-    cursor: pointer;
-  }
-  input[type="date"]::-webkit-datetime-edit{
-    display: inline-block;
-  }
-  input[type="date"]:focus::-webkit-datetime-edit{
-    display: none;
+@layer components {
+  /* webkit css 적용법 */
+  .cleanInput {
+    ::-webkit-calendar-picker-indicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      /* input 모든 영역 클릭 시 캘린더 뜨게 */
+      width: 100%;
+      height: 100%;
+      /* icon 지우기 */
+      color: transparent;
+      background: transparent;
+      cursor: pointer;
+    }
+    /* default 연도.월.일 지우기 */
+    /* isdirty 역할의 css selector */
+    /* 1.placeholder-shown (type text,number, time에만 적용됨) */
+    :focus{
+      &::-webkit-datetime-edit {
+        opacity: 1;
+      }
+    }
+    :not(:focus){
+      &::-webkit-datetime-edit {
+        opacity: 0;
+      }
+    }
+    :not(:focus):valid{
+      &::-webkit-datetime-edit {
+        opacity: 1;
+      }
+    }
   }
 }
 
 :root {
-    /* color */
-    --blue-100: #5B85EB;
-    --black-100: #464646;
-    --black-200: #646464;
-    --black-300: #999999;
-    --black-400: #b4b4b4;
-    --black-500: #eaeaea;
-    --black-600: #f0f0f0;
-    --red-100: rgb(240 86 86);
-    /* gap */
-    --gap-sm: 8px;
-    --gap-md: 16px;
-    --gap-lg: 24px;
-    --vh: 1vh;
-    --100vh: calc(var(--vh,1vh)*100);
+  /* color */
+  --blue-100: #5b85eb;
+  --black-100: #464646;
+  --black-200: #646464;
+  --black-300: #999999;
+  --black-400: #b4b4b4;
+  --black-500: #eaeaea;
+  --black-600: #f0f0f0;
+  --red-100: rgb(240 86 86);
+  /* gap */
+  --gap-sm: 8px;
+  --gap-md: 16px;
+  --gap-lg: 24px;
+  --vh: 1vh;
+  --100vh: calc(var(--vh, 1vh) * 100);
 }
-
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
-
 
 body {
   max-width: 100vw;
@@ -61,7 +69,6 @@ body {
   /* 페이지간 w 차이 없게 */
   overflow-y: scroll;
 }
-
 
 a {
   color: inherit;
@@ -80,7 +87,7 @@ a {
   width: 100%;
   justify-content: center;
   gap: 80px;
-  max-width: unset!important;
+  max-width: unset !important;
   min-height: calc(var(--vh, 1vh) * 100);
   padding-left: 0;
   padding-right: 0;
@@ -99,7 +106,7 @@ a {
   box-shadow: 0px 0px 16px rgb(50 50 50 / 12%);
 }
 
-.main{
+.main {
   display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
@@ -107,12 +114,12 @@ a {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   /* navbar */
   padding-bottom: 64px;
 }
 
-.content{
+.content {
   display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
@@ -122,4 +129,3 @@ a {
   flex: 1;
   padding: 24px;
 }
-
