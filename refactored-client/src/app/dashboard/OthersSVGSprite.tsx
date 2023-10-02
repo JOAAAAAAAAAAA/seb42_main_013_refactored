@@ -5,7 +5,6 @@ type OthersID =
   | "drug"
   | "supplement"
   | "menu"
-  | "add"
   | "time"
 
 
