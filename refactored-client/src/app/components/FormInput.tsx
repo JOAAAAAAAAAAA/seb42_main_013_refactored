@@ -40,13 +40,9 @@ function FormInput<TFormValue extends keyof FieldValues>({
         <input
           className={`relative h-[1.5rem] w-full border-none bg-transparent text-base text-[--black-100] shadow-none outline-none
         placeholder:text-[--black-400]
-        ${type === "password" && "!h-8"}
-        ${type === "text" && "!h-8"}
-        ${type === "date" && `
-        w-full before:absolute before:left-0
-        before:text-[--black-400] focus:hidden`}
-        ${type === "time" && "min-w-[100px]"}
-        `}
+        ${type === "password" || type === "text" 
+        ? "!h-8" 
+        :(type === "date" ?"w-full before:absolute before:left-0 before:text-[--black-400] focus:hidden":type === "time" ? "min-w-[100px]":"")}`}
           type={type}
           placeholder={placeholder}
           id={register.name}
