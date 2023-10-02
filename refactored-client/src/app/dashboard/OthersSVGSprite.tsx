@@ -5,7 +5,9 @@ type OthersID =
   | "drug"
   | "supplement"
   | "menu"
+  | "add"
   | "time"
+
 
 
 
@@ -29,7 +31,9 @@ export default function OthersSVGSprite({
       <svg
         width={width}
         height={height}
-        color={color}>
+        color={color}
+        className='inline-block'
+        >
         <use
           width="100%"
           height="100%"

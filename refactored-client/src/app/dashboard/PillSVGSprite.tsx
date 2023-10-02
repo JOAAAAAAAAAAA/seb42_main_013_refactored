@@ -1,15 +1,16 @@
 import pillSVGUrl from '../../../public/svg/pill_type.svg?url'
 
-type pillTypeID =
+export type PillTypeID =
   | "capsule"
   | "chewable"
   | "gummy"
   | "powder"
   | "tablet"
+  | "liquid"
 
 
 interface PillSVGSpriteProps extends React.SVGAttributes<HTMLOrSVGElement> {
-  id: pillTypeID
+  id: PillTypeID
   color: string;
   width: string;
   height: string;
