@@ -270,7 +270,6 @@ export default function Create({
         />
         <input type="text" id="csrf" value="" hidden />
         <SubmitButton>등록하기</SubmitButton>
-        {/* <BlueButton type="submit" aria-disabled={pending}>등록하기</BlueButton> */}
       </form >
       {showModal && <CreateModal fieldName={showModal} formAction={formAction} />}
 
