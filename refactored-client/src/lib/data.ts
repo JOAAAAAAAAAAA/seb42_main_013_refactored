@@ -1,4 +1,5 @@
 'use server'
+import { z } from "zod";
 
 import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
 import { Pill } from '@/types'
@@ -7,28 +8,60 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const createData = async (prevFormState: any, formData: FormData) => {
-  // const data = addPillSchema.parse({
-  //   pill: formData.get('pill'),
-  // })
+export const createData = async ( prevFormState: any, formData: FormData) => {
+
   console.log('prevFormState', prevFormState)
   console.log('formData', formData)
+  // const expirationDate = `${formData.get('expirationDate_year')}-${formData.get('expirationDate_month')}${formData.get('expirationDate_day')}}`
+  // formData.set('expirationDate',expirationDate)
 
-  const updatedFormState = Object.fromEntries(
-    Object.entries(prevFormState).map(([key, prevValue]) => {
-      const formDataValue = formData.get(key)
+  switch (formData.get("type")) {
+    case "update_ingredients":
+      return {...prevFormState,
+        ingredients: [...prevFormState, formData.get('ingredients')]}  
+      break;
 
-      return [key, prevValue !== formDataValue ? formDataValue : prevValue]
-    })
-  )
+    case "update_takingTime":
+      return {...prevFormState,
+        takingTime: [...prevFormState, formData.get('takingTime')]}  
+      break;
+    case "create":
+      break;
+  }
 
-  // formData.delete('$ACTION_REF_1')
-  // formData.delete('$ACTION_1:1')
-  // formData.delete('$ACTION_1:0')
-  // formData.delete('$ACTION_KEY')
-  // console.log('entries', Object.fromEntries(formData.entries()))
-  console.log('result',updatedFormState)
-  return updatedFormState
+
+
+
+
+  // const schema = z.object({
+  //   supplementName: z.string(),
+  //   ingredients: z.array(z.string().nullable()),
+  //   productType: z.string(),
+  //   formulation: z.string(),
+  //   expirationDate: z.string().nullable(),
+  //   startDate: z.string().default(new Date().toISOString().slice(0, 10)),
+  //   endDate: z.string(),
+  //   takingTime: z.array(z.string().nullable()),
+  //   pillsLeft: z.coerce.number(),
+  //   totalCapacity: z.coerce.number(),
+  //   servingSize: z.coerce.number(),
+  // })
+  // const updatedFormState = {...Object.fromEntries(
+  //   Object.entries(prevFormState).map(([key, prevValue]) => {
+  //     const formDataValue = formData.get(key)
+  //     return [key, prevValue !== formDataValue ? formDataValue : prevValue]
+  //   })
+  // ),
+
+  // console.log('updatedFormState',updatedFormState)
+  // try {
+  //   const data = schema.parse(updatedFormState)
+  //   return updatedFormState
+
+  // }catch(e){
+  //   console.log('error',e)
+  // }
+
   // try {
   //   // const decodedClaims = await adminAuth.verifySessionCookie(session, true)
   //   // const pillRef = adminFirestore.collection(decodedClaims.uid)
@@ -40,7 +73,8 @@ export const createData = async (prevFormState: any, formData: FormData) => {
   // }
 }
 
-export const deleteData = async (formData: FormData, session: string) => {
+
+export const deleteData = async (formData: FormData, session: string, ) => {
   const data = addPillSchema.parse({
     pill: formData.get('pill'),
   })

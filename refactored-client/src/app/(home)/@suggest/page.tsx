@@ -13,16 +13,15 @@ import card2 from '../../../../public/cards/card2.jpg'
 import card3 from '../../../../public/cards/card3.jpg'
 import card4 from '../../../../public/cards/card4.jpg'
 import Await from '@/app/components/Await';
-import { getHealth, getHealthData } from '@/lib/health';
+import { getHealth } from '@/lib/health';
 import UserConcern from './UserConcern';
-import { healthToBase64 } from '@/lib/base64';
 
 
 export default async function Suggest() {
 
 
   return (
-    <div className="container flex flex-col gap-[--gap-md] overflow-hidden bg-[--black-500] font-nanumGothic">
+    <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-0 font-nanumGothic">
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <div className='flex w-full border-b border-[#999999]'>
           <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
@@ -114,7 +113,7 @@ export default async function Suggest() {
           </Grid>
         </Grid>
       </Paper>
-    </div>
+    </section>
 
   )
 }

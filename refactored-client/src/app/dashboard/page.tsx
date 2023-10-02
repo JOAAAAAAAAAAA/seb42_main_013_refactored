@@ -38,30 +38,29 @@ function Dashboard() {
 
 
   return (
-    <div className="container relative flex h-full flex-col gap-[--gap-md] overflow-hidden px-[--gap-sm] py-[--gap-md] font-nanumGothic">
-
+    <section className="main relative gap-[--gap-md]">
       <Tab />
       <div className="relative mx-0 my-[4px] flex items-center justify-end">
         <SortbyModalWindow />
       </div>
-      <ul className="relative flex flex-col gap-[--gap-sm]">
+      <ul className="relative flex h-full flex-col gap-[--gap-sm]">
         {(!data || data.length === 0) && <>
           <Image src="/images/NoSupplementData.png" alt="no data" />
           <span>등록된 데이터가 없습니다.</span>
         </>}
         {data && data.map((ele, idx) => {
-          return <DataList key={ele.detailSupplementId}/>;
+          return <DataList key={ele.detailSupplementId} />;
         })}
+      <Fab
+        className="!absolute bottom-[--gap-sm] right-0"
+        LinkComponent={Link}
+        href={"/dashboard/create"}
+        size="small" color="primary" aria-label="add">
+        <FontAwesomeIcon icon={faPlus} />
+      </Fab>
       </ul>
-        <Fab
-          className="!absolute bottom-[20px] right-[20px]"
-          LinkComponent={Link}
-          href={"/dashboard/create"}
-          size="small" color="primary" aria-label="add">
-          <FontAwesomeIcon icon={faPlus} />
-        </Fab>
       {/* {isdeleteOpen && <DeleteConfirm data={data} setData={setData} openDeleteHanlder={openDeleteHanlder}/>} */}
-    </div>
+    </section>
   )
 }
 
