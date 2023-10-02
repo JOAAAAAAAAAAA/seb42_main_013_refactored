@@ -1,178 +1,274 @@
-export default function Create(){
+"use client"
+import { Chip } from "@mui/material";
+import OthersSVGSprite from "../OthersSVGSprite";
+import PillSVGSprite from "../PillSVGSprite";
+import { useReducer, useState } from "react";
+import { BlueButton } from "@/app/components/Buttons";
+import { experimental_useFormState as useFormState } from 'react-dom'
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import { createData } from "@/lib/data";
+import CreateModal from "./CreateModal";
+import CreateInput from "./CreateInput";
+import RadioChip from "./RadioChip";
+import { Pill, PillData } from "@/types";
+import AddButton from "./AddButton";
+import Fieldset from "./Fieldset";
+
+export type ModalState = Pick<Pill, 'expirationDate' | 'takingTime' | 'ingredients'>;
+export type ModalAction =
+  // | { type: "expirationDate_year"; year: number }
+  // | { type: "expirationDate_month"; month: number }
+  // | { type: "expirationDate_day"; day: number }
+  | { type: "AddTakingTime"; time: string | undefined}
+  | { type: "DeleteTakingTime"; time: string }
+  | { type: "AddIngredients"; ingredient: string | undefined }
+  | { type: "DeleteIngredients"; ingredient: string }
+
+const modalReducer = (state: ModalState, action: ModalAction) => {
+  switch (action.type) {
+    // case "expirationDate_year":
+    //   if (!state.expirationDate) {
+    //     let date = new Date()
+    //     date.setFullYear(action.year)
+    //     return { ...state, expirationDate: date }
+    //   } else {
+    //     state.expirationDate.setFullYear(action.year)
+    //     return { ...state }
+    //   }
+    // case "expirationDate_month":
+    //   if (!state.expirationDate) {
+    //     let date = new Date()
+    //     date.setMonth(action.month - 1)
+    //     return { ...state, expirationDate: date }
+    //   } else {
+    //     state.expirationDate.setMonth(action.month - 1)
+    //     return { ...state }
+    //   }
+    // case "expirationDate_day":
+    //   if (!state.expirationDate) {
+    //     let date = new Date()
+    //     date.setDate(action.day)
+    //     return { ...state, expirationDate: date }
+    //   } else {
+    //     state.expirationDate.setDate(action.day)
+    //     return { ...state }
+    //   }
+    case "AddTakingTime":
+      if(!action.time) return state
+      return { ...state, takingTime: [...state.takingTime, action.time] };
+    case "DeleteTakingTime":
+      return { ...state, takingTime: state.takingTime.filter((ele) => ele !== action.time) };
+    case "AddIngredients":
+      if(!action.ingredient) return state
+      return { ...state, ingredients: [...state.ingredients, action.ingredient] };
+    case "DeleteIngredients":
+      return { ...state, ingredients: state.ingredients.filter((ele) => ele !== action.ingredient) };
+    default:
+      return state;
+  }
+}
+
+export default function Create({
+  searchParams
+}: {
+  searchParams: Record<string, string> | null
+}) {
+  const [modalState, dispatch] = useReducer(modalReducer, {
+    expirationDate: null,
+    takingTime: [],
+    ingredients: [],
+  })
+  const today = new Date().toISOString().slice(0, 10)
+  const initialState = {
+    supplementName: '',
+    ingredients: [],
+    productType: '',
+    formulation: '',
+    expirationDate: null,
+    startDate: today,
+    endDate: null,
+    takingTime: [],
+    pillsLeft: 0,
+    totalCapacity: 1,
+    servingSize: 1,
+  };
+  
+
+  const showModal = searchParams?.modal
+
+  const [state, formAction] = useFormState(createData, initialState)
+  const { pending, data } = useFormStatus()
+
 
   return (
-    <DataCreateContainer noValidate onSubmit={submitHandler} onKeyPress={(e)=>{e.key==="Enter" && e.preventDefault()}}>
-      <InputSection>
-        <h3>종류</h3>
-        <div>
-          <OptionTag
-            nobtn={1}
-            notselected={data.supplementType !== "supplement"}
-            onClick={() => {
-              setData({ ...data, supplementType: "supplement" });
-            }}
-          >
-            영양제
-            <AddBtn type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
-                <path d="m8.5 8.5 7 7"></path>
-              </svg>
-            </AddBtn>
-          </OptionTag>
-          <OptionTag
-            nobtn={1}
-            notselected={data.supplementType !== "drug"}
-            onClick={() => {
-              setData({ ...data, supplementType: "drug" });
-            }}
-          >
-            처방약
-            <AddBtn type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <circle cx="7" cy="7" r="5"></circle>
-                <circle cx="17" cy="17" r="5"></circle>
-                <path d="M12 17h10"></path>
-                <path d="m3.46 10.54 7.08-7.08"></path>
-              </svg>
-            </AddBtn>
-          </OptionTag>
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>이미지</h3>
-        <SelectImg data={data} setData={setData}/>
-      </InputSection>
-      <InputSection>
-        <h3>
-          약 이름<p>*</p>
-        </h3>
-        <div>
-          <DataInput required={1} type="text" data={data} setData={setData} name="supplementName" />
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>주요 성분</h3>
-        <div>
-          {data.nutrients &&
-            data.nutrients.map((ele, idx) => {
-              return <Tags key={idx} ele={ele} idx={idx} deleteEleHandler={deleteEleHandler} name="nutrients" />;
-            })}
-          <AddBtn type="button"
-            onClick={() => {
-              setWhichData("nutrients");
-              openeModalHandler();
-            }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </AddBtn>
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>소비기한</h3>
-        <div>
-          <DataInput type="date" data={data} setData={setData} name="expirationDate" />
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>
-          잔여알수 / 전체용량<p>*</p>
-        </h3>
-        <Box>
-          <DataInput max={data.totalCapacity} placeholder="잔여알수" required={1} type="number" name="pillsLeft" data={data} setData={setData} />
-          /
-          <DataInput placeholder="전체용량" required={1} type="number" name="totalCapacity" data={data} setData={setData} />
-        </Box>
-      </InputSection>
-      <InputSection>
-        <h3>복용 기간</h3>
-        <div>
-          <DataInput required={1} placeholder="시작일" type="date" name="startDate" data={data} setData={setData} />
-          ~
-          <DataInput min={data.startDate} placeholder="종료일" type="date" name="endDate" data={data} setData={setData} />
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>
-          복용 주기<p>*</p>
-        </h3>
-        <div>
-          <Cycle className="everyday" selected={data.dosageInterval === "1" ? 1 : 0} onClick={() => setData({ ...data, dosageInterval: "1" })}>
-            <span>매일</span>
-          </Cycle>
-          <Cycle className="ndays" selected={data.dosageInterval !== "1" ? 1 : 0} onClick={openEditHandler} isEditMode={isEditMode}>
-            {isEditMode && (
-              <>
-                <RealInput
-                  type="number"
-                  value={data.dosageInterval}
-                  ref={inputEl}
-                  onBlur={blurHandler}
-                  onChange={cycleHandler}
-                  placeholder="며칠마다 복용하시나요"
-                />
-                <DeleteBtn value={1}>
-                  <button type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </button>
-                </DeleteBtn>
-              </>
-            )}
-            {!isEditMode && <span>{data.dosageInterval === "1" ? "N" : data.dosageInterval}일</span>}
-          </Cycle>
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>복용 시간</h3>
-        <div>
-          {data.takingTime &&
-            data.takingTime.map((ele, idx) => {
-              return <Tags key={idx} ele={ele} idx={idx} deleteEleHandler={deleteEleHandler} name="takingTime" />;
-            })}
-          <AddBtn type="button"
-            onClick={() => {
-              setWhichData("takingTime");
-              openeModalHandler();
-            }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </AddBtn>
-        </div>
-      </InputSection>
-      <InputSection>
-        <h3>
-          1회 복용량<p>*</p>
-        </h3>
-        <div>
-          <DataInput required={1} min={1} placeholder="1회 복용량" type="number" name="dosagePerServing" data={data} setData={setData} />
-        </div>
-      </InputSection>
-      <ScanBarcode
-        type="button"
-        onClick={() => {
-          setWhichData("barcode");
-          openeModalHandler();
-        }}
-      >
-        <svg version="1.1" viewBox="0 0 700 550" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="m117.6 126c0-12.371 10.031-22.398 22.398-22.398h56v-22.398h-56c-24.742 0-44.801 20.059-44.801 44.801v56h22.398zm0 313.6v-56h-22.398v56c0 24.742 20.059 44.801 44.801 44.801h56v-22.398h-56c-12.375-0.003906-22.402-10.035-22.402-22.402zm470.4 0c0 12.371-10.031 22.398-22.398 22.398h-56v22.398h56c24.742 0 44.801-20.059 44.801-44.801v-56h-22.398zm-22.398-358.4h-56v22.398h56c12.371 0 22.398 10.031 22.398 22.398v56h22.398v-56c0-24.738-20.059-44.797-44.797-44.797zm-448 201.6c0 6.1836 5.0195 11.199 11.199 11.199h448c6.1836 0 11.199-5.0195 11.199-11.199 0-6.1836-5.0195-11.199-11.199-11.199h-448c-6.1836 0-11.199 5.0156-11.199 11.199zm179.2-134.4h-22.398v100.8h22.398zm-134.4 0v100.8h22.398v-100.8zm179.2 0h-22.398v100.8h22.398zm112 0h-22.398v100.8h22.398zm44.797 0h-22.398v100.8h22.398zm22.402 0v100.8h22.398v-100.8zm-268.8 0h-44.801v100.8h44.801zm156.8 0h-44.801v100.8h44.801zm-134.4 268.8h22.398v-100.8h-22.398zm-89.598 0v-100.8h-22.398v100.8zm134.4 0h22.398v-100.8h-22.398zm112 0h22.398v-100.8h-22.398zm44.801 0h22.398v-100.8h-22.398zm67.199 0v-100.8h-22.398v100.8zm-336 0h44.801v-100.8h-44.801zm156.8 0h44.801v-100.8h-44.801z"
-          />
-        </svg>
-      </ScanBarcode>
-      {data.isPatch 
-      ?<CurrentBtn>수정하기</CurrentBtn> 
-      :<CurrentBtn>등록하기</CurrentBtn>
-      }
-      {isOpen && <CreateModal name={whichData} isOpen={isOpen} openModalHandler={openeModalHandler} data={data} setData={setData} />}
-    </DataCreateContainer>
+    <form
+      className="container relative flex h-full flex-col gap-[--gap-md] overflow-hidden px-[--gap-sm] py-[--gap-md] !font-nanumGothic" noValidate
+      action={formAction}
+    // onSubmit 은 event handler
+    // https://stackoverflow.com/questions/29014570/a-forms-action-and-onsubmit-which-executes-first
+    // onKeyPress={(e) => { e.key === "Enter" &&ee e.preventDefault() }}
+    >
+      <CreateInput
+        type="text"
+        id="supplementName"
+        name="supplementName"
+        label="제품명"
+      />
+      <Fieldset fieldsetName="제품 유형">
+        <RadioChip
+          label="처방약"
+          name="productType"
+          id="drug"
+          icon={<OthersSVGSprite id="drug" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+        <RadioChip
+          label="영양제"
+          name="productType"
+          id="supplement"
+          icon={<OthersSVGSprite id="supplement" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+      </Fieldset>
+      <Fieldset fieldsetName="제형">
+        <RadioChip
+          name="formulation"
+          label="캡슐"
+          id="capsule"
+          icon={<PillSVGSprite id="capsule" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+        <RadioChip
+          name="formulation"
+          label="젤리"
+          id="gummy"
+          icon={<PillSVGSprite id="gummy" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+        <RadioChip
+          name="formulation"
+          label="츄어블"
+          id="chewable"
+          icon={<PillSVGSprite id="chewable" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+        <RadioChip
+          name="formulation"
+          label="분말"
+          id="powder"
+          icon={<PillSVGSprite id="powder" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+        <RadioChip
+          name="formulation"
+          label="액상"
+          id="liquid"
+          icon={<PillSVGSprite id="liquid" width="1.2em" color="currentColor" height="1.2em" />}
+        />
+      </Fieldset>
+      <Fieldset fieldsetName="주요 성분">
+        {modalState.ingredients.map((name) => (
+          <label key={name} htmlFor={name}>
+            <Chip
+              label={name}
+              size="small"
+              variant="outlined"
+              color="primary"
+              onDelete={(e) => {
+                dispatch({ type: "DeleteIngredients", ingredient: name })
+              }}
+            />
+            <input type="checkbox" name="ingredients" id={name} value={name}
+              checked readOnly className="peer appearance-none" />
+          </label>
+        ))}
+        <AddButton fieldset="ingredients" />
+      </Fieldset>
+      <Fieldset fieldsetName="소비기한">
+        <CreateInput
+          type="text"
+          placeholder="YYYY"
+          id="expirationDate_year"
+          name="expirationDate_year"
+          // onChange={(e) => {
+          //   dispatch({ type: "expirationDate_year", year: parseInt(e.target.value) })
+          // }}
+          inputProps={{ maxLength: 4 }}
+        />/
+        <CreateInput
+          type="text"
+          placeholder="MM"
+          id="expirationDate_month"
+          name="expirationDate_month"
+          // onChange={(e) => {
+          //   dispatch({ type: "expirationDate_month", month: parseInt(e.target.value) })
+          // }}
+          inputProps={{ maxLength: 2 }}
+        />/
+        <CreateInput
+          type="text"
+          placeholder="DD"
+          id="expirationDate_day"
+          name="expirationDate_day"
+          // onChange={(e) => {
+          //   dispatch({ type: "expirationDate_day", day: parseInt(e.target.value) })
+          // }}
+          inputProps={{ maxLength: 2 }}
+        />
+      </Fieldset>
+      <Fieldset fieldsetName="용량">
+        <CreateInput
+          type="number"
+          id="pillsLeft"
+          name="pillsLeft"
+          label="잔여알수"
+        />/
+        <CreateInput
+          type="number"
+          id="totalCapacity"
+          name="totalCapacity"
+          label="전체용량"
+        />
+      </Fieldset>
+      <Fieldset fieldsetName="복용 기간">
+        <CreateInput
+          type="date"
+          id="startDate"
+          name="startDate"
+          defaultValue={today}
+          required
+          label="시작일"
+        />~
+        <CreateInput
+          type="date"
+          id="endDate"
+          name="endDate"
+          required
+          label="종료일"
+        />
+      </Fieldset>
+      <Fieldset fieldsetName="복용 시간">
+        {modalState.takingTime.map((time) => (
+          <label key={time} htmlFor={time}>
+            <Chip
+              label={time}
+              size="small"
+              variant="outlined"
+              color="primary"
+              onDelete={() => {
+                dispatch({ type: "DeleteTakingTime", time: time })
+              }}
+            />
+            <input type="checkbox" name="takingTime" id={time} value={time}
+              checked readOnly className="peer appearance-none" />
+          </label>
+        ))}
+        <AddButton fieldset="takingTime" />
+      </Fieldset>
+      <CreateInput
+        type="number"
+        id="servingSize"
+        name="servingSize"
+        label="1회 복용량"
+      />
+      <input type="text" id="csrf" value="" hidden />
+      <BlueButton type="submit" aria-disabled={pending}>등록하기</BlueButton>
+      {showModal && <CreateModal fieldName={showModal} dispatch={dispatch}/>}
+
+    </form >
   )
 }
