@@ -4,7 +4,7 @@ import { FieldError, FieldValues, UseFormRegisterReturn } from "react-hook-form"
 
 type FormInputProps<TFormValue extends keyof FieldValues> = {
   type: string;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   error?: FieldError;
   register: UseFormRegisterReturn;
@@ -26,21 +26,26 @@ function FormInput<TFormValue extends keyof FieldValues>({
   //   setData({...data,[name]:""})
   // }
   return (
-    <div className={error ?"" :"mb-[22px]"}>
+    <div className=
+    {`flex-1 ${error ? "" :"mb-[22px]"}`}>
       {label && <label
         htmlFor={register.name}
-        className={`font-bold text-[--black-200] text-base after:content-[${register.required ? "*" : ""}]`}
+        className={`after:text-base after:font-bold after:text-[--black-200] ${register.required ? "after:content-[*]" : ""}`}
       >{label}</label>}
       <div className={`flex flex-1 border 
-        ${!error ? "focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)] border-[--black-400]" : "border-[--red-100]"} 
-        rounded-[5px] px-2 relative 
-        hover:bg-[#F7F9FA] transition-colors`}
+        ${!error ? "border-[--black-400] focus-within:border focus-within:border-[--blue-100] focus-within:shadow-[0_0_2px_2px_rgba(5,145,255,0.1)]" : "border-[--red-100]"} 
+        relative rounded-[5px] px-2 
+        transition-colors hover:bg-[#F7F9FA]`}
       >
         <input
-          className={`border-none bg-transparent shadow-none text-base h-8 w-full outline-none relative text-[--black-100]
+          className={`relative h-[1.5rem] w-full border-none bg-transparent text-base text-[--black-100] shadow-none outline-none
         placeholder:text-[--black-400]
-        ${type === "date" && `before:absolute before:left-0 before:text-[--black-400] before:content-[${placeholder}] w-full focus:hidden`}
-        ${type === "time" && "mind-w-full"}
+        ${type === "password" && "!h-8"}
+        ${type === "text" && "!h-8"}
+        ${type === "date" && `
+        w-full before:absolute before:left-0
+        before:text-[--black-400] focus:hidden`}
+        ${type === "time" && "min-w-[100px]"}
         `}
           type={type}
           placeholder={placeholder}
@@ -67,7 +72,7 @@ function FormInput<TFormValue extends keyof FieldValues>({
         } */}
       </div>
       {error && (
-        <p className="text-[--red-100] text-[12px] mb-[4px]">
+        <p className="mb-[4px] text-[12px] text-[--red-100]">
           {error.message}
         </p>
       )}
