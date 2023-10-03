@@ -8,27 +8,45 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-export const createData = async (prevFormState: any, formData: FormData) => {
+export const createData = async (prevFormState: Pill, formData: FormData) => {
   console.log('prevFormState', prevFormState)
   console.log('formData', formData)
-  console.log('getall',formData.getAll('ingredients'))
-  console.log('getalltime',formData.getAll('takingTime'))
+
 
   //https://github.com/remix-run/remix/discussions/1298
   switch (formData.get('type')) {
     case 'update_ingredients':
-      return {
-        ...prevFormState,
-        ingredients: [
-          ...prevFormState.ingredients,
-          formData.get('ingredients'),
-        ],
+      const ingredient = formData.get('ingredients') 
+      if(typeof ingredient === 'string' && !prevFormState.ingredients.includes(ingredient)){
+        //중복값 입력 안되게
+        return {
+          ...prevFormState,
+          ingredients: [...prevFormState.ingredients, ingredient],
+        }
+      }else{
+        return prevFormState
       }
     case 'update_takingTime':
-      return {
-        ...prevFormState,
-        takingTime: [...prevFormState.takingTime, formData.get('takingTime')],
+      const time = formData.get('takingTime')
+      if(typeof time === 'string' && !prevFormState.takingTime.includes(time)){
+        //중복값 입력 안되게
+        return {
+          ...prevFormState,
+          takingTime: [...prevFormState.takingTime, time],
+        }
+      }else{
+        return prevFormState
       }
+    // case 'deleteChip':
+    //   const fieldsetName = formData.get('fieldsetName')
+    //   const value = formData.get('value')
+    //   if(typeof fieldsetName === 'string'){
+    //     const filtered = prevFormState.takingTime.filter((ele)=> ele !== value)
+    //     return {
+    //       ...prevFormState,
+    //       [fieldsetName]: [...filtered],
+    //     }
+    //   }else return prevFormState
     case 'create':
       const schema = z.object({
         supplementName: z.string(),
@@ -43,25 +61,25 @@ export const createData = async (prevFormState: any, formData: FormData) => {
         totalCapacity: z.coerce.number(),
         servingSize: z.coerce.number(),
       })
-      const updatedFormState = {
-        ...Object.fromEntries(
-          Object.entries(prevFormState).map(([key, prevValue]) => {
-            const formDataValue = key==="takingTime" || key==="ingredients" ?formData.getAll(key): formData.get(key)
-            //takingTime, ingredients은 배열이므로 getAll로 모두 뽑는다
-            return [
-              key,
-              prevValue !== formDataValue ? formDataValue : prevValue,
-            ]
-          }),
-        ),
+      const year = formData.get('expirationDate_year') ?? ''
+      const month = formData.get('expirationDate_month') ?? ''
+      const day = formData.get('expirationDate_day') ?? ''
+      if(typeof year === 'string' && typeof month === 'string' && typeof day === 'string'){
+        const expirationDate = `${year}-${month}-${day}`
+        formData.set('expirationDate', expirationDate)
       }
-      console.log('updatedFormState', updatedFormState)
-      const expirationDate = `${formData.get(
-        'expirationDate_year',
-      )}-${formData.get('expirationDate_month')}${formData.get(
-        'expirationDate_day',
-      )}}`
-      formData.set('expirationDate', expirationDate)
+
+      //타입 이슈 해결
+      const prev = Object.entries(prevFormState)
+      const updated = prev.map(([key, prevValue]) => {
+        const newValue = (key==="takingTime" || key==="ingredients") ?formData.getAll(key): formData.get(key)
+        //takingTime, ingredients은 배열이므로 getAll로 모두 뽑는다
+        return [
+          key,
+          prevValue !== newValue ? newValue : prevValue,
+        ]
+      })
+      const updatedFormState = Object.fromEntries(updated)
 
       try {
         const parsedData = schema.safeParse(updatedFormState)
@@ -72,6 +90,9 @@ export const createData = async (prevFormState: any, formData: FormData) => {
         console.log('error', e)
         return prevFormState
       }
+
+    default:
+      return prevFormState
   }
 
   // finally{
@@ -80,6 +101,11 @@ export const createData = async (prevFormState: any, formData: FormData) => {
   //   redirect('./create') //  'dashboard/create'로 입력하면 /dashboard/dashboard/create로 된다. 상대경로라 그런듯
   // }
 }
+
+export const deletechip = async (prevFormState: any, formData: FormData) => {
+
+}
+
 
 export const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
