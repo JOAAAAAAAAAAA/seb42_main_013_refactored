@@ -1,5 +1,5 @@
 "use client"
-import { Chip } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import OthersSVGSprite from "../OthersSVGSprite";
 import PillSVGSprite from "../PillSVGSprite";
 import { useReducer, useState } from "react";
@@ -17,9 +17,6 @@ import SubmitButton from "./SubmitButton";
 
 export type ModalState = Pick<Pill, 'expirationDate' | 'takingTime' | 'ingredients'>;
 export type ModalAction =
-  // | { type: "expirationDate_year"; year: number }
-  // | { type: "expirationDate_month"; month: number }
-  // | { type: "expirationDate_day"; day: number }
   | { type: "AddTakingTime"; time: string | undefined }
   | { type: "DeleteTakingTime"; time: string }
   | { type: "AddIngredients"; ingredient: string | undefined }
@@ -27,33 +24,6 @@ export type ModalAction =
 
 const modalReducer = (state: ModalState, action: ModalAction) => {
   switch (action.type) {
-    // case "expirationDate_year":
-    //   if (!state.expirationDate) {
-    //     let date = new Date()
-    //     date.setFullYear(action.year)
-    //     return { ...state, expirationDate: date }
-    //   } else {
-    //     state.expirationDate.setFullYear(action.year)
-    //     return { ...state }
-    //   }
-    // case "expirationDate_month":
-    //   if (!state.expirationDate) {
-    //     let date = new Date()
-    //     date.setMonth(action.month - 1)
-    //     return { ...state, expirationDate: date }
-    //   } else {
-    //     state.expirationDate.setMonth(action.month - 1)
-    //     return { ...state }
-    //   }
-    // case "expirationDate_day":
-    //   if (!state.expirationDate) {
-    //     let date = new Date()
-    //     date.setDate(action.day)
-    //     return { ...state, expirationDate: date }
-    //   } else {
-    //     state.expirationDate.setDate(action.day)
-    //     return { ...state }
-    //   }
     case "AddTakingTime":
       if (!action.time) return state
       return { ...state, takingTime: [...state.takingTime, action.time] };
@@ -82,7 +52,7 @@ export default function Create({
   const today = new Date().toISOString().slice(0, 10)
   const showModal = searchParams?.modal
   // const boundCreateData = createData.bind(null,modalState);
-  const [state, formAction] = useFormState(createData, {
+  const [formState, formAction] = useFormState<Pill, FormData>(createData, {
     supplementName: '',
     ingredients: [],
     productType: '',
@@ -96,8 +66,7 @@ export default function Create({
     servingSize: 1,
   })
   // const { pending, data } = useFormStatus()
-
-  console.log('state!!!!!!', state)
+  console.log('formState!!!!!!', formState)
   return (
     <section className="main">
       <form
@@ -160,24 +129,24 @@ export default function Create({
           />
         </Fieldset>
         <Fieldset fieldsetName="주요 성분">
-          {modalState.ingredients.map((name) => (
+          {formState.ingredients.map((name, idx) => (
             // bind 함수로 대체
-            // <label key={name} htmlFor={name}>
-            <Chip
-              key={name}
-              label={name}
-              size="small"
-              variant="outlined"
-              color="primary"
-              onDelete={(e) => {
-                dispatch({ type: "DeleteIngredients", ingredient: name })
-              }}
-            />
-            //   <input type="checkbox" name="ingredients" id={name} value={name}
-            //     checked readOnly className="peer appearance-none" />
-            // </label>
+            <label key={idx} htmlFor={name}>
+              <Chip
+                label={name}
+                size="small"
+                variant="outlined"
+                color="primary"
+                onDelete={(e) => {
+                  dispatch({ type: "DeleteIngredients", ingredient: name })
+                }}
+              />
+              <input type="checkbox" name="ingredients" id={name} value={name}
+                checked readOnly className="peer appearance-none" />
+            </label>
           ))}
           <AddButton fieldset="ingredients" />
+          <input type="text" hidden name="ingredients" defaultValue="오메가3" />
         </Fieldset>
         <Fieldset fieldsetName="소비기한">
           <CreateInput
@@ -243,22 +212,21 @@ export default function Create({
           />
         </Fieldset>
         <Fieldset fieldsetName="복용 시간">
-          {modalState.takingTime.map((time) => (
-            // <label key={time} htmlFor={time}>
-            <Chip
-              key={time}
-              label={time}
-              size="small"
-              variant="outlined"
-              color="primary"
-              onDelete={() => {
-                dispatch({ type: "DeleteTakingTime", time: time })
-              }}
-            />
-            //     bind로 전송
-            //     <input type="checkbox" name="takingTime" id={time} value={time}
-            //       checked readOnly className="peer appearance-none" />
-            // </label>
+          {formState.takingTime.map((time, idx) => (
+            <label key={time} htmlFor={time}>
+              <Chip
+                key={idx}
+                label={time}
+                size="small"
+                variant="outlined"
+                color="primary"
+                onDelete={() => {
+                  dispatch({ type: "DeleteTakingTime", time: time })
+                }}
+              />
+              <input type="checkbox" name="takingTime" id={time} value={time}
+                checked readOnly className="peer appearance-none" />
+            </label>
           ))}
           <AddButton fieldset="takingTime" />
         </Fieldset>
@@ -268,11 +236,13 @@ export default function Create({
           name="servingSize"
           label="1회 복용량"
         />
-        <input type="text" id="csrf" value="" hidden />
+        {/* <input type="text" id="csrf" value="" hidden /> */}
+        <input name="type" type="hidden" defaultValue="create" />
+        <Button onClick={}>바인드</Button>
         <SubmitButton>등록하기</SubmitButton>
+
       </form >
       {showModal && <CreateModal fieldName={showModal} formAction={formAction} />}
-
     </section>
   )
 }
