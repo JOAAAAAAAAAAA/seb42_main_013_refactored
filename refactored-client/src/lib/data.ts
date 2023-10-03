@@ -37,16 +37,17 @@ export const createData = async (prevFormState: Pill, formData: FormData) => {
       }else{
         return prevFormState
       }
-    // case 'deleteChip':
-    //   const fieldsetName = formData.get('fieldsetName')
-    //   const value = formData.get('value')
-    //   if(typeof fieldsetName === 'string'){
-    //     const filtered = prevFormState.takingTime.filter((ele)=> ele !== value)
-    //     return {
-    //       ...prevFormState,
-    //       [fieldsetName]: [...filtered],
-    //     }
-    //   }else return prevFormState
+    case 'deleteChip':
+      const fieldsetName = formData.get('fieldsetName')
+      const value = formData.get('value')
+      if(typeof fieldsetName === 'string'){
+        const filtered = prevFormState.takingTime.filter((ele)=> ele !== value)
+        // revalidatePath('/create')
+        return {
+          ...prevFormState,
+          [fieldsetName]: [...filtered],
+        }
+      }else return prevFormState
     case 'create':
       const schema = z.object({
         supplementName: z.string(),
@@ -84,6 +85,7 @@ export const createData = async (prevFormState: Pill, formData: FormData) => {
       try {
         const parsedData = schema.safeParse(updatedFormState)
         console.log('parsedData', parsedData)
+        //해당 url방문시에 revalidate 되는 거라 먼저 선언해도 괜찮
         revalidatePath('/create')
         return updatedFormState
       } catch (e) {
