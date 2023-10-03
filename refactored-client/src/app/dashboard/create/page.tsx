@@ -15,7 +15,7 @@ import AddButton from "./AddButton";
 import Fieldset from "./Fieldset";
 import SubmitButton from "./SubmitButton";
 
-export type ModalState = Pick<Pill, 'expirationDate' | 'takingTime' | 'ingredients'>;
+export type ModalState = Pick<Pill, 'takingTime' | 'ingredients'>;
 export type ModalAction =
   | { type: "AddTakingTime"; time: string | undefined }
   | { type: "DeleteTakingTime"; time: string }
@@ -45,13 +45,11 @@ export default function Create({
   searchParams: Record<string, string> | null
 }) {
   const [modalState, dispatch] = useReducer(modalReducer, {
-    expirationDate: null,
     takingTime: [],
     ingredients: [],
   })
   const today = new Date().toISOString().slice(0, 10)
   const showModal = searchParams?.modal
-  // const boundCreateData = createData.bind(null,modalState);
   const [formState, formAction] = useFormState<Pill, FormData>(createData, {
     supplementName: '',
     ingredients: [],
@@ -67,6 +65,18 @@ export default function Create({
   })
   // const { pending, data } = useFormStatus()
   console.log('formState!!!!!!', formState)
+  const deleteChip = async (fieldsetName:string, value:string) => {
+
+    const formData = new FormData();
+    formData.append("type","deleteChip")
+    formData.append("fieldsetName",fieldsetName)
+    formData.append("value",value)
+    //bind 한 후 호출해야 실행 됨
+    const boundFormAction = formAction.bind(null, formData)
+    boundFormAction();
+  }
+
+
   return (
     <section className="main">
       <form
@@ -238,9 +248,9 @@ export default function Create({
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
-        <Button onClick={}>바인드</Button>
+        <Button onClick={()=>deleteChip('ingredients','오메가3')}>바인드</Button>
         <SubmitButton>등록하기</SubmitButton>
-
+        
       </form >
       {showModal && <CreateModal fieldName={showModal} formAction={formAction} />}
     </section>
