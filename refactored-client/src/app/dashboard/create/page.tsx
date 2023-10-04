@@ -133,7 +133,6 @@ export default function Create(
             </label>
           ))}
           <AddButton fieldset="ingredients" />
-          <input type="text" hidden name="ingredients" defaultValue="오메가3" />
         </Fieldset>
         <Fieldset fieldsetName="소비기한">
           <CreateInput
@@ -141,9 +140,6 @@ export default function Create(
             placeholder="YYYY"
             id="expirationDate_year"
             name="expirationDate_year"
-            // onChange={(e) => {
-            //   dispatch({ type: "expirationDate_year", year: parseInt(e.target.value) })
-            // }}
             inputProps={{ maxLength: 4 }}
           />/
           <CreateInput
@@ -151,9 +147,6 @@ export default function Create(
             placeholder="MM"
             id="expirationDate_month"
             name="expirationDate_month"
-            // onChange={(e) => {
-            //   dispatch({ type: "expirationDate_month", month: parseInt(e.target.value) })
-            // }}
             inputProps={{ maxLength: 2 }}
           />/
           <CreateInput
@@ -161,9 +154,6 @@ export default function Create(
             placeholder="DD"
             id="expirationDate_day"
             name="expirationDate_day"
-            // onChange={(e) => {
-            //   dispatch({ type: "expirationDate_day", day: parseInt(e.target.value) })
-            // }}
             inputProps={{ maxLength: 2 }}
           />
         </Fieldset>
