@@ -22,7 +22,8 @@ function Navigation() {
     showLabels
     value={value}
     onChange={handleChange}
-    className="fixed bottom-0 h-[64px] w-full max-w-[428px]"
+    sx={{height:64}}
+    className="fixed bottom-0 w-full max-w-[428px]"
   >
     <BottomNavigationAction
       LinkComponent={Link}

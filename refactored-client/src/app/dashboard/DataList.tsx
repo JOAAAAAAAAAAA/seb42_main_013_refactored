@@ -59,7 +59,7 @@ export default function DataList() {
           <span className="text-center text-[16px] text-black">{spreadPill.supplementName}</span>
           <span className="text-center text-[14px] text-[--balck-200]">{spreadPill.nutrients[0]}</span>
         </div>
-        <div className="flex gap-[4px] text-[14px] text-[--black-100]">
+        <div className="flex items-center gap-[4px] text-center text-[14px] text-[--black-100]">
           <OthersSVGSprite id="calendar" color="black" width="16px" height="16px" />
           {spreadPill.dosageInterval === 1 ? "매일" : `${spreadPill.dosageInterval}일 마다`}
           {!!spreadPill.takingTime.length && (
