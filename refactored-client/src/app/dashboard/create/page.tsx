@@ -1,40 +1,45 @@
 "use client"
-import { Button, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 import { experimental_useFormState as useFormState } from 'react-dom'
-import { createData } from "@/lib/data";
+import { createData } from "@/lib/formAction";
 import CreateModal from "./CreateModal";
 import CreateInput from "./CreateInput";
 import RadioChip from "./RadioChip";
-import { Pill, PillData } from "@/types";
+import { Pill } from "@/types";
 import AddButton from "./AddButton";
 import Fieldset from "./Fieldset";
 import SubmitButton from "./SubmitButton";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import OthersSVGSprite from "../OthersSVGSprite";
 import PillSVGSprite from "../PillSVGSprite";
+import { ZodIssueCode } from "zod";
 
+interface FormState extends Pill {
+  errorMessage: {
+    [path in keyof Pill] ?: [{ message: string, errorCode: ZodIssueCode }]
+  };
+}
 
 export default function Create(
-  ) {
-    const today = new Date().toISOString().slice(0, 10)
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const router = useRouter()
+) {
+  const today = new Date().toISOString().slice(0, 10)
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const showModal = searchParams.get('fieldset')
-
-    const [formState, formAction] = useFormState<Pill, FormData>(createData, {
-      supplementName: '',
-      ingredients: [],
-      productType: '',
-      formulation: '',
-      expirationDate: null,
-      startDate: today,
-      endDate: null,
-      takingTime: [],
-      pillsLeft: 0,
-      totalCapacity: 1,
-      servingSize: 1,
-    })
+  const [formState, formAction] = useFormState<FormState, FormData>(createData, {
+    supplementName: '',
+    ingredients: [],
+    productType: '',
+    formulation: '',
+    expirationDate: null,
+    startDate: today,
+    endDate: null,
+    takingTime: [],
+    pillsLeft: 0,
+    totalCapacity: 1,
+    servingSize: 1,
+    errorMessage: {}
+  })
   const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
     formData.append("type", "deleteChip")
@@ -54,6 +59,7 @@ export default function Create(
     router.back()
   }
 
+  console.log(formState.errorMessage)
   return (
     <section className="main">
       <form
@@ -64,6 +70,8 @@ export default function Create(
       // onKeyPress={(e) => { e.key === "Enter" &&ee e.preventDefault() }}
       >
         <CreateInput
+          error={!!formState.errorMessage?.supplementName}
+          helperText={formState.errorMessage?.supplementName?.[0]?.message}
           type="text"
           id="supplementName"
           name="supplementName"
@@ -163,12 +171,16 @@ export default function Create(
             id="pillsLeft"
             name="pillsLeft"
             label="잔여알수"
-          />/
+            error={!!formState.errorMessage?.pillsLeft}
+            helperText={formState.errorMessage?.pillsLeft?.[0]?.message}
+          /><p className="inline-block">/</p>
           <CreateInput
             type="number"
             id="totalCapacity"
             name="totalCapacity"
             label="전체용량"
+            error={!!formState.errorMessage?.totalCapacity}
+            helperText={formState.errorMessage?.totalCapacity?.[0]?.message}
           />
         </Fieldset>
         <Fieldset fieldsetName="복용 기간">
@@ -178,6 +190,8 @@ export default function Create(
             name="startDate"
             defaultValue={today}
             required
+            error={!!formState.errorMessage?.startDate}
+            helperText={formState.errorMessage?.startDate?.[0]?.message}
             label="시작일"
           />~
           <CreateInput
@@ -185,6 +199,8 @@ export default function Create(
             id="endDate"
             name="endDate"
             required
+            error={!!formState.errorMessage?.endDate}
+            helperText={formState.errorMessage?.endDate?.[0]?.message}
             label="종료일"
           />
         </Fieldset>
@@ -212,12 +228,14 @@ export default function Create(
           id="servingSize"
           name="servingSize"
           label="1회 복용량"
+          error={!!formState.errorMessage?.servingSize}
+          helperText={formState.errorMessage?.servingSize?.[0]?.message}
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
         <SubmitButton>등록하기</SubmitButton>
       </form >
-      {showModal &&<CreateModal addChip={addChip}/>}
+      {showModal && <CreateModal addChip={addChip} />}
     </section>
   )
 }
