@@ -1,11 +1,6 @@
 "use client"
 import { Button, Chip } from "@mui/material";
-import OthersSVGSprite from "../OthersSVGSprite";
-import PillSVGSprite from "../PillSVGSprite";
-import { useReducer, useState } from "react";
-import { BlueButton } from "@/app/components/Buttons";
 import { experimental_useFormState as useFormState } from 'react-dom'
-// import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 import { createData } from "@/lib/data";
 import CreateModal from "./CreateModal";
 import CreateInput from "./CreateInput";
@@ -14,68 +9,50 @@ import { Pill, PillData } from "@/types";
 import AddButton from "./AddButton";
 import Fieldset from "./Fieldset";
 import SubmitButton from "./SubmitButton";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import OthersSVGSprite from "../OthersSVGSprite";
+import PillSVGSprite from "../PillSVGSprite";
 
-export type ModalState = Pick<Pill, 'takingTime' | 'ingredients'>;
-export type ModalAction =
-  | { type: "AddTakingTime"; time: string | undefined }
-  | { type: "DeleteTakingTime"; time: string }
-  | { type: "AddIngredients"; ingredient: string | undefined }
-  | { type: "DeleteIngredients"; ingredient: string }
 
-const modalReducer = (state: ModalState, action: ModalAction) => {
-  switch (action.type) {
-    case "AddTakingTime":
-      if (!action.time) return state
-      return { ...state, takingTime: [...state.takingTime, action.time] };
-    case "DeleteTakingTime":
-      return { ...state, takingTime: state.takingTime.filter((ele) => ele !== action.time) };
-    case "AddIngredients":
-      if (!action.ingredient) return state
-      return { ...state, ingredients: [...state.ingredients, action.ingredient] };
-    case "DeleteIngredients":
-      return { ...state, ingredients: state.ingredients.filter((ele) => ele !== action.ingredient) };
-    default:
-      return state;
-  }
-}
+export default function Create(
+  ) {
+    const today = new Date().toISOString().slice(0, 10)
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+    const router = useRouter()
+  const showModal = searchParams.get('fieldset')
 
-export default function Create({
-  searchParams
-}: {
-  searchParams: Record<string, string> | null
-}) {
-  const [modalState, dispatch] = useReducer(modalReducer, {
-    takingTime: [],
-    ingredients: [],
-  })
-  const today = new Date().toISOString().slice(0, 10)
-  const showModal = searchParams?.modal
-  const [formState, formAction] = useFormState<Pill, FormData>(createData, {
-    supplementName: '',
-    ingredients: [],
-    productType: '',
-    formulation: '',
-    expirationDate: null,
-    startDate: today,
-    endDate: null,
-    takingTime: [],
-    pillsLeft: 0,
-    totalCapacity: 1,
-    servingSize: 1,
-  })
-  // const { pending, data } = useFormStatus()
-  console.log('formState!!!!!!', formState)
-  const deleteChip = async (fieldsetName:string, value:string) => {
-
+    const [formState, formAction] = useFormState<Pill, FormData>(createData, {
+      supplementName: '',
+      ingredients: [],
+      productType: '',
+      formulation: '',
+      expirationDate: null,
+      startDate: today,
+      endDate: null,
+      takingTime: [],
+      pillsLeft: 0,
+      totalCapacity: 1,
+      servingSize: 1,
+    })
+  const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
-    formData.append("type","deleteChip")
-    formData.append("fieldsetName",fieldsetName)
-    formData.append("value",value)
+    formData.append("type", "deleteChip")
+    formData.append("fieldsetName", fieldsetName)
+    formData.append("value", value)
     //bind 한 후 호출해야 실행 됨
     const boundFormAction = formAction.bind(null, formData)
     boundFormAction();
   }
-
+  const addChip = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    //bind 한 후 호출해야 실행 됨
+    const boundFormAction = formAction.bind(null, formData)
+    await boundFormAction()
+    router.back()
+  }
 
   return (
     <section className="main">
@@ -148,7 +125,7 @@ export default function Create({
                 variant="outlined"
                 color="primary"
                 onDelete={(e) => {
-                  dispatch({ type: "DeleteIngredients", ingredient: name })
+                  deleteChip("ingredients", name)
                 }}
               />
               <input type="checkbox" name="ingredients" id={name} value={name}
@@ -231,7 +208,7 @@ export default function Create({
                 variant="outlined"
                 color="primary"
                 onDelete={() => {
-                  dispatch({ type: "DeleteTakingTime", time: time })
+                  deleteChip("takingTime", time)
                 }}
               />
               <input type="checkbox" name="takingTime" id={time} value={time}
@@ -248,11 +225,9 @@ export default function Create({
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
-        <Button onClick={()=>deleteChip('ingredients','오메가3')}>바인드</Button>
         <SubmitButton>등록하기</SubmitButton>
-        
       </form >
-      {showModal && <CreateModal fieldName={showModal} formAction={formAction} />}
+      {showModal &&<CreateModal addChip={addChip}/>}
     </section>
   )
 }
