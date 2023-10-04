@@ -15,7 +15,7 @@ export default function Fieldset({
         variant="subtitle1"
         className="text-[rgba(0,0,0,0.6)]"
       >{fieldsetName}</Typography>
-      <div className="flex w-full flex-wrap items-center gap-[--gap-sm]">
+      <div className=" flex w-full flex-wrap items-end gap-[--gap-sm]">
         {children}
       </div>
     </fieldset>
