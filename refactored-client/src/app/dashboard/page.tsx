@@ -27,7 +27,6 @@ function Dashboard() {
       dosageInterval: 3,
       dosagePerServing: 1,
       endDate: '2023-01-01',
-      expirationDate: '2023-11-01',
       pillsLeft: 3,
       startDate: '2023-01-01',
       supplementName: '오메가3',

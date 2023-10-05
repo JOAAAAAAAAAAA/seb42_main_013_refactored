@@ -6,8 +6,9 @@ export default function CreateInput({
   type,
   label,
   placeholder,
-  onChange,
   inputProps,
+  error,
+  helperText,
   ...props
 }: {
   id: string
@@ -15,7 +16,8 @@ export default function CreateInput({
   type: string
   label?: string
   placeholder?: string
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  error?: boolean
+  helperText?: string
   inputProps?: InputBaseComponentProps
   props?: React.HTMLAttributes<HTMLInputElement>
 }) {
@@ -24,16 +26,23 @@ export default function CreateInput({
       id={id}
       type={type}
       name={name}
-      onChange={onChange}
       inputProps={inputProps}
       label={label}
+      error={error}
+      helperText={helperText}
       variant="standard"
       sx={{
         '& .MuiFormLabel-asterisk,.MuiInputLabel-asterisk':{
           display: "none"
         },
       }}
-      className="cleanInput flex-1"
+      className={`
+      cleanInput flex-1
+      !text-[rgba(0,0,0.8)]
+      ${name==="servingSize"||name==="supplementName" ?"[&_label]:text-[rgba(0,0,0,0.8)]" :""} 
+      `} 
+      
+
       placeholder={placeholder}
       {...props}
     />

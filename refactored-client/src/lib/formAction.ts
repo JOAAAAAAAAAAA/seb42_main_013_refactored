@@ -6,10 +6,10 @@ import { addPillSchema } from '@/zodSchema/addPills'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
+import { ZodError, z} from 'zod'
+
 
 export const createData = async (prevFormState: Pill, formData: FormData) => {
-
   //https://github.com/remix-run/remix/discussions/1298
   switch (formData.get('type')) {
     case 'update_ingredients':
@@ -54,32 +54,9 @@ export const createData = async (prevFormState: Pill, formData: FormData) => {
           [fieldsetName]: [...filtered],
         }
       } else return prevFormState
-    case 'create':
-      // const schema = z.object({
-      //   supplementName: z.string(),
-      //   ingredients: z.array(z.string().nullable()),
-      //   productType: z.string(),
-      //   formulation: z.string(),
-      //   expirationDate: z.string().nullable(),
-      //   startDate: z.string().default(new Date().toISOString().slice(0, 10)),
-      //   endDate: z.string(),
-      //   takingTime: z.array(z.string().nullable()),
-      //   pillsLeft: z.coerce.number(),
-      //   totalCapacity: z.coerce.number(),
-      //   servingSize: z.coerce.number(),
-      // })
-      const year = formData.get('expirationDate_year') ?? ''
-      const month = formData.get('expirationDate_month') ?? ''
-      const day = formData.get('expirationDate_day') ?? ''
-      if (
-        typeof year === 'string' &&
-        typeof month === 'string' &&
-        typeof day === 'string'
-      ) {
-        const expirationDate = `${year}-${month}-${day}`
-        formData.set('expirationDate', expirationDate)
-      }
 
+    case 'create':
+     
       //타입 이슈 해결
       const prev = Object.entries(prevFormState)
       const updated = prev.map(([key, prevValue]) => {
@@ -88,16 +65,38 @@ export const createData = async (prevFormState: Pill, formData: FormData) => {
             ? formData.getAll(key)
             : formData.get(key)
         //takingTime, ingredients은 배열이므로 getAll로 모두 뽑는다
-        return [key, prevValue !== newValue ? newValue : prevValue]
+        return [
+          key,
+          prevValue !== newValue && newValue !== null ? newValue : prevValue,
+        ]
       })
       const updatedFormState = Object.fromEntries(updated)
-      console.log('updatedFormState', updatedFormState)
 
-      const parsedData = schema.safeParse(updatedFormState)
+      //유효성 검사
+      const parsedData = addPillSchema.safeParse(updatedFormState)
       console.log('parsedData', parsedData)
+
+      if (!parsedData.success) {
+        const flattenMessage = parsedData.error.flatten((issue) => ({
+          message: issue.message,
+          errorCode: issue.code,
+        })).fieldErrors
+        return { ...updatedFormState, errorMessage: flattenMessage }
+      }
       //해당 url방문시에 revalidate 되는 거라 먼저 선언해도 괜찮
-      return updatedFormState
+      else return updatedFormState
     default:
       return prevFormState
   }
+}
+
+
+const postPill = async (data: Pill) => {
+
+  const sessionCookie = cookies.get('session')?.value
+  console.log('sessionCookie', sessionCookie)
+  const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+  const { uid } = decodedClaims
+  const pillRef = adminFirestore.collection('pills').doc(uid)
+  await pillRef.set(data, { merge: true })
 }

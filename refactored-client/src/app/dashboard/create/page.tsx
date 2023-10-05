@@ -1,11 +1,10 @@
 "use client"
-import { Chip } from "@mui/material";
+import { Chip, FormHelperText } from "@mui/material";
 import { experimental_useFormState as useFormState } from 'react-dom'
 import { createData } from "@/lib/formAction";
 import CreateModal from "./CreateModal";
 import CreateInput from "./CreateInput";
 import RadioChip from "./RadioChip";
-import { Pill } from "@/types";
 import AddButton from "./AddButton";
 import Fieldset from "./Fieldset";
 import SubmitButton from "./SubmitButton";
@@ -13,12 +12,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import OthersSVGSprite from "../OthersSVGSprite";
 import PillSVGSprite from "../PillSVGSprite";
 import { ZodIssueCode } from "zod";
-
-interface FormState extends Pill {
-  errorMessage: {
-    [path in keyof Pill] ?: [{ message: string, errorCode: ZodIssueCode }]
-  };
-}
+import { FormState } from "@/types";
 
 export default function Create(
 ) {
@@ -31,7 +25,6 @@ export default function Create(
     ingredients: [],
     productType: '',
     formulation: '',
-    expirationDate: null,
     startDate: today,
     endDate: null,
     takingTime: [],
@@ -40,6 +33,7 @@ export default function Create(
     servingSize: 1,
     errorMessage: {}
   })
+
   const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
     formData.append("type", "deleteChip")
@@ -63,21 +57,22 @@ export default function Create(
   return (
     <section className="main">
       <form
-        className="container flex h-full flex-col gap-[--gap-md] !font-nanumGothic" noValidate
+        className="container flex h-full flex-col gap-[--gap-sm] [&_*]:!font-nanumGothic" noValidate
         action={formAction}
       // onSubmit 은 event handler
       // https://stackoverflow.com/questions/29014570/a-forms-action-and-onsubmit-which-executes-first
       // onKeyPress={(e) => { e.key === "Enter" &&ee e.preventDefault() }}
       >
         <CreateInput
+          label="제품명"
           error={!!formState.errorMessage?.supplementName}
-          helperText={formState.errorMessage?.supplementName?.[0]?.message}
+          helperText={formState.errorMessage?.supplementName?.[0]?.message || " "}
           type="text"
           id="supplementName"
           name="supplementName"
-          label="제품명"
         />
-        <Fieldset fieldsetName="제품 유형">
+        <Fieldset fieldsetName="제품 유형"
+          errorMessage={formState.errorMessage.productType}>
           <RadioChip
             label="처방약"
             name="productType"
@@ -91,7 +86,8 @@ export default function Create(
             icon={<OthersSVGSprite id="supplement" width="1.2em" color="currentColor" height="1.2em" />}
           />
         </Fieldset>
-        <Fieldset fieldsetName="제형">
+        <Fieldset fieldsetName="제형"
+          errorMessage={formState.errorMessage.formulation}>
           <RadioChip
             name="formulation"
             label="캡슐"
@@ -123,7 +119,8 @@ export default function Create(
             icon={<PillSVGSprite id="liquid" width="1.2em" color="currentColor" height="1.2em" />}
           />
         </Fieldset>
-        <Fieldset fieldsetName="주요 성분">
+        <Fieldset fieldsetName="주요 성분"
+          errorMessage={formState.errorMessage.ingredients}>
           {formState.ingredients.map((name, idx) => (
             // bind 함수로 대체
             <label key={idx} htmlFor={name}>
@@ -142,37 +139,20 @@ export default function Create(
           ))}
           <AddButton fieldset="ingredients" />
         </Fieldset>
-        <Fieldset fieldsetName="소비기한">
-          <CreateInput
-            type="text"
-            placeholder="YYYY"
-            id="expirationDate_year"
-            name="expirationDate_year"
-            inputProps={{ maxLength: 4 }}
-          />/
-          <CreateInput
-            type="text"
-            placeholder="MM"
-            id="expirationDate_month"
-            name="expirationDate_month"
-            inputProps={{ maxLength: 2 }}
-          />/
-          <CreateInput
-            type="text"
-            placeholder="DD"
-            id="expirationDate_day"
-            name="expirationDate_day"
-            inputProps={{ maxLength: 2 }}
-          />
-        </Fieldset>
-        <Fieldset fieldsetName="용량">
+        <Fieldset fieldsetName="제품 용량"
+          errorMessage={
+            (!formState.errorMessage.pillsLeft && !formState.errorMessage.totalCapacity)
+            ? undefined
+            :[
+            ...(formState.errorMessage.pillsLeft ?? []),
+            ...(formState.errorMessage.totalCapacity ?? [])
+          ]}>
           <CreateInput
             type="number"
             id="pillsLeft"
             name="pillsLeft"
             label="잔여알수"
             error={!!formState.errorMessage?.pillsLeft}
-            helperText={formState.errorMessage?.pillsLeft?.[0]?.message}
           /><p className="inline-block">/</p>
           <CreateInput
             type="number"
@@ -180,9 +160,9 @@ export default function Create(
             name="totalCapacity"
             label="전체용량"
             error={!!formState.errorMessage?.totalCapacity}
-            helperText={formState.errorMessage?.totalCapacity?.[0]?.message}
           />
         </Fieldset>
+
         <Fieldset fieldsetName="복용 기간">
           <CreateInput
             type="date"
@@ -204,7 +184,8 @@ export default function Create(
             label="종료일"
           />
         </Fieldset>
-        <Fieldset fieldsetName="복용 시간">
+        <Fieldset fieldsetName="복용 시간"
+          errorMessage={formState.errorMessage.takingTime}>
           {formState.takingTime.map((time, idx) => (
             <label key={time} htmlFor={time}>
               <Chip
@@ -224,12 +205,13 @@ export default function Create(
           <AddButton fieldset="takingTime" />
         </Fieldset>
         <CreateInput
+          label="1회 복용량"
+          defaultValue={1}
           type="number"
           id="servingSize"
           name="servingSize"
-          label="1회 복용량"
           error={!!formState.errorMessage?.servingSize}
-          helperText={formState.errorMessage?.servingSize?.[0]?.message}
+          helperText={formState.errorMessage?.servingSize?.[0]?.message || " "}
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
