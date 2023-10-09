@@ -11,7 +11,6 @@ export default function AddButton({
   fieldset: string;
 }) {
   const pathname = usePathname()
-  console.log(`${pathname}?fieldset=${fieldset}`)
   return (
     //오류 뜨지만 잘 작동함
     <Link href={`${pathname}?fieldset=${fieldset}`}>
@@ -27,9 +26,7 @@ export default function AddButton({
       // icon insert 시, 기본 span default로 배치됨
       // icon 대신 라벨로 대체
       // icon={<OthersSVGSprite id="add" width="1.2em" color="currentColor" height="1.2em" />}
-      label={(
-          <FontAwesomeIcon icon={faPlus} />
-      )}
+      label={(<FontAwesomeIcon icon={faPlus} />)}
     />
     </Link>
   )

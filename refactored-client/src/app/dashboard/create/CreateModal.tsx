@@ -18,14 +18,16 @@ export default function CreateModal({
 
   return (
     <Backdrop
-      className="z-10"
-      open={true} onClick={()=>router.push(pathname)}>
-      <div onClick={(e) => e.stopPropagation()}>
+      className="z-10 "
+      open={true} onClick={() => router.push(pathname)}>
+      <div 
+      className="[@media(min-width:1024px)]:ml-[420px]"
+      onClick={(e) => e.stopPropagation()}>
         <form
           // action={formAction} 
           //! revalidate & routerback처리 위해 custom onsubmit
           onSubmit={(e) => addChip(e)}
-          className="relative m-auto flex max-w-[300px] flex-col gap-[4px] rounded-[5px] bg-white px-[20px] py-[16px]">
+          className="m-auto flex max-w-[300px] flex-col gap-[4px] rounded-[5px] bg-white px-[20px] py-[16px]">
           <TextField
             className="cleanInput !min-w-[150px]"
             sx={{
@@ -41,10 +43,10 @@ export default function CreateModal({
             inputRef={inputRef}
           />
           <input name="type" type="hidden" defaultValue={`update_${fieldName}`} />
-          <Button
-            type="submit"
-            variant="contained"
-          >추가</Button>
+          <div className="flex gap-[4px]">
+            <Button className="w-full" variant="outlined" onClick={() => router.push(pathname)}>취소</Button>
+            <Button className="w-full" sx={{boxShadow:"none"}} type="submit" variant="contained">추가</Button>
+          </div>
         </form>
       </div>
     </Backdrop>

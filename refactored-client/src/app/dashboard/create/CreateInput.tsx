@@ -39,7 +39,7 @@ export default function CreateInput({
       className={`
       cleanInput flex-1
       !text-[rgba(0,0,0.8)]
-      ${name==="servingSize"||name==="supplementName" ?"[&_label]:text-[rgba(0,0,0,0.8)]" :""} 
+      ${name==="servingSize"||name==="supplementName" ?"flex-initial [&_label]:text-[rgba(0,0,0,0.8)]" :""} 
       `} 
       
 

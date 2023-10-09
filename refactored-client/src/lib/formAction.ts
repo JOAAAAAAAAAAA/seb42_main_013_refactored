@@ -84,7 +84,6 @@ export const createData = async (prevFormState: FormState, formData: FormData) =
         })).fieldErrors
         return { ...updatedFormState, errorMessage: flattenMessage }
       }
-
       try {
         const sessionCookie = cookies().get('session')?.value || ''
         const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
@@ -95,9 +94,11 @@ export const createData = async (prevFormState: FormState, formData: FormData) =
           .doc(uid)
           .collection('pills')
         await pillRef.add(parsedData.data)
-        revalidatePath('/dashboard')
       } catch (e) {
         console.error(e)
+      }finally{
+        revalidatePath('/dashboard')
+        redirect('/dashboard')
       }
 
     //해당 url방문시에 revalidate 되는 거라 먼저 선언해도 괜찮

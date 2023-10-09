@@ -62,7 +62,8 @@ export default function Create(
   return (
     <section className="main">
       <form
-        className="container flex h-full flex-col gap-[--gap-sm] [&_*]:!font-nanumGothic" noValidate
+        className="container flex h-full flex-col justify-around gap-[--gap-sm] [&_*]:!font-nanumGothic	" 
+        noValidate //css 용 valid 작동 안하게, validation은 zod로
         action={formAction}
       // onSubmit 은 event handler
       // https://stackoverflow.com/questions/29014570/a-forms-action-and-onsubmit-which-executes-first
