@@ -1,5 +1,5 @@
 "use client"
-import { Chip, FormHelperText } from "@mui/material";
+import { Button, Chip, FormHelperText } from "@mui/material";
 import { experimental_useFormState as useFormState } from 'react-dom'
 import { createData } from "@/lib/formAction";
 import CreateModal from "./CreateModal";
@@ -18,6 +18,7 @@ export default function Create(
 ) {
   const today = new Date().toISOString().slice(0, 10)
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const router = useRouter()
   const showModal = searchParams.get('fieldset')
   const [formState, formAction] = useFormState<FormState, FormData>(createData, {
@@ -33,6 +34,7 @@ export default function Create(
     servingSize: 1,
     errorMessage: {}
   })
+  console.log(formState.errorMessage)
 
   const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
@@ -40,20 +42,22 @@ export default function Create(
     formData.append("fieldsetName", fieldsetName)
     formData.append("value", value)
     //bind 한 후 호출해야 실행 됨
-    const boundFormAction = formAction.bind(null, formData)
-    boundFormAction();
+    // const boundFormAction = formAction.bind(null, formData)
+    // boundFormAction();
+    // bind 안해도 실행됨...?
+    formAction(formData)
+    router.push(pathname)
   }
   const addChip = async (e) => {
     e.preventDefault();
     const form = e.currentTarget
     const formData = new FormData(form)
-    //bind 한 후 호출해야 실행 됨
-    const boundFormAction = formAction.bind(null, formData)
-    await boundFormAction()
+    await formAction(formData)
     router.back()
   }
 
-  console.log(formState.errorMessage)
+
+
   return (
     <section className="main">
       <form
@@ -63,6 +67,8 @@ export default function Create(
       // https://stackoverflow.com/questions/29014570/a-forms-action-and-onsubmit-which-executes-first
       // onKeyPress={(e) => { e.key === "Enter" &&ee e.preventDefault() }}
       >
+                  <input type="text" hidden name="ingredients" defaultValue="오메가3" />
+
         <CreateInput
           label="제품명"
           error={!!formState.errorMessage?.supplementName}
@@ -72,7 +78,7 @@ export default function Create(
           name="supplementName"
         />
         <Fieldset fieldsetName="제품 유형"
-          errorMessage={formState.errorMessage.productType}>
+          errorMessage={formState.errorMessage?.productType}>
           <RadioChip
             label="처방약"
             name="productType"
@@ -123,18 +129,19 @@ export default function Create(
           errorMessage={formState.errorMessage.ingredients}>
           {formState.ingredients.map((name, idx) => (
             // bind 함수로 대체
+            
             <label key={idx} htmlFor={name}>
               <Chip
                 label={name}
                 size="small"
                 variant="outlined"
                 color="primary"
-                onDelete={(e) => {
-                  deleteChip("ingredients", name)
+                onDelete={() => {
+                  deleteChip('ingredients',name)
                 }}
               />
               <input type="checkbox" name="ingredients" id={name} value={name}
-                checked readOnly className="peer appearance-none" />
+                checked readOnly hidden className="peer" />
             </label>
           ))}
           <AddButton fieldset="ingredients" />
@@ -215,6 +222,7 @@ export default function Create(
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
+        <Button onClick={()=>deleteChip('ingredients','오메가3')}>바인드</Button>
         <SubmitButton>등록하기</SubmitButton>
       </form >
       {showModal && <CreateModal addChip={addChip} />}
