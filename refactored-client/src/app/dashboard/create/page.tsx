@@ -8,11 +8,12 @@ import RadioChip from "./RadioChip";
 import AddButton from "./AddButton";
 import Fieldset from "./Fieldset";
 import SubmitButton from "./SubmitButton";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import OthersSVGSprite from "../OthersSVGSprite";
 import PillSVGSprite from "../PillSVGSprite";
 import { ZodIssueCode } from "zod";
 import { FormState } from "@/types";
+import SessionExpireModal from "@/app/components/SessionExpireModal";
 
 export default function Create(
 ) {
@@ -20,6 +21,7 @@ export default function Create(
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
+  const sessionExpire = searchParams.get('session')
   const showModal = searchParams.get('fieldset')
   const [formState, formAction] = useFormState<FormState, FormData>(createData, {
     supplementName: '',
@@ -34,7 +36,6 @@ export default function Create(
     servingSize: 1,
     errorMessage: {}
   })
-  console.log(formState.errorMessage)
 
   const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
@@ -69,8 +70,8 @@ export default function Create(
       >
         <CreateInput
           label="제품명"
-          error={!!formState.errorMessage?.supplementName}
-          helperText={formState.errorMessage?.supplementName?.[0]?.message || " "}
+          error={!!formState?.errorMessage?.supplementName}
+          helperText={formState?.errorMessage?.supplementName?.[0]?.message || " "}
           type="text"
           id="supplementName"
           name="supplementName"
@@ -223,6 +224,7 @@ export default function Create(
         <SubmitButton>등록하기</SubmitButton>
       </form >
       {showModal && <CreateModal addChip={addChip} />}
+      {sessionExpire && <SessionExpireModal /> }
     </section>
   )
 }
