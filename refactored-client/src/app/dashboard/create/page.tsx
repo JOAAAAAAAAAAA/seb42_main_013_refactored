@@ -67,8 +67,6 @@ export default function Create(
       // https://stackoverflow.com/questions/29014570/a-forms-action-and-onsubmit-which-executes-first
       // onKeyPress={(e) => { e.key === "Enter" &&ee e.preventDefault() }}
       >
-                  <input type="text" hidden name="ingredients" defaultValue="오메가3" />
-
         <CreateInput
           label="제품명"
           error={!!formState.errorMessage?.supplementName}
@@ -222,7 +220,6 @@ export default function Create(
         />
         {/* <input type="text" id="csrf" value="" hidden /> */}
         <input name="type" type="hidden" defaultValue="create" />
-        <Button onClick={()=>deleteChip('ingredients','오메가3')}>바인드</Button>
         <SubmitButton>등록하기</SubmitButton>
       </form >
       {showModal && <CreateModal addChip={addChip} />}
