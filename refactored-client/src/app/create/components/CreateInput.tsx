@@ -6,7 +6,6 @@ export default function CreateInput({
   type,
   label,
   placeholder,
-  inputProps,
   error,
   helperText,
   ...props
@@ -18,7 +17,6 @@ export default function CreateInput({
   placeholder?: string
   error?: boolean
   helperText?: string
-  inputProps?: InputBaseComponentProps
   props?: React.HTMLAttributes<HTMLInputElement>
 }) {
   return (
@@ -26,7 +24,6 @@ export default function CreateInput({
       id={id}
       type={type}
       name={name}
-      inputProps={inputProps}
       label={label}
       error={error}
       helperText={helperText}
@@ -39,10 +36,7 @@ export default function CreateInput({
       className={`
       cleanInput flex-1
       !text-[rgba(0,0,0.8)]
-      ${name==="servingSize"||name==="supplementName" ?"flex-initial [&_label]:text-[rgba(0,0,0,0.8)]" :""} 
-      `} 
-      
-
+      ${name==="servingSize"||name==="supplementName" ?"flex-initial [&_label]:text-[rgba(0,0,0,0.8)]" :""}`} 
       placeholder={placeholder}
       {...props}
     />

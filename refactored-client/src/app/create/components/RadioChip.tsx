@@ -21,6 +21,7 @@ export default function RadioChip({
     >
       <input
         type="radio" name={name} value={id} id={id}
+        {...props}
         className="peer appearance-none" />
       <Chip
         size="small"
