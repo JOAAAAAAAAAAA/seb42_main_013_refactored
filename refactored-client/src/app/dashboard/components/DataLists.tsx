@@ -5,7 +5,6 @@ import Image from "next/image";
 import { experimental_useOptimistic as useOptimistic } from "react";
 import nodata from '@/../public/images/NoSupplementData.png'
 import DataList from "./DataList";
-import { useSearchParams } from "next/navigation";
 
 export default function DataLists({ data }: { data: PillData[] }) {
   const [optimisticData, deleteOptimisticData] = useOptimistic(
@@ -13,7 +12,6 @@ export default function DataLists({ data }: { data: PillData[] }) {
     (state, id) => state.filter((pill) => pill.id !== id)
   )
   
-  const searchParams = useSearchParams()
 
   return (
     <ul className="relative flex h-full flex-col items-center gap-[--gap-sm]">
