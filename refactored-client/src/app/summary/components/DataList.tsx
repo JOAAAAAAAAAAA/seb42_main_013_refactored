@@ -9,15 +9,22 @@ import Link from "next/link";
 import { deletePill } from "@/lib/pills";
 import { Backdrop } from "@mui/material";
 import PillSVGSprite from "@/app/components/PillSVGSprite";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function DataList({ 
+export default function DataList({
   pill,
-  deleteOptimisticData }:{ 
-  pill: PillData, 
-  deleteOptimisticData: (action: unknown) => void }){
+  deleteOptimisticData }: {
+    pill: PillData,
+    deleteOptimisticData: (action: unknown) => void
+  }) {
 
-  const [isOpen, setIsOpen] = useState(false);
-  const openModalHandler = () => setIsOpen(!isOpen);
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const modalOpen = searchParams.get('modal')
+  const id = searchParams.get('id')
+  const router = useRouter()
+  const [showModal, setShowModal] = useState(false)
+
 
   return (
     <li className="
@@ -66,25 +73,23 @@ export default function DataList({
               <span>| 소비기한</span>
               <span className="expirationDate">{spreadPill.expirationDate}</span>
             </>
-
           } */}
         </div>
       </div>
-      <button 
-      className="absolute right-[8px] top-[16px]"
-      onClick={openModalHandler}>
+      <Link
+        href={pathname + `?modal=menu`+`&id=${pill.id}`}
+        className="absolute right-[8px] top-[16px]">
         <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
-      </button>
-      {isOpen && (
+      </Link>
+      {modalOpen==="menu" && id===pill.id && (
         <>
-          <ul 
-          className="absolute right-[8px] top-[8px] z-10 flex cursor-pointer list-none flex-col rounded-[5px] bg-white text-center text-[12px] 
+          <ul
+            className="absolute right-[8px] top-[8px] z-10 flex cursor-pointer list-none flex-col rounded-[5px] bg-white text-center text-[12px] 
           shadow-[0px_4px_4px_rgba(0,0,0,0.25)] [&>:first-child]:pt-[8px] [&>:last-child]:pb-[8px] [&>li:active]:text-[--blue-100]
-          [&>li:hover]:bg-[#f7f9fa] [&>li]:px-[16px] [&>li]:py-[4px]
-          "
-          onClick={(e) => e.stopPropagation()}>
+          [&>li:hover]:bg-[#f7f9fa] [&>li]:px-[16px] [&>li]:py-[4px]"
+            onClick={(e) => e.stopPropagation()}>
             <li><Link href={`/create?edit=${pill.id}`}>수정하기</Link></li>
-            <li onClick={()=> {
+            <li onClick={() => {
               deleteOptimisticData(pill.id)
               deletePill(pill.id)
             }}>삭제하기</li>
