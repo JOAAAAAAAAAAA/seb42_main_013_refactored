@@ -75,4 +75,8 @@ stroke="currentColor"
 >
 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 </symbol>
+<symbol 
+id="arrow"
+xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18" fill="none" class="css-0 e1xquxwu5"><path d="M13 7L9 11L5 7" stroke="currentColor" stroke-width="1"/>
+</symbol>
 </svg>
