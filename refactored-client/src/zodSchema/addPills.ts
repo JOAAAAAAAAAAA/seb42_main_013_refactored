@@ -3,11 +3,10 @@ import { z } from "zod";
 export const addPillSchema = z.object({
   supplementName: z.string().nonempty("필수 입력 항목입니다."),
   ingredients: z.array(z.string()),
-  productType: z.string().nonempty("필수 선택 항목입니다."),
-  formulation: z.string().nonempty("필수 선택 항목입니다."),
-
+  productType: z.enum(["drug", "supplement"],{errorMap:()=> {return {message: "필수 선택 항목입니다."}}}),
+  formulation: z.enum(["capsule","chewable","gummy","powder","tablet","liquid"],{errorMap:()=> {return {message: "필수 선택 항목입니다."}}}),
   //https://blog.herodevs.com/web-fundamentals-avoid-these-javascript-date-object-pitfalls-b9df24fa55e1
-  startDate:z.string()
+  startDate:z.string().default(new Date().toISOString().slice(0,10))
   //input empty 면 ''로 받아짐. null 로 변환
   .transform((val) => (val === '' ? null : val)).nullable()
   // new Date() 적용
@@ -20,8 +19,8 @@ export const addPillSchema = z.object({
   .pipe(z.coerce.date({errorMap:()=> {return {message: "유효한 날짜를 입력해주세요."}}}))
   .transform( v => v.getTime()===0 ?null :v),
   takingTime: z.array(z.string()),
-  pillsLeft: z.coerce.number().int("소숫점을 포함할 수 없습니다."),
-  totalCapacity: z.coerce.number().int("소숫점을 포함할 수 없습니다."),
+  pillsLeft: z.coerce.number().int("소숫점을 포함할 수 없습니다.").min(1,"숫자를 입력해주세요."),
+  totalCapacity: z.coerce.number().int("소숫점을 포함할 수 없습니다.").min(1,"숫자를 입력해주세요."),
   servingSize: z.coerce.number().min(1,"0 이상의 숫자를 입력해주세요.").int("소숫점을 포함할 수 없습니다."),
 })
 .superRefine((data, ctx) => {
@@ -43,7 +42,6 @@ export const addPillSchema = z.object({
       message: "전체 용량보다 적어야 합니다.",
     })
   }
-  console.log('fefefee',data.endDate)
 
   if (data.endDate && data.startDate > data.endDate) {
     ctx.addIssue({
@@ -58,28 +56,3 @@ export const addPillSchema = z.object({
 })
 ;
 
-
-
-// const validationMessage = (validityState) => {
-//   let message = ''
-//   switch(validityState) {
-//     case "rangeOverflow" :
-//       message = "전체 용량보다 적어야 합니다."
-//     break;
-//     case "valueMissing" :
-//       message = "필수 입력 항목입니다."
-//     break;
-//     case "rangeUnderflow" :
-//       message = "0 이상의 숫자를 입력해주세요."
-//     break;
-//     case "customError" :
-//       message = "잔여 알 수 보다 많아야 합니다."
-//     break;
-//     case "badInput" :
-//       message = "유효한 값을 입력해주세요."
-//     break;
-//     default:
-//       message = ""
-//   }
-//   return message
-// }

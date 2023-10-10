@@ -20,7 +20,7 @@ export default function RadioChip({
       className="bg-transparent"
     >
       <input
-        type="radio" name={name} value={id} id={id}
+        type="radio" name={name} value={id} id={id} checked={id === 'capsule'|| id === 'supplement'}
         className="peer appearance-none" />
       <Chip
         size="small"
