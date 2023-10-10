@@ -1,3 +1,4 @@
+"use server"
 import { AuthUser } from "@/types";
 import { User, getRedirectResult, inMemoryPersistence, onAuthStateChanged, setPersistence, signInWithRedirect } from "firebase/auth";
 import React, { createContext, use, useEffect, useReducer, useState } from "react";
@@ -7,6 +8,8 @@ import { useRouter } from "next/navigation";
 import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
 import { revalidatePath } from "next/cache";
 import Loading from "@/app/loading";
+import { redirect } from 'next/navigation'
+import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
 
 
 export const signInwithGoogle = () => {
@@ -50,7 +53,7 @@ export const sessionLogin = async () => {
         //!세션쿠키를 사용해여 사용자 세션을 관리하므로, 클라이언트에서는 상태를 유지하지 않는다.
         setPersistence(auth, inMemoryPersistence)
         auth.signOut()   
-        router.push("/")
+        redirect("/")
       }
     }
   } catch (error) {
@@ -64,6 +67,15 @@ export const sessionLogout = async () => {
   })
   if (res.ok) {
     // revalidatePath('/')
-    router.push("/login")
+    redirect("/login")
+  }
+}
+
+export const verifySessionCookie = async (sessionCookie: string) => {
+  try {
+    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+    return decodedClaims
+  } catch (error) {
+    if (error.code === 'auth/session-cookie-expired') redirect('/login')
   }
 }

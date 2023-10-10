@@ -1,52 +1,67 @@
 'use server'
 
 import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { start } from 'repl'
 import { PillData } from '@/types'
 import { revalidatePath } from 'next/cache'
-
-const sessionCookie = cookies().get('session')?.value || ''
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { verifySessionCookie } from './auth'
 
 export const getPills = async () => {
-  const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+  const sessionCookie = cookies().get('session')?.value || ''
+  const decodedClaims = await verifySessionCookie(sessionCookie)
   if (!decodedClaims) redirect('/login')
   const { uid } = decodedClaims
-  const pills = await adminFirestore.collection('users').doc(uid).collection('pills').get()
+  const pills = await adminFirestore
+    .collection('users')
+    .doc(uid)
+    .collection('pills')
+    .get()
   const data = pills.docs.map((doc) => {
-    const data = doc.data()
-    return { ...data, 
-      id: doc.id, 
-      startDate: data.startDate.toDate(), 
-      endDate: data.endDate?.toDate() ?? null,
-      createdAt: data.createdAt.toDate(),
+    const parsedDoc = doc.data()
+    return {
+      ...parsedDoc,
+      id: doc.id,
+      startDate: parsedDoc.startDate.toDate(),
+      endDate: parsedDoc.endDate?.toDate() ?? null,
+      createdAt: parsedDoc.createdAt.toDate(),
     } as PillData
   })
   return data
 }
 
 export const deletePill = async (id: string) => {
-  const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+  const sessionCookie = cookies().get('session')?.value || ''
+  const decodedClaims = await verifySessionCookie(sessionCookie)
   if (!decodedClaims) redirect('/login')
   const { uid } = decodedClaims
-  await adminFirestore.collection('users').doc(uid).collection('pills').doc(id).delete()
-  revalidatePath('/dashboard')
+  await adminFirestore
+    .collection('users')
+    .doc(uid)
+    .collection('pills')
+    .doc(id)
+    .delete()
+  revalidatePath('/summary')
 }
 
 export const getPill = async (id: string) => {
-  const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+  const sessionCookie = cookies().get('session')?.value || ''
+  const decodedClaims = await verifySessionCookie(sessionCookie)
   if (!decodedClaims) redirect('/login')
   const { uid } = decodedClaims
-  const pill = await adminFirestore.collection('users').doc(uid).collection('pills').doc(id).get()
+  const pill = await adminFirestore
+    .collection('users')
+    .doc(uid)
+    .collection('pills')
+    .doc(id)
+    .get()
   const data = pill.data()
-  console.log(data)
-
-  // return { ...data, 
-  //   id: pill.id, 
-  //   startDate: data.startDate.toDate(), 
-  //   endDate: data.endDate?.toDate() ?? null,
-  //   createdAt: data.createdAt.toDate(),
-  // } as PillData
+  delete data?.createdAt
+  return {
+    ...data,
+    id: pill.id,
+    startDate: data?.startDate.toDate(),
+    endDate: data?.endDate?.toDate() ?? null,
+    createdAt: data?.createdAt?.toDate(),
+  } as PillData
 }
-

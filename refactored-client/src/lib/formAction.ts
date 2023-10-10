@@ -103,8 +103,8 @@ export const createData = async (prevFormState: FormState, formData: FormData) =
       } catch (e) {
         console.error(e)
       }finally{
-        revalidatePath('/dashboard')
-        redirect('/dashboard')
+        revalidatePath('/summary')
+        redirect('/summary')
       }
 
     //해당 url방문시에 revalidate 되는 거라 먼저 선언해도 괜찮
