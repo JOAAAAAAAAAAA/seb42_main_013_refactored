@@ -33,6 +33,7 @@ export default function OthersSVGSprite({
         height={height}
         color={color}
         className='inline-block'
+        {...props}
         >
         <use
           width="100%"

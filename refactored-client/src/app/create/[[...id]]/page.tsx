@@ -26,8 +26,8 @@ export default function Create() {
   const [formState, formAction] = useFormState<FormState, FormData>(createData, {
     supplementName: '',
     ingredients: [],
-    productType: '',
-    formulation: '',
+    productType: 'supplement',
+    formulation: 'capsule',
     startDate: today,
     endDate: null,
     takingTime: [],
@@ -83,13 +83,13 @@ export default function Create() {
             label="처방약"
             name="productType"
             id="drug"
-            icon={<OthersSVGSprite id="drug" width="1.2em" color="currentColor" height="1.2em" />}
+            icon={<OthersSVGSprite id="drug" width="1.2em" color="currentColor" height="1em" />}
           />
           <RadioChip
             label="영양제"
             name="productType"
             id="supplement"
-            icon={<OthersSVGSprite id="supplement" width="1.2em" color="currentColor" height="1.2em" />}
+            icon={<OthersSVGSprite id="supplement" width="1.2em" color="currentColor" height="1em" />}
           />
         </Fieldset>
         <Fieldset fieldsetName="제형"
@@ -98,19 +98,19 @@ export default function Create() {
             name="formulation"
             label="캡슐"
             id="capsule"
-            icon={<PillSVGSprite id="capsule" width="1.2em" color="currentColor" height="1.2em" />}
+            icon={<PillSVGSprite id="capsule" width="1.5em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
             label="젤리"
             id="gummy"
-            icon={<PillSVGSprite id="gummy" width="1.2em" color="currentColor" height="1.2em" />}
+            icon={<PillSVGSprite id="gummy" width="1.2em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
             label="츄어블"
             id="chewable"
-            icon={<PillSVGSprite id="chewable" width="1.2em" color="currentColor" height="1.2em" />}
+            icon={<PillSVGSprite id="chewable" width="1.2em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
