@@ -6,11 +6,13 @@ import { addPillSchema } from '@/zodSchema/addPills'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { v4 as uuid } from 'uuid'
-import { z, ZodError } from 'zod'
+import z from 'zod'
+import { FieldValue } from 'firebase-admin/firestore';
+
 
 
 export const createData = async (prevFormState: FormState, formData: FormData) => {
+  console.log('실행중')
   //https://github.com/remix-run/remix/discussions/1298
   switch (formData.get('type')) {
     case 'update_ingredients':
@@ -87,13 +89,17 @@ export const createData = async (prevFormState: FormState, formData: FormData) =
       try {
         const sessionCookie = cookies().get('session')?.value || ''
         const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
-        if (!decodedClaims) redirect('/dashboard/create?session=expired')
+        if (!decodedClaims) redirect('/create?session=expired')
         const { uid } = decodedClaims
         const pillRef = adminFirestore
           .collection('users')
           .doc(uid)
           .collection('pills')
-        await pillRef.add(parsedData.data)
+        
+        //pillRef에 createdAt 추가
+
+        await pillRef.add({...parsedData.data, createdAt:FieldValue.serverTimestamp()})
+        console.log('등록완료')
       } catch (e) {
         console.error(e)
       }finally{
@@ -107,16 +113,3 @@ export const createData = async (prevFormState: FormState, formData: FormData) =
   }
 }
 
-
-
-const postPill = async (data: Pill) => {
-  const sessionCookie = cookies().get('session')?.value || ''
-  const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
-  if (!decodedClaims) redirect('/login')
-  const { uid } = decodedClaims
-  const pillRef = adminFirestore
-    .collection('users')
-    .doc(uid)
-    .collection('pills')
-  await pillRef.add(data)
-}
