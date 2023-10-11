@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import Loading from "@/app/loading";
 import { redirect } from 'next/navigation'
 import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
+import { cookies } from "next/headers";
 
 
 export const signInwithGoogle = () => {
@@ -61,14 +62,10 @@ export const sessionLogin = async () => {
   }
 }
 
-export const sessionLogout = async () => {
-  const res = await fetch(`/auth/sessionlogout`, {
-    method: 'POST',
-  })
-  if (res.ok) {
-    // revalidatePath('/')
-    redirect("/login")
-  }
+export const sessionLogout = () => {
+  console.log('로그아웃')
+  cookies().delete('session')
+  redirect("/login")
 }
 
 export const verifySessionCookie = async (sessionCookie: string) => {
