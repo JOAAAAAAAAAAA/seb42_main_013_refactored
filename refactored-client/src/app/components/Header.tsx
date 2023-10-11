@@ -1,11 +1,7 @@
-"use client"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
-import { useContext } from "react";
-import { AuthContext } from "@/context/AuthProvider";
 import logo from '@/../public/images/logo_header.png'
 import { sessionLogout as logout } from "@/lib/auth";
 
@@ -17,21 +13,16 @@ import { sessionLogout as logout } from "@/lib/auth";
 // https://nextjs.org/docs/app/api-reference/functions/use-pathname
 
 function Header() {
-  const { sessionLogout } = useContext(AuthContext);
-
 
   return (
     <header className="relative flex h-[48px] w-full max-w-[428px] items-center justify-center bg-[--blue-100]">
       <Link href="/" className="relative h-full w-[160px] max-w-[428px]">
-        <Image src={logo} alt="logo" fill
-          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 50vw"
-          className="mt-[2px] object-contain"
-        />
+        <Image src={logo} alt="logo" priority/>
       </Link>
-      <FontAwesomeIcon icon={faRightFromBracket}
-        className="absolute right-[8px] h-[80%] cursor-pointer text-[30px] text-white" onClick={sessionLogout} />
-      <form action={logout}>
-        <button type="submit">로그아웃</button>
+      <form 
+      className="absolute right-[8px] flex h-[80%] cursor-pointer items-center text-[30px] text-white"
+      action={logout}>
+        <button type="submit"><FontAwesomeIcon icon={faRightFromBracket}/></button>
       </form>
     </header>
   )
