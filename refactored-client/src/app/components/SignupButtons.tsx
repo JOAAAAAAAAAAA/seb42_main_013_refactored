@@ -17,8 +17,8 @@ export const SignupButtons = () => {
 
   return (
     //! 변수 사용시 []로 감싸야 함
-    <div className="flex flex-col shrink-0 w-full gap-[--gap-sm]">
-      <div className="w-full text-center border-b border-[#aaa] leading-[0.1em] m-[15px 5px 20px] text-[13px] text-[#949393] my-[--gap-md]"><span className="bg-white px-[10px]">또는</span></div>
+    <div className="flex w-full shrink-0 flex-col gap-[--gap-sm]">
+      <div className="m-[15px_5px_20px] my-[--gap-md] w-full border-b border-[#aaa] text-center text-[13px] leading-[0.1em] text-[#949393]"><span className="bg-white px-[10px]">또는</span></div>
       <SignupButton authProvider='google' onClickHandler={signInwithGoogle} />
       <SignupButton authProvider='github' onClickHandler={signInwithGoogle} />
       <SignupButton authProvider='facebook' onClickHandler={signInwithGoogle} />

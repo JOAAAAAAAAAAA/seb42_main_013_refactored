@@ -41,16 +41,17 @@ export type loginData = z.infer<typeof loginSchema>
 
 export interface PillData extends Pill {
   id: string
-  createdAt: Timestamp
+  createdAt: Date
 }
 
 export type PillDataFilter = 'all' | 'supplement' | 'drug'
 
 export type PillDataSort =
+  | 'recent'
   | 'AtoZ'
+  | 'ZtoA'
   | 'pillsLeftAscending'
   | 'pillsLeftDescending'
-  | 'expiryDate'
 
 export type TabType = {
   id: number

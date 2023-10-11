@@ -7,6 +7,7 @@ import { faPills } from "@fortawesome/free-solid-svg-icons";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { SyntheticEvent, useState } from "react";
+import { cookies } from "next/headers";
 
 
 function Navigation() {
@@ -14,6 +15,7 @@ function Navigation() {
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
 
 
 
@@ -34,9 +36,9 @@ function Navigation() {
     />
     <BottomNavigationAction
       LinkComponent={Link}
-      href={"/dashboard"}
+      href={"/summary"}
       label={"알약관리"}
-      value={"dashboard"}
+      value={"summary"}
       icon={<FontAwesomeIcon icon={faPills}/>}
     />
     <BottomNavigationAction

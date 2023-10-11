@@ -22,6 +22,7 @@ export const addPillSchema = z.object({
   pillsLeft: z.coerce.number().int("소숫점을 포함할 수 없습니다.").min(1,"숫자를 입력해주세요."),
   totalCapacity: z.coerce.number().int("소숫점을 포함할 수 없습니다.").min(1,"숫자를 입력해주세요."),
   servingSize: z.coerce.number().min(1,"0 이상의 숫자를 입력해주세요.").int("소숫점을 포함할 수 없습니다."),
+  id: z.string().optional(),
 })
 .superRefine((data, ctx) => {
   if (data.pillsLeft > data.totalCapacity) {
