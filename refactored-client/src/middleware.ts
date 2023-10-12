@@ -1,7 +1,29 @@
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { verifyCSRFToken } from './lib/csrf'
  
-export async function middleware(request: NextRequest) {
+export async function middleware(req: NextRequest) {
+
+  if(req.method === 'POST'){
+    console.log('CSRF Verifying...')
+    const cookieValue = cookies().get('csrf-token')?.value || ''
+    if (!cookieValue)
+      return NextResponse.json({ message: 'no csrfToken found' }, { status: 401 })
+    const reqbody = await req.json()
+    const csrfTokenVerified = await verifyCSRFToken({
+      cookieValue: cookieValue,
+      bodyValue: reqbody.csrfToken,
+    })
+    console.log('csrfTokenVerified',csrfTokenVerified)
+    if (csrfTokenVerified) {
+      return NextResponse.next()
+    } else {
+      return  NextResponse.json({ message: 'Invalid CSRF Token' }, { status: 403 })
+    }
+  }
+  
+
   // console.log("middleware action!!!!!!!!!!!!!!!!!!")
 
 //   const sessionCookie = request.cookies.get("session")?.value;

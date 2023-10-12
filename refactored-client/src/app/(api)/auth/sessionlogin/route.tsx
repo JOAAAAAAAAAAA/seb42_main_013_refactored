@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
 
   const cookieValue = req.cookies.get("next-auth.csrf-token")?.value
   if (!cookieValue) return NextResponse.json({ message: "no csrfToken found" }, { status: 401 })
-  
+
+
   //idToken 검증
   const idToken = authorization.split("Bearer ")[1];
 
@@ -35,19 +36,9 @@ export async function POST(req: NextRequest) {
   const csrfOptions = {
     secret: process.env.AUTH_SECRET,
   }
-  const [decodedIDToken, {csrfTokenVerified}] = await Promise.all([
-  adminAuth.verifyIdToken(idToken),
-  createCSRFToken({
-    options: csrfOptions,
-    cookieValue,
-    isPost,
-    bodyValue: reqbody.csrfToken,
-  })
-  ])
-
+  const decodedIDToken = await adminAuth.verifyIdToken(idToken)
 
   if (!decodedIDToken) return NextResponse.json({ message: "UNAUTHORIZED REQUEST" }, { status: 401 })
-  if (!csrfTokenVerified) return NextResponse.json({ message: "Invalid idToken" }, { status: 403 })
 
   //https://googleapis.dev/nodejs/firestore/latest/FieldValue.html#.serverTimestamp
   const user = {
@@ -59,7 +50,8 @@ export async function POST(req: NextRequest) {
   }
   //유저 정보 저장
   try {
-    const userRef = adminFirestore.collection('users').doc(decodedIDToken.uid);
+    const userRef = adminFirestore.collection('users').doc(decodedIDToken.uid).collection('userInfo').doc(decodedIDToken.uid)
+
     //doc parameter (reference to the document, path, pathSegments)
     await userRef.set(
       user,
@@ -84,8 +76,8 @@ export async function POST(req: NextRequest) {
 
 
   // const res = NextResponse.redirect(new URL("/summary", req.url))
-  
-  const res = new NextResponse(JSON.stringify(resbody),{
+
+  const res = new NextResponse(JSON.stringify(resbody), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
