@@ -1,6 +1,6 @@
 'use server'
 
-import { cookies } from "next/headers"
+import { cookies } from 'next/headers'
 
 /** Web compatible method to create a hash, using SHA256 */
 async function createHash(message: string) {
@@ -35,32 +35,58 @@ function randomString(size: number) {
  * https://owasp.org/www-chapter-london/assets/slides/David_Johansson-Double_Defeat_of_Double-Submit_Cookie.pdf
  */
 
-export async function createCSRFToken() {
+
+export async function createCSRFToken(){
   const csrfToken = randomString(32)
   const csrfTokenHash = await createHash(
     `${csrfToken}${process.env.AUTH_SECRET}`,
   )
+
   const cookieValue = `${csrfToken}|${csrfTokenHash}`
-  cookies().set('csrf-token', cookieValue, {
-    maxAge: 60 * 60, // 1 hour
+  return {cookieValue, csrfToken}
+}
+
+export async function setCSRFCookie(res: any) {
+  const {cookieValue} = await createCSRFToken()
+  res.cookies.set('csrf-token', cookieValue, {
+    path: '/',
+    secure: true,
     sameSite: 'lax',
     httpOnly: true,
-    secure: true,
+    maxAge: 60*60, // 1 hour
   })
-  return { csrfToken } //body 에 {csrf-token: 'token|hash'}
 }
+
+export async function getCsrfTokenWithCookie(){
+  const {cookieValue, csrfToken} = await createCSRFToken()
+  cookies().set('csrf-token', cookieValue, {
+    path: '/',
+    secure: true,
+    sameSite: 'lax',
+    httpOnly: true,
+    maxAge: 60*60, // 1 hour
+  })
+  return csrfToken
+}
+
+
 
 export async function verifyCSRFToken({
   cookieValue,
   bodyValue,
-}:{
+}: {
   cookieValue: string
   bodyValue: string
 }) {
+  console.log('verifyCSRFToken')
+  console.log('cookieValue', cookieValue)
+  console.log('bodyValue', bodyValue)
   const [csrfToken, csrfTokenHash] = cookieValue.split('|')
+
   const expectedCsrfTokenHash = await createHash(
     `${csrfToken}${process.env.AUTH_SECRET}`,
   )
+  console.log('expectedCsrfTokenHash', expectedCsrfTokenHash)
   if (csrfTokenHash === expectedCsrfTokenHash) {
     // If hash matches then we trust the CSRF token value
     // If this is a POST request and the CSRF Token in the POST request matches

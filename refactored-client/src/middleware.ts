@@ -1,16 +1,19 @@
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyCSRFToken } from './lib/csrf'
+import { createCSRFToken, setCSRFCookie, verifyCSRFToken } from './lib/csrf'
+import { cookies } from 'next/headers'
+import { set } from 'react-hook-form'
  
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, ) {
 
   if(req.method === 'POST'){
     console.log('CSRF Verifying...')
-    const cookieValue = cookies().get('csrf-token')?.value || ''
-    if (!cookieValue)
-      return NextResponse.json({ message: 'no csrfToken found' }, { status: 401 })
+    console.log('req.cookies',cookies())
+    const cookieValue = req.cookies.get('csrf-token')?.value || ''
+    console.log('cookieValue',cookieValue)
+    if (!cookieValue) return NextResponse.json({ message: 'no csrfToken found' }, { status: 401 })
     const reqbody = await req.json()
+    console.log('reqbody',reqbody)
     const csrfTokenVerified = await verifyCSRFToken({
       cookieValue: cookieValue,
       bodyValue: reqbody.csrfToken,
@@ -27,7 +30,7 @@ export async function middleware(req: NextRequest) {
   // console.log("middleware action!!!!!!!!!!!!!!!!!!")
 
 //   const sessionCookie = request.cookies.get("session")?.value;
-//   const path = request.nextUrl.pathname
+  const path = req.nextUrl.pathname
   
 //   const protectedPaths = ["/summary", "/suggest"]
 //   if (protectedPaths.includes(path)) {
@@ -53,7 +56,16 @@ export async function middleware(req: NextRequest) {
 //   }
 // }
 
-//   const loginPaths = ["/login", "/signup"]
+  const authPaths = ["/login", "/signup"]
+  // console.log(cookies())
+  const csrfTokenCookie = req.cookies.has('csrf-token')
+  if (authPaths.includes(path) && !csrfTokenCookie) {
+    console.log('trigger되고는 있다')
+    const res = NextResponse.next()
+    // const res = new NextResponse()
+    await setCSRFCookie(res)
+    return res
+  }
 //   if (loginPaths.includes(path) && sessionCookie) {
 //     return NextResponse.redirect(new URL("/", request.url))
 //   }
