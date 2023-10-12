@@ -13,6 +13,9 @@ import { useForm } from "react-hook-form";
 export default function LoginForm({csrfToken}: {csrfToken: string}) {
   const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitting } } = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
+    defaultValues:{
+      csrfToken: csrfToken
+    }
   });
 
   const { signInwithEmail } = useContext(AuthContext);

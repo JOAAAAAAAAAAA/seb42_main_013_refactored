@@ -47,7 +47,7 @@ export async function createCSRFToken(){
 }
 
 export async function setCSRFCookie(res: any) {
-  const {cookieValue} = await createCSRFToken()
+  const {cookieValue, csrfToken}= await createCSRFToken()
   res.cookies.set('csrf-token', cookieValue, {
     path: '/',
     secure: true,
@@ -55,6 +55,8 @@ export async function setCSRFCookie(res: any) {
     httpOnly: true,
     maxAge: 60*60, // 1 hour
   })
+  res.headers.set('X-CSRF-Token', csrfToken)
+  return res
 }
 
 export async function getCsrfTokenWithCookie(){

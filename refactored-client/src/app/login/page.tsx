@@ -1,7 +1,7 @@
 import AlertModal from "../components/AlertModal";
 import LoginForm from "./LoginForm";
 import { SignupButtons } from "../signup/conponents/SignupButtons";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { createCSRFToken } from "@/lib/csrf";
 import { Button } from "@mui/material";
 
@@ -14,7 +14,8 @@ async function Login({
 
   const isError = searchParams?.error
 
-  const csrfToken = cookies().get("csrf-token")?.value || ""
+  const csrfToken = headers().get("X-CSRF-Token") || ''
+  console.log('csrfToken')
   //https://github.com/vercel/next.js/discussions/49843
   //https://nextjs.org/docs/app#how-can-i-set-cookies
   //https://github.com/vercel/next.js/issues/52799#issuecomment-1642035226

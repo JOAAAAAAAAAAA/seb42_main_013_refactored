@@ -35,9 +35,9 @@ export interface decodedUser {
   lastLoginAt: Timestamp
 }
 
-export type signupData = z.infer<typeof signupSchema>
+export type SignUpData = z.infer<typeof signupSchema>
 export type Pill = z.infer<typeof addPillSchema>
-export type loginData = z.infer<typeof loginSchema>
+export type LoginData = z.infer<typeof loginSchema>
 
 export interface PillData extends Pill {
   id: string

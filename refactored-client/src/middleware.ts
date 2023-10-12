@@ -8,15 +8,13 @@ export async function middleware(req: NextRequest, ) {
 
   if(req.method === 'POST'){
     console.log('CSRF Verifying...')
-    console.log('req.cookies',cookies())
     const cookieValue = req.cookies.get('csrf-token')?.value || ''
-    console.log('cookieValue',cookieValue)
+
     if (!cookieValue) return NextResponse.json({ message: 'no csrfToken found' }, { status: 401 })
-    const reqbody = await req.json()
-    console.log('reqbody',reqbody)
+    const bodyValue = (await req.json()).csrfToken
     const csrfTokenVerified = await verifyCSRFToken({
       cookieValue: cookieValue,
-      bodyValue: reqbody.csrfToken,
+      bodyValue: bodyValue,
     })
     console.log('csrfTokenVerified',csrfTokenVerified)
     if (csrfTokenVerified) {
@@ -59,13 +57,15 @@ export async function middleware(req: NextRequest, ) {
   const authPaths = ["/login", "/signup"]
   // console.log(cookies())
   const csrfTokenCookie = req.cookies.has('csrf-token')
-  if (authPaths.includes(path) && !csrfTokenCookie) {
+  if (authPaths.includes(path)) {
     console.log('trigger되고는 있다')
     const res = NextResponse.next()
     // const res = new NextResponse()
     await setCSRFCookie(res)
+    console.log('res',res)
     return res
   }
+
 //   if (loginPaths.includes(path) && sessionCookie) {
 //     return NextResponse.redirect(new URL("/", request.url))
 //   }
