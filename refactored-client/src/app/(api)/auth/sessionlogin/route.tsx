@@ -23,10 +23,6 @@ export async function POST(req: NextRequest) {
   const authorization = req.headers.get("Authorization");
   if (!authorization) return NextResponse.json({ message: "no idToken found" }, { status: 401 })
 
-  const cookieValue = req.cookies.get("next-auth.csrf-token")?.value
-  if (!cookieValue) return NextResponse.json({ message: "no csrfToken found" }, { status: 401 })
-
-
   //idToken 검증
   const idToken = authorization.split("Bearer ")[1];
 
