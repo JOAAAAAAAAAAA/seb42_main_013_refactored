@@ -45,13 +45,17 @@ import { getBase64 } from "./base64"
 //   }
 // }
 
-
-
-export const getHealth = async (): Promise<ConcernWithBase64[]> => {
-  // get data
+export const getHealthData = async (): Promise<Concern[]> => {
   const healthRef = adminFirestore.collection('health');
   const snapshot = await healthRef.get();
   const data = snapshot.docs.map((doc) => doc.data()) as Concern[];
+  return data;
+}
+
+
+
+export const getHealth = async (): Promise<ConcernWithBase64[]> => {
+  const data = await getHealthData();
 
   // base64 병렬처리
   const base64Promises = data.map(async (concern: Concern) => {
