@@ -1,12 +1,13 @@
 "use client"
 import { AuthUser, PillData, SignUpData, LoginData } from "@/types";
 import { createUserWithEmailAndPassword, getRedirectResult, inMemoryPersistence, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signInWithRedirect, updateProfile } from "firebase/auth";
-import React, { createContext, use, useReducer } from "react";
+import React, { createContext, use, useEffect, useReducer } from "react";
 import { auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { useRouter } from "next/navigation";
 import Loading from "@/context/loading";
 import { getSessionCookie } from "./helper";
 import { Timestamp } from "firebase/firestore/lite";
+import { getUser } from "@/lib/user";
 
 
 
@@ -15,7 +16,7 @@ type AuthContextType = {
   signInwithGoogle: () => void;
   signUpwithEmail: (data: SignUpData) => void;
   signInwithEmail: (data: LoginData) => void;
-  sessionLoginfromRedirect: () => Promise<void>;
+  sessionLoginfromRedirect: (csrfToken: string) => Promise<void>;
   authUser: AuthUser | null;
 }
 
@@ -34,6 +35,7 @@ type AuthAction =
   | { type: "login"; authUser: AuthUser; }
   | { type: "setLoading"; isLoading: boolean }
   | { type: "getPills"; pills: PillData[] }
+  | { type: "getUser"; authUser: AuthUser }
 
 
 type AuthState = {
@@ -180,9 +182,13 @@ export default function AuthProvider({
       dispatch({ type: "setLoading", isLoading: false })
     }  
   }
-  
 
 
+  useEffect(() => {
+    if(!authUser && session){
+      const res = await getUser ()
+    }
+  },[authUser])
 
 
   return (

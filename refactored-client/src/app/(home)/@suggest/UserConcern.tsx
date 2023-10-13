@@ -1,9 +1,7 @@
 "use client"
 
-import { getUser } from "@/lib/user"
 import  Card  from "@mui/material/Card"
 import  Button  from "@mui/material/Button"
-import { cookies } from "next/headers"
 import Image from "next/image"
 import Link from "next/link"
 import { useContext } from "react"

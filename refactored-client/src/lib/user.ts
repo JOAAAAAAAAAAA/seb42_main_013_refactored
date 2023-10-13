@@ -1,6 +1,9 @@
 import { User } from "@/types"
+import { verify } from "crypto"
+import { cookies } from "next/headers"
 
-export const getUser = async (sessionCookie: string) => {
+export const getUserClient = async () => {
+  "use client"
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/user`, {
     method: 'GET',
@@ -20,4 +23,13 @@ export const getUser = async (sessionCookie: string) => {
   } catch (error) {
     console.error(error)
   }
+}
+
+export const getUserServer = async () => {
+  "use server"
+  const sessionCookie = cookies().get('session')
+  if (!sessionCookie) return null
+  v
+  gf
+
 }
