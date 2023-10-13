@@ -5,8 +5,11 @@ import { cookies } from 'next/headers'
 import { set } from 'react-hook-form'
  
 export async function middleware(req: NextRequest, ) {
-
+  
+  const protectedPaths = ["/login", "/signup","create","/summary"]
+  if(protectedPaths.includes(req.nextUrl.pathname)){
   if(req.method === 'POST'){
+    //server action 도 post 로 들어가서;
     console.log('CSRF Verifying...')
     const cookieValue = req.cookies.get('csrf-token')?.value || ''
 
@@ -22,7 +25,7 @@ export async function middleware(req: NextRequest, ) {
     } else {
       return  NextResponse.json({ message: 'Invalid CSRF Token' }, { status: 403 })
     }
-  }
+  }}
   
 
   // console.log("middleware action!!!!!!!!!!!!!!!!!!")
@@ -55,14 +58,9 @@ export async function middleware(req: NextRequest, ) {
 // }
 
   const authPaths = ["/login", "/signup"]
-  // console.log(cookies())
-  const csrfTokenCookie = req.cookies.has('csrf-token')
   if (authPaths.includes(path)) {
-    console.log('trigger되고는 있다')
     const res = NextResponse.next()
-    // const res = new NextResponse()
     await setCSRFCookie(res)
-    console.log('res',res)
     return res
   }
 
