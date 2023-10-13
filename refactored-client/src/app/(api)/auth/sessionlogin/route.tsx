@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { adminAuth } from "@/firebase/firebaseAdmin";
+import { verifySessionCookie } from "@/lib/auth";
 
 
 
@@ -86,10 +87,7 @@ export async function GET(req: NextRequest) {
   }
   //case 2 session cookie가 있지만, 만료된 경우
   try {
-    const decodedClaims = await adminAuth.verifySessionCookie(session, true);
-    if (!decodedClaims) {
-      return NextResponse.json({ message: "session cookie expired" }, { status: 401 });
-    }
+    const decodedClaims = await verifySessionCookie();
     return NextResponse.json({ isLogin: true }, { status: 200 });
   } catch (error) {
     //verifySessionCookie(sessionCookie: string, checkRevoked?: boolean): Promise<DecodedIdToken>;

@@ -8,31 +8,29 @@ import { redirect } from 'next/navigation'
 import { verifySessionCookie } from './auth'
 
 export const getPills = async () => {
-  const sessionCookie = cookies().get('session')?.value || ''
-  const decodedClaims = await verifySessionCookie(sessionCookie)
-  if (!decodedClaims) redirect('/login')
-  const { uid } = decodedClaims
-  const pills = await adminFirestore
-    .collection('users')
-    .doc(uid)
-    .collection('pills')
-    .get()
-  const data = pills.docs.map((doc) => {
-    const parsedDoc = doc.data()
-    return {
-      ...parsedDoc,
-      id: doc.id,
-      startDate: parsedDoc.startDate.toDate(),
-      endDate: parsedDoc.endDate?.toDate() ?? null,
-      createdAt: parsedDoc.createdAt.toDate(),
-    } as PillData
-  })
-  return data
+  try{
+    const decodedClaims = await verifySessionCookie()
+    if (!decodedClaims) redirect('/login')
+    const { uid } = decodedClaims
+    const pills = await adminFirestore.collection('users').doc(uid).collection('pills').get()
+    const data = pills.docs.map((doc) => {
+      const parsedDoc = doc.data()
+      return {
+        ...parsedDoc,
+        id: doc.id,
+        startDate: parsedDoc.startDate.toDate(),
+        endDate: parsedDoc.endDate?.toDate() ?? null,
+        createdAt: parsedDoc.createdAt.toDate(),
+      } as PillData
+    })
+    return data
+  }catch(e){
+    console.error(e)
+  }
 }
 
 export const deletePill = async (id: string) => {
-  const sessionCookie = cookies().get('session')?.value || ''
-  const decodedClaims = await verifySessionCookie(sessionCookie)
+  const decodedClaims = await verifySessionCookie()
   if (!decodedClaims) redirect('/login')
   const { uid } = decodedClaims
   await adminFirestore
@@ -45,23 +43,22 @@ export const deletePill = async (id: string) => {
 }
 
 export const getPill = async (id: string) => {
-  const sessionCookie = cookies().get('session')?.value || ''
-  const decodedClaims = await verifySessionCookie(sessionCookie)
-  if (!decodedClaims) redirect('/login')
-  const { uid } = decodedClaims
-  const pill = await adminFirestore
-    .collection('users')
-    .doc(uid)
-    .collection('pills')
-    .doc(id)
-    .get()
-  const data = pill.data()
-  delete data?.createdAt
-  return {
-    ...data,
-    id: pill.id,
-    startDate: data?.startDate.toDate(),
-    endDate: data?.endDate?.toDate() ?? null,
-    createdAt: data?.createdAt?.toDate(),
-  } as PillData
+  // const decodedClaims = await verifySessionCookie(sessionCookie)
+  // if (!decodedClaims) redirect('/login')
+  // const { uid } = decodedClaims
+  // const pill = await adminFirestore
+  //   .collection('users')
+  //   .doc(uid)
+  //   .collection('pills')
+  //   .doc(id)
+  //   .get()
+  // const data = pill.data()
+  // delete data?.createdAt
+  // return {
+  //   ...data,
+  //   id: pill.id,
+  //   startDate: data?.startDate.toDate(),
+  //   endDate: data?.endDate?.toDate() ?? null,
+  //   createdAt: data?.createdAt?.toDate(),
+  // } as PillData
 }

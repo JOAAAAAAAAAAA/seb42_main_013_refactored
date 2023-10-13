@@ -1,6 +1,6 @@
-import { Typography } from "@mui/material";
+import  Typography  from "@mui/material/Typography";
 import { FlattenedError } from "@/types";
-import { FormHelperText } from "@mui/material";
+import  FormHelperText  from "@mui/material/FormHelperText";
 
 
 export default function Fieldset({
@@ -13,7 +13,7 @@ export default function Fieldset({
     props?: React.HTMLAttributes<HTMLDivElement>
     errorMessage?: FlattenedError[]
   }) {
-  const isError = errorMessage
+
   return (
     <fieldset className="flex w-full flex-col text-[rgba(0,0,0,0.6)]" {...props}>
       <Typography

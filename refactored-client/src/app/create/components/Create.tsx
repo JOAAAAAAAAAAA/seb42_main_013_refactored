@@ -13,21 +13,22 @@ import OthersSVGSprite from "@/app/components/OthersSVGSprite";
 import PillSVGSprite from "@/app/components/PillSVGSprite";
 import { ZodIssueCode } from "zod";
 import { FormState, PillData } from "@/types";
-import SessionExpireModal from "@/app/components/SessionExpireModal";
+import ErrorModal from "@/app/components/ErrorModal";
 
 export default function Create(
   {initialData}: {initialData?: PillData}
 ) {
+
   const today = new Date().toISOString().slice(0, 10)
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
-  const sessionExpire = searchParams.get('session')
+  const isError = searchParams.has('error')
   const initialState = {
     supplementName: '',
     ingredients: [],
-    productType: 'supplement',
-    formulation: 'capsule',
+    productType: '',
+    formulation: '',
     startDate: today,
     endDate: null,
     takingTime: [],
@@ -40,6 +41,7 @@ export default function Create(
 
   const showModal = searchParams.get('fieldset')
   const [formState, formAction] = useFormState<FormState, FormData>(createData, initialState)
+  console.log('error', formState?.errorMessage)
 
   const deleteChip = async (fieldsetName: string, value: string) => {
     const formData = new FormData();
@@ -62,7 +64,7 @@ export default function Create(
   }
 
 
-
+  console.log('formState', formState)
   return (
     <section className="main">
       <form
@@ -80,66 +82,58 @@ export default function Create(
           type="text"
           id="supplementName"
           name="supplementName"
-          defaultValue={initialData?.supplementName}
         />
         <Fieldset fieldsetName="제품 유형"
-          errorMessage={formState.errorMessage?.productType}>
+          errorMessage={formState?.errorMessage?.productType}>
           <RadioChip
             label="처방약"
             name="productType"
             id="drug"
-            defaultChecked={initialData?.productType === "drug"}
             icon={<OthersSVGSprite id="drug" width="1.2em" color="currentColor" height="1em" />}
           />
           <RadioChip
             label="영양제"
             name="productType"
             id="supplement"
-            defaultChecked={initialData?.productType === "supplement"}
             icon={<OthersSVGSprite id="supplement" width="1.2em" color="currentColor" height="1em" />}
           />
         </Fieldset>
         <Fieldset fieldsetName="제형"
-          errorMessage={formState.errorMessage.formulation}>
+          errorMessage={formState?.errorMessage?.formulation}>
           <RadioChip
             name="formulation"
             label="캡슐"
             id="capsule"
-            defaultChecked={initialData?.formulation === "capsule"}
             icon={<PillSVGSprite id="capsule" width="1.5em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
             label="젤리"
             id="gummy"
-            defaultChecked={initialData?.formulation === "gummy"}
             icon={<PillSVGSprite id="gummy" width="1.2em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
             label="츄어블"
             id="chewable"
-            defaultChecked={initialData?.formulation === "chewable"}
             icon={<PillSVGSprite id="chewable" width="1.2em" color="currentColor" height="1.5em" />}
           />
           <RadioChip
             name="formulation"
             label="분말"
             id="powder"
-            defaultChecked={initialData?.formulation === "powder"}
             icon={<PillSVGSprite id="powder" width="1.2em" color="currentColor" height="1.2em" />}
           />
           <RadioChip
             name="formulation"
             label="액상"
             id="liquid"
-            defaultChecked={initialData?.formulation === "liquid"}
             icon={<PillSVGSprite id="liquid" width="1.2em" color="currentColor" height="1.2em" />}
           />
         </Fieldset>
         <Fieldset fieldsetName="주요 성분"
-          errorMessage={formState.errorMessage.ingredients}>
-          {formState.ingredients.map((name, idx) => (
+          errorMessage={formState?.errorMessage?.ingredients}>
+          {formState?.ingredients?.map((name, idx) => (
             // bind 함수로 대체
             
             <label key={idx} htmlFor={name}>
@@ -160,25 +154,25 @@ export default function Create(
         </Fieldset>
         <Fieldset fieldsetName="제품 용량"
           errorMessage={
-            (!formState.errorMessage.pillsLeft && !formState.errorMessage.totalCapacity)
+            (!formState?.errorMessage?.pillsLeft && !formState?.errorMessage?.totalCapacity)
             ? undefined
             :[
-            ...(formState.errorMessage.pillsLeft ?? []),
-            ...(formState.errorMessage.totalCapacity ?? [])
+            ...(formState?.errorMessage?.pillsLeft ?? []),
+            ...(formState?.errorMessage?.totalCapacity ?? [])
           ]}>
           <CreateInput
             type="number"
             id="pillsLeft"
             name="pillsLeft"
             label="잔여알수"
-            error={!!formState.errorMessage?.pillsLeft}
+            error={!!formState?.errorMessage?.pillsLeft}
           /><p className="inline-block">/</p>
           <CreateInput
             type="number"
             id="totalCapacity"
             name="totalCapacity"
             label="전체용량"
-            error={!!formState.errorMessage?.totalCapacity}
+            error={!!formState?.errorMessage?.totalCapacity}
           />
         </Fieldset>
 
@@ -189,8 +183,8 @@ export default function Create(
             name="startDate"
             defaultValue={today}
             required
-            error={!!formState.errorMessage?.startDate}
-            helperText={formState.errorMessage?.startDate?.[0]?.message}
+            error={!!formState?.errorMessage?.startDate}
+            helperText={formState?.errorMessage?.startDate?.[0]?.message}
             label="시작일"
           />~
           <CreateInput
@@ -198,17 +192,16 @@ export default function Create(
             id="endDate"
             name="endDate"
             required
-            error={!!formState.errorMessage?.endDate}
-            helperText={formState.errorMessage?.endDate?.[0]?.message}
+            error={!!formState?.errorMessage?.endDate}
+            helperText={formState?.errorMessage?.endDate?.[0]?.message}
             label="종료일"
           />
         </Fieldset>
         <Fieldset fieldsetName="복용 시간"
-          errorMessage={formState.errorMessage.takingTime}>
-          {formState.takingTime.map((time, idx) => (
-            <label key={time} htmlFor={time}>
+          errorMessage={formState?.errorMessage?.takingTime}>
+          {formState?.takingTime?.map((time, idx) => (
+            <label key={idx} htmlFor={time}>
               <Chip
-                key={idx}
                 label={time}
                 size="small"
                 variant="outlined"
@@ -229,15 +222,15 @@ export default function Create(
           type="number"
           id="servingSize"
           name="servingSize"
-          error={!!formState.errorMessage?.servingSize}
-          helperText={formState.errorMessage?.servingSize?.[0]?.message || " "}
+          error={!!formState?.errorMessage?.servingSize}
+          helperText={formState?.errorMessage?.servingSize?.[0]?.message || " "}
         />
-        {/* <input type="text" id="csrf" value="" hidden /> */}
-        <input name="type" type="hidden" defaultValue="create" />
-        <SubmitButton>등록하기</SubmitButton>
+        <input name="type" type="hidden" defaultValue={searchParams.has('edit')?"update" :"create"} />
+        <input name="id" type="hidden" defaultValue={initialData?.id} />
+        <SubmitButton sx={{paddingY:"16px"}}>등록하기</SubmitButton>
       </form >
       {showModal && <CreateModal addChip={addChip} />}
-      {sessionExpire && <SessionExpireModal /> }
+      {isError && <ErrorModal /> }
     </section>
   )
 }

@@ -1,14 +1,16 @@
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
-import { BlueButton } from "@/app/components/Buttons";
+import { Button, SxProps } from '@mui/material';
 
 export default function SubmitButton ({
+  sx,
   children,
 }: {
+  sx?: SxProps
   children: React.ReactNode
 }){
   const { pending } = useFormStatus()
 
   return (
-    <BlueButton type="submit" aria-disabled={pending}>{children}</BlueButton>
+    <Button type="submit" disabled={pending} sx={sx} variant="contained">{children}</Button>
   )
 }

@@ -27,12 +27,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'source.unsplash.com',
-        port: '',
-        pathname: '/random',
-      },
-      {
-        protocol: 'https',
         hostname: 'shop-phinf.pstatic.net',
         port: '',
         pathname: '/**/**',
@@ -43,6 +37,18 @@ const nextConfig = {
         port: '',
         pathname: '/**/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'source.boringavatars.com',
+        port: '',
+        pathname: '/**/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**/**',
+      }
     ],
   },
 

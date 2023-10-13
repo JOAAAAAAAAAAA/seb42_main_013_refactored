@@ -11,9 +11,9 @@ import Dashboard from "../components/Dashboard";
 
 
 async function Summary({
-  searchParams
+  // searchParams
 }: {
-  searchParams: { [key: string]: string | undefined }
+  // searchParams: { [key: string]: string | undefined }
   //https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional
 }) {
   const data = await getPills();
@@ -34,7 +34,7 @@ async function Summary({
     <section className="main relative gap-[--gap-md]">
       <Dashboard data={data} />
       <Fab
-        className="!absolute bottom-[calc(8px+64px)]"
+        className="!fixed bottom-[calc(8px+64px)] !ml-[calc(420px-40px-8px-4px)] "
         LinkComponent={Link}
         href={"/create"}
         size="small" color="primary" aria-label="add">

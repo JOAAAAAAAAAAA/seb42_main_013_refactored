@@ -3,7 +3,7 @@ import { AuthUser, PillData, SignUpData, LoginData } from "@/types";
 import { createUserWithEmailAndPassword, getRedirectResult, inMemoryPersistence, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signInWithRedirect, updateProfile } from "firebase/auth";
 import React, { createContext, use, useEffect, useReducer } from "react";
 import { auth, googleAuthProvider } from "../firebase/firebaseApp";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/context/loading";
 import { getSessionCookie } from "./helper";
 import { Timestamp } from "firebase/firestore/lite";
@@ -85,7 +85,7 @@ export default function AuthProvider({
   //아니면 그냥 firebase.auth().currentUser.getIdToken()으로 받아도 될 것 같음
 
 
-  const sessionLoginfromRedirect = async (csrfToken:string) => {
+  const sessionLoginfromRedirect = async (csrfToken: string) => {
     dispatch({ type: "setLoading", isLoading: true })
     try {
       const userCredential = await getRedirectResult(auth)
@@ -110,7 +110,7 @@ export default function AuthProvider({
         //   photoURL: userCredential.user.photoURL,
         //   lastLoginAt: userCredential.user.metadata.lastSignInTime,
         // }
-        
+
         // const [idToken, csrfToken] = await Promise.all([
         //   userCredential.user.getIdToken(),
         //   fetch("/auth/csrf"),
@@ -119,7 +119,7 @@ export default function AuthProvider({
         //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
         //csrfToken은 session단위로 생성되어야 한다. no timestamps
         // const body = await csrfToken.json()
-        
+
         const response = await getSessionCookie(idToken, csrfToken)
         if (response.status === 200) {
           // window.location.href = "/"
@@ -155,14 +155,14 @@ export default function AuthProvider({
       console.log(error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
-    }  
+    }
   }
 
   const signInwithEmail = async (data: LoginData) => {
     const { email, password, csrfToken } = data;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      if(!userCredential.user.emailVerified){
+      if (!userCredential.user.emailVerified) {
         router.push("/login?error=email-not-verified")
       }
       if (userCredential && auth.currentUser) {
@@ -180,15 +180,25 @@ export default function AuthProvider({
       console.log(error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
-    }  
+    }
   }
 
-
-  useEffect(() => {
-    if(!authUser && session){
-      const res = await getUser ()
-    }
-  },[authUser])
+  // const pathname = usePathname()
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     if (!authUser && pathname !== "/login" && pathname !== "/signup") {
+  //       try {
+  //         dispatch({ type: "setLoading", isLoading: true })
+  //         await getUser();
+  //       } catch (e) {
+  //         console.error(e);
+  //       } finally {
+  //         dispatch({ type: "setLoading", isLoading: false })
+  //       }
+  //     }
+  //   };
+  //   fetchUser();
+  // }, [authUser])
 
 
   return (

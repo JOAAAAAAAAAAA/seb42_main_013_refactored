@@ -5,11 +5,11 @@ import WebAside from './components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Suspense } from 'react'
-import Loading from './loading'
+import Loading from '../context/loading'
 import { cookies } from 'next/headers'
 import AuthProvider from '@/context/AuthProvider'
 import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
-import HeaderProvider from './HeaderProvider'
+import Header from './components/Header'
 import { usePathname } from 'next/navigation'
 import Navigation from './components/Nav'
 
@@ -40,21 +40,24 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  const isLogin = cookies().has('session')
+
   return (
     <html lang="en">
       <body className={`${nanumGothic.variable} ${roboto.variable}`}>
         <ThemeRegistry>
           <div className='root-container'>
             <WebAside />
-            <Suspense fallback={<Loading />}>
+            {/* <Suspense fallback={<Loading />}> */}
               <div className='app-container'>
                 <AuthProvider>
-                  <HeaderProvider />
+                  <Header />
                   {children}
-                  <Navigation/>
+                  {isLogin && <Navigation/>}
                 </AuthProvider>
               </div>
-            </Suspense>
+            {/* </Suspense> */}
           </div>
         </ThemeRegistry>
         <script src="https://apis.google.com/js/platform.js" async defer></script>

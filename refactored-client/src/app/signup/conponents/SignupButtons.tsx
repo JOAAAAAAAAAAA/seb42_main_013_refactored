@@ -8,11 +8,10 @@ import { AuthContext } from '@/context/AuthProvider';
 
  
 export const SignupButtons = ({csrfToken}: {csrfToken: string}) => {
-  const { sessionLoginfromRedirect, signInwithGoogle, signUpwithEmail } = useContext(AuthContext);
+  const { sessionLoginfromRedirect, signInwithGoogle, authUser } = useContext(AuthContext);
   useEffect(() => {
     sessionLoginfromRedirect(csrfToken)
   }, [])
-
 
   return (
     //! 변수 사용시 []로 감싸야 함

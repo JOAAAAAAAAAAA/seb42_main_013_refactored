@@ -29,14 +29,12 @@
     "firebase": "^10.3.0",
     "firebase-admin": "^11.10.1",
     "next": "^13.5.2",
-    "next-auth": "^0.0.0-manual.ffd05533",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-redux": "^8.1.2",
     "swiper": "^10.1.0",
     "typescript": "5.1.6",
-    "uuid": "^9.0.1",
     "zod": "^3.22.2"
   },
   "devDependencies": {

@@ -1,13 +1,10 @@
-import { IconButton, InputBase, Paper } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Paper } from '@mui/material';
 import Image from 'next/image';
 import Banner from './Banner';
 import ConcernTab from './ConcernTab';
 import Grid from '@mui/material/Unstable_Grid2';
 import { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton } from './Skeletons';
 import { Suspense } from 'react';
-import { cookies } from 'next/headers';
 import card1 from '../../../../public/cards/card1.jpg'
 import card2 from '../../../../public/cards/card2.jpg'
 import card3 from '../../../../public/cards/card3.jpg'
@@ -15,27 +12,20 @@ import card4 from '../../../../public/cards/card4.jpg'
 import Await from '@/app/components/Await';
 import { getHealth } from '@/lib/health';
 import UserConcern from './UserConcern';
+import SearchForm from './SearchForm';
 
 
 export default async function Suggest() {
-
-
   return (
     <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-0 font-nanumGothic">
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
-        <div className='flex w-full border-b border-[#999999]'>
-          <InputBase id="search input" placeholder="새로운 영양제 탐색" fullWidth />
-          <IconButton type="submit" aria-label="search" size="small">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </IconButton>
-        </div>
+        <SearchForm/>
         <Suspense fallback={<UserConcernSkeleton />}>
           <UserConcern />
         </Suspense>
         <Suspense fallback={<BannerSkeleton />}>
           <Banner />
         </Suspense>
-
       </Paper>
       <Paper square elevation={0} className="flex flex-col gap-[--gap-sm]  px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>

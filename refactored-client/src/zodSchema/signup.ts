@@ -6,6 +6,7 @@ export const signupSchema = z
   .nonempty("이메일을 입력해 주세요.")
   .regex(new RegExp("^\\S*$"), "이메일에 공백을 포함할 수 없습니다.")
   .email("올바른 이메일 형식이 아닙니다.")
+  .transform((data) => data.toLowerCase())
   // email은 regex 적용 안됨
   // .refine((data) => !data.includes(' '), "이메일에 공백을 포함할 수 없습니다.")
   //TODO

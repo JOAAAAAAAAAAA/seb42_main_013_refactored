@@ -2,7 +2,8 @@ import { ButtonBase, Chip } from "@mui/material"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { createQuery } from "@/lib/query";
 
 
 export default function AddButton({
@@ -10,10 +11,13 @@ export default function AddButton({
 }: {
   fieldset: string;
 }) {
-  const pathname = usePathname()
+
+  const searchParams = useSearchParams()
+
+
   return (
     //오류 뜨지만 잘 작동함
-    <Link href={`${pathname}?fieldset=${fieldset}`}>
+    <Link href={createQuery('fieldset', fieldset, searchParams)} scroll={false}>
     <Chip
       size="small"
       clickable

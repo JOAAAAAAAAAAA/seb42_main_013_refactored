@@ -7,19 +7,18 @@ export default async function Layout({
 }: {
   searchParams: { [key: string]: string | undefined }
 }) {
-  const id = searchParams?.edit
-  const pill = getPill(id)
+  const id = searchParams?.edit || ''
+  const promise = getPill(id)
 
   return (
     <>
       {id
         ? (
-          <Await promise={pill}>
+          <Await promise={promise}>
             {(data) => <Create initialData={data}/>}
           </Await>
         )
         : <Create />
-
       }
     </>
   )

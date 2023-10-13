@@ -6,13 +6,12 @@ import { PillData, PillDataSort } from "@/types";
 import Link from "next/link";
 import OthersSVGSprite from "@/app/components/OthersSVGSprite";
 import SortbyModalWindow from "../components/SortbyModalWindow";
-import DataLists from "./DataLists";
 import Image from "next/image";
 import { experimental_useOptimistic as useOptimistic } from "react";
 import nodata from '@/../public/images/NoSupplementData.png'
 import DataList from "./DataList";
 
-export default function Dashboard({ data }: { data: PillData[] }) {
+export default function Dashboard({ data }: { data?: PillData[] }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -22,14 +21,16 @@ export default function Dashboard({ data }: { data: PillData[] }) {
   const modalOpen = searchParams.get('modal')
 
   const sortName = new Map<PillDataSort, string>([
+    ['recent', "최근 등록순"],
     ["AtoZ", "가나다순"],
     ["ZtoA", "가나다역순"],
     ["pillsLeftAscending", "남은약 적은순"],
     ["pillsLeftDescending", "남은약 많은순"],
   ])
 
-  const filteredData = filter ? data.filter((pill) => pill.productType === filter) : data
-  const sortedData = filteredData.sort((a, b) => {
+  const filteredData = data && filter ? data.filter((pill) => pill.productType === filter) : data
+  const sortedData = filteredData && filteredData.sort((a, b) => {
+    if (sort === "recent") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     if (sort === "AtoZ") return a.supplementName.localeCompare(b.supplementName)
     if (sort === "ZtoA") return b.supplementName.localeCompare(a.supplementName)
     if (sort === "pillsLeftAscending") return a.pillsLeft - b.pillsLeft
@@ -40,7 +41,7 @@ export default function Dashboard({ data }: { data: PillData[] }) {
   //optimistic ui
   const [optimisticData, deleteOptimisticData] = useOptimistic(
     sortedData,
-    (state, id) => state.filter((pill) => pill.id !== id)
+    (state, id) => state?.filter((pill) => pill.id !== id)
   )
 
 
@@ -73,6 +74,7 @@ export default function Dashboard({ data }: { data: PillData[] }) {
       </div>
       <div className="relative mx-0 my-[4px] flex justify-end">
         <Link
+          scroll={false}
           className="flex items-center"
           href={pathname + `?modal=sort`}>
           <button className="flex cursor-pointer items-center border-none text-[14px] text-[--black-100] outline-none">{sortName.get(sort)}</button>
@@ -80,19 +82,21 @@ export default function Dashboard({ data }: { data: PillData[] }) {
         </Link>
         {modalOpen === "sort" && <SortbyModalWindow sortName={sortName} sort={sort} setSort={setSort} />}
       </div>
-      {!!modalOpen && <div onClick={() => router.back()} className="fixed inset-0 z-10 flex justify-center" />}
+      {!!modalOpen && <div onClick={() => router.push('/summary', { scroll: false })} className="fixed inset-0 z-10 flex justify-center" />}
       <ul className="relative flex h-full flex-col items-center gap-[--gap-sm]">
-        {(!sortedData || sortedData.length === 0) && <>
-          <Image src={nodata} alt="no data" sizes="100vw"
-            style={{
-              width: '50%',
-              height: 'auto',
-            }} />
-          <span>등록된 데이터가 없습니다.</span>
-        </>}
-        {optimisticData && optimisticData.map((pill, idx) => {
-          return <DataList key={pill.id} pill={pill} deleteOptimisticData={deleteOptimisticData} />;
-        })}
+        {optimisticData
+          ? (optimisticData.map((pill) => {
+            return <DataList key={pill.id} pill={pill} deleteOptimisticData={deleteOptimisticData} />;
+          }))
+          : (<>
+            <Image src={nodata} alt="no data" sizes="100vw"
+              style={{
+                width: '50%',
+                height: 'auto',
+              }} />
+            <span>등록된 데이터가 없습니다.</span>
+          </>)
+        }
       </ul>
     </>
   )
