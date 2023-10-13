@@ -1,5 +1,5 @@
 export const getSessionCookie = async (idToken:string, csrfToken:string, body?:any) => {
-   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/session`, {
+   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/sessionlogin`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${idToken}`,

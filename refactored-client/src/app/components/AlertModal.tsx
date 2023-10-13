@@ -11,7 +11,7 @@ export default function AlertModal({
   redirect,
   ...props}:
   {
-    msg: string
+    msg: JSX.Element | string
     redirect?: string
     props?: AlertProps
   }) {

@@ -6,6 +6,7 @@ import { auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { useRouter } from "next/navigation";
 import Loading from "@/context/loading";
 import { getSessionCookie } from "./helper";
+import { Timestamp } from "firebase/firestore/lite";
 
 
 
@@ -14,14 +15,14 @@ type AuthContextType = {
   signInwithGoogle: () => void;
   signUpwithEmail: (data: SignUpData) => void;
   signInwithEmail: (data: LoginData) => void;
-  sessionLogin: () => Promise<void>;
+  sessionLoginfromRedirect: () => Promise<void>;
   authUser: AuthUser | null;
 }
 
 const initialState: AuthContextType = {
   signInwithGoogle: () => { },
   signUpwithEmail: () => { },
-  sessionLogin: () => Promise.resolve(),
+  sessionLoginfromRedirect: () => Promise.resolve(),
   signInwithEmail: () => { },
   authUser: null,
 }
@@ -82,10 +83,12 @@ export default function AuthProvider({
   //아니면 그냥 firebase.auth().currentUser.getIdToken()으로 받아도 될 것 같음
 
 
-  const sessionLogin = async () => {
+  const sessionLoginfromRedirect = async (csrfToken:string) => {
     dispatch({ type: "setLoading", isLoading: true })
     try {
       const userCredential = await getRedirectResult(auth)
+      console.log('실행중')
+      console.log('token exists', csrfToken)
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
       // idToken 수명은 1시간으로 매우 짧다.
@@ -97,18 +100,25 @@ export default function AuthProvider({
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
         //!4. csrf      
         //! 병렬처리
-
-        const [idToken, csrfToken] = await Promise.all([
-          userCredential.user.getIdToken(),
-          fetch("/auth/csrf"),
-        ]);
+        const idToken = await userCredential._tokenResponse?.idToken
+        // const user = {
+        //   uid: userCredential.user.uid,
+        //   email: userCredential.user.email,
+        //   displayName: userCredential.user.displayName,
+        //   photoURL: userCredential.user.photoURL,
+        //   lastLoginAt: userCredential.user.metadata.lastSignInTime,
+        // }
+        
+        // const [idToken, csrfToken] = await Promise.all([
+        //   userCredential.user.getIdToken(),
+        //   fetch("/auth/csrf"),
+        // ]);
 
         //https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
         //csrfToken은 session단위로 생성되어야 한다. no timestamps
-        const body = await csrfToken.json()
+        // const body = await csrfToken.json()
         
-        const response = await getSessionCookie(idToken, body.csrfToken)
-
+        const response = await getSessionCookie(idToken, csrfToken)
         if (response.status === 200) {
           // window.location.href = "/"
           const res = await response.json()
@@ -147,10 +157,7 @@ export default function AuthProvider({
   }
 
   const signInwithEmail = async (data: LoginData) => {
-    console.log('로그인중')
-    console.log('data', data)
     const { email, password, csrfToken } = data;
-
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if(!userCredential.user.emailVerified){
@@ -158,17 +165,14 @@ export default function AuthProvider({
       }
       if (userCredential && auth.currentUser) {
         const idToken = await userCredential._tokenResponse?.idToken
-        const body = {'CSRF-Token': csrfToken}
-        console.log('body', body)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/session`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${idToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({"csrfToken": csrfToken}),
-        });
-        response.status === 200 && router.push("/")
+        const response = await getSessionCookie(idToken, csrfToken)
+        if (response.status === 200) {
+          const res = await response.json()
+          dispatch({ type: "login", authUser: res.user })
+          setPersistence(auth, inMemoryPersistence)
+          auth.signOut()
+          router.push("/")
+        }
       }
     } catch (error) {
       console.log(error)
@@ -182,7 +186,7 @@ export default function AuthProvider({
 
 
   return (
-    <AuthContext.Provider value={{ authUser, signInwithGoogle, sessionLogin, signUpwithEmail, signInwithEmail }}>
+    <AuthContext.Provider value={{ authUser, signInwithGoogle, sessionLoginfromRedirect, signUpwithEmail, signInwithEmail }}>
       {state.isLoading ? <Loading /> : children}
     </AuthContext.Provider>
   )

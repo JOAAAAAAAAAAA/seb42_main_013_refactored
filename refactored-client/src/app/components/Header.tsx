@@ -21,7 +21,8 @@ function Header() {
       </Link>
       <form 
       className="absolute right-[8px] flex h-[80%] cursor-pointer items-center text-[30px] text-white"
-      action={logout}>
+      action={logout}
+      >
         <button type="submit"><FontAwesomeIcon icon={faRightFromBracket}/></button>
       </form>
     </header>

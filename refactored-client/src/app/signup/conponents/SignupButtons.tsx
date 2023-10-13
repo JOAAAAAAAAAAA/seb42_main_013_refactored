@@ -7,10 +7,10 @@ import { AuthContext } from '@/context/AuthProvider';
 
 
  
-export const SignupButtons = () => {
-  const { sessionLogin, signInwithGoogle, signUpwithEmail } = useContext(AuthContext);
+export const SignupButtons = ({csrfToken}: {csrfToken: string}) => {
+  const { sessionLoginfromRedirect, signInwithGoogle, signUpwithEmail } = useContext(AuthContext);
   useEffect(() => {
-    sessionLogin()
+    sessionLoginfromRedirect(csrfToken)
   }, [])
 
 
