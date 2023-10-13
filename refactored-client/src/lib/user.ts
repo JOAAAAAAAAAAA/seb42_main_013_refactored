@@ -1,6 +1,9 @@
-import { User } from "@/types"
+import { User, AuthUser } from "@/types"
 import { verify } from "crypto"
 import { cookies } from "next/headers"
+import { verifySessionCookie } from "./auth"
+import { adminFirestore } from "@/firebase/firebaseAdmin"
+import { redirect } from "next/navigation"
 
 export const getUserClient = async () => {
   "use client"
@@ -25,11 +28,20 @@ export const getUserClient = async () => {
   }
 }
 
-export const getUserServer = async () => {
+export const getUserInServer = async () => {
   "use server"
-  const sessionCookie = cookies().get('session')
-  if (!sessionCookie) return null
-  v
-  gf
-
+  try{
+    const decodedClaims = await verifySessionCookie()
+    if (!decodedClaims) redirect('/login')
+    const userRef = adminFirestore.collection('users').doc(decodedClaims.uid).collection('userInfo').doc(decodedClaims.uid)
+    const doc = await userRef.get()
+    const snapshot = doc.data() 
+    const user = {
+      ...snapshot,
+      lastLoginAt: snapshot?.lastLoginAt.toDate(),
+    } as AuthUser
+    return user
+  }catch(e){
+    console.error(e)
+  }
 }
