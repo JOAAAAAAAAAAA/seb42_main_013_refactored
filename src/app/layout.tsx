@@ -36,8 +36,12 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
+  nav,
+  header,
   children,
 }: {
+  nav: React.ReactNode
+  header: React.ReactNode
   children: React.ReactNode;
 }) {
 
@@ -50,13 +54,13 @@ export default function RootLayout({
           <div className='root-container'>
             <WebAside />
             {/* <Suspense fallback={<Loading />}> */}
-              <div className='app-container'>
-                <AuthProvider>
-                  <Header />
-                  {children}
-                  {isLogin && <Navigation/>}
-                </AuthProvider>
-              </div>
+            <div className='app-container'>
+              <AuthProvider>
+                {isLogin && header}
+                {children}
+                {isLogin && nav}
+              </AuthProvider>
+            </div>
             {/* </Suspense> */}
           </div>
         </ThemeRegistry>
