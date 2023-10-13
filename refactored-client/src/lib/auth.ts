@@ -19,11 +19,13 @@ export const sessionLogout = () => {
   redirect("/login")
 }
 
-export const verifySessionCookie = async (sessionCookie: string) => {
+export const verifySessionCookie = async () => {
+  const sessionCookie = cookies().get('session')?.value || ''
   try {
     const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
     return decodedClaims
   } catch (error) {
-    if (error.code === 'auth/session-cookie-expired') redirect('/login')
+    if (error.code === 'auth/session-cookie-expired') redirect('/login?error=session-cookie-expired')
   }
 }
+
