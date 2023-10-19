@@ -56,7 +56,6 @@ export const getHealthData = async (): Promise<Concern[]> => {
 
 export const getHealth = async (): Promise<ConcernWithBase64[]> => {
   const data = await getHealthData();
-
   // base64 병렬처리
   const base64Promises = data.map(async (concern: Concern) => {
     const supplementsWithBase64 = await Promise.all(

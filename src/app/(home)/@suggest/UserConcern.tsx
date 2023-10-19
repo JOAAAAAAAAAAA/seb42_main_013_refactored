@@ -10,20 +10,21 @@ export default async function UserConcern() {
   // const { authUser } = useContext(AuthContext);
   const authUser = await getUserInServer()
   
+  
   return (
     <>
       <div className="pl-[4px] text-[14px]"> 환영합니다, <span>{authUser?.displayName}</span>님✨</div>
       <Card variant='outlined' className="p-[--gap-md]">
-        {authUser?.concerns
+        {authUser?.concerns && authUser.concerns.length>0
           ? (
             <div className="flex flex-col">
               <div className="mb-[--gap-sm]" ><span className="font-bold text-[--blue-100]">{authUser?.displayName}</span>님을 위한 영양제 추천</div>
               <div className="relative flex h-[100px] w-full items-center justify-around">
-                {authUser.concerns.map((ele: string, idx: number) => (
-                    <div className="text-center" key={idx}>
-                      <Image src={`/images/icon-pill${idx}.png`} width={50} height={50} alt="supplement-icon" />
-                      <span className="text-xs">{ele}</span>
-                    </div>
+                {authUser.concerns.slice(0, 4).map((ele: string, idx: number) => (
+                  <div className="text-center" key={idx}>
+                    <Image src={`/images/icon-pill${idx}.png`} width={50} height={50} alt="supplement-icon" />
+                    <span className="text-xs">{ele}</span>
+                  </div>
                 ))}
               </div>
             </div>

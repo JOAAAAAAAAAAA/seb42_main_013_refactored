@@ -34,8 +34,6 @@ export default async function Suggest() {
             {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
           </Await>
         </Suspense>
-
-
       </Paper>
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <h1 className="font-semibold text-[--blue-100]">생활 건강 정보</h1>
