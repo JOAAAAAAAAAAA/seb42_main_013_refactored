@@ -6,9 +6,6 @@ import { auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/context/loading";
 import { getSessionCookie } from "./helper";
-import { Timestamp } from "firebase/firestore/lite";
-import { getUser } from "@/lib/user";
-
 
 
 //context 에는 전달할 값만 loading 필요없음
@@ -18,6 +15,10 @@ type AuthContextType = {
   signInwithEmail: (data: LoginData) => void;
   sessionLoginfromRedirect: (csrfToken: string) => Promise<void>;
   authUser: AuthUser | null;
+  savePills: (data: PillData[]) => void;
+  pills: PillData[] | null;
+  fetchCSRFToken: () => Promise<void>;
+  csrfToken: string | null;
 }
 
 const initialState: AuthContextType = {
@@ -26,6 +27,10 @@ const initialState: AuthContextType = {
   sessionLoginfromRedirect: () => Promise.resolve(),
   signInwithEmail: () => { },
   authUser: null,
+  savePills: () => {},
+  pills: null,
+  fetchCSRFToken: () => Promise.resolve(),
+  csrfToken: null,
 }
 
 export const AuthContext = createContext<AuthContextType>(initialState);
@@ -36,23 +41,27 @@ type AuthAction =
   | { type: "setLoading"; isLoading: boolean }
   | { type: "getPills"; pills: PillData[] }
   | { type: "getUser"; authUser: AuthUser }
+  | { type: "fetchCSRFToken"; csrfToken: string }
 
 
 type AuthState = {
   authUser: AuthUser | null;
   pills: PillData[] | null;
   isLoading: boolean;
+  csrfToken: string | null;
 }
 
 
 const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
-    case "login":
+    case "getUser":
       return { ...state, authUser: action.authUser };
     case "setLoading":
       return { ...state, isLoading: action.isLoading };
     case 'getPills':
       return { ...state, pills: action.pills };
+    case 'fetchCSRFToken':
+      return { ...state, csrfToken: action.csrfToken };
     default:
       return state;
   }
@@ -71,10 +80,11 @@ export default function AuthProvider({
     authUser: null,
     isLoading: false,
     pills: null,
+    csrfToken: null,
   });
 
   //provider 에 전달할 값 빼기
-  const { authUser, pills } = state
+  const { authUser, pills, csrfToken } = state
 
   //!1. 구글로 로그인&시작하기 onClickHandler
   const signInwithGoogle = () => {
@@ -84,13 +94,10 @@ export default function AuthProvider({
   //!2. signInWithRedirect는 리턴값이 없음 getRedirectResult로 받아야함
   //아니면 그냥 firebase.auth().currentUser.getIdToken()으로 받아도 될 것 같음
 
-
   const sessionLoginfromRedirect = async (csrfToken: string) => {
     dispatch({ type: "setLoading", isLoading: true })
     try {
       const userCredential = await getRedirectResult(auth)
-      console.log('실행중')
-      console.log('token exists', csrfToken)
       // result 는 UserCredential or null
       // firebase 는 authrization code나 Access Token 를 반환하지 않고 firebase의 idToken과 Refresh를 반환한다.
       // idToken 수명은 1시간으로 매우 짧다.
@@ -103,14 +110,6 @@ export default function AuthProvider({
         //!4. csrf      
         //! 병렬처리
         const idToken = await userCredential._tokenResponse?.idToken
-        // const user = {
-        //   uid: userCredential.user.uid,
-        //   email: userCredential.user.email,
-        //   displayName: userCredential.user.displayName,
-        //   photoURL: userCredential.user.photoURL,
-        //   lastLoginAt: userCredential.user.metadata.lastSignInTime,
-        // }
-
         // const [idToken, csrfToken] = await Promise.all([
         //   userCredential.user.getIdToken(),
         //   fetch("/auth/csrf"),
@@ -152,7 +151,7 @@ export default function AuthProvider({
       }
     } catch (error) {
       error.code === "auth/email-already-in-use" && router.push("/signup?error=email-already-in-use")
-      console.log(error)
+      console.error(error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
     }
@@ -177,32 +176,27 @@ export default function AuthProvider({
         }
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
     }
   }
 
-  // const pathname = usePathname()
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     if (!authUser && pathname !== "/login" && pathname !== "/signup") {
-  //       try {
-  //         dispatch({ type: "setLoading", isLoading: true })
-  //         await getUser();
-  //       } catch (e) {
-  //         console.error(e);
-  //       } finally {
-  //         dispatch({ type: "setLoading", isLoading: false })
-  //       }
-  //     }
-  //   };
-  //   fetchUser();
-  // }, [authUser])
+  const savePills = (data:PillData[]) => {
+    dispatch({ type: "getPills", pills: data })
+  }
+  const fetchCSRFToken = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/csrf`)
+    if(!res.ok) throw new Error('error')
+    const {csrfToken} = await res.json()
+    dispatch({ type: "fetchCSRFToken", csrfToken: csrfToken })
+  }
+
+
 
 
   return (
-    <AuthContext.Provider value={{ authUser, signInwithGoogle, sessionLoginfromRedirect, signUpwithEmail, signInwithEmail }}>
+    <AuthContext.Provider value={{ fetchCSRFToken, csrfToken,authUser, pills, savePills, signInwithGoogle, sessionLoginfromRedirect, signUpwithEmail, signInwithEmail }}>
       {state.isLoading ? <Loading /> : children}
     </AuthContext.Provider>
   )

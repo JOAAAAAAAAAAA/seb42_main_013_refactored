@@ -1,6 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 /** Web compatible method to create a hash, using SHA256 */
 async function createHash(message: string) {
@@ -46,14 +47,14 @@ export async function createCSRFToken(){
   return {cookieValue, csrfToken}
 }
 
-export async function setCSRFCookie(res: any) {
+export async function setCSRFCookie(res: NextResponse, maxAge?: number) {
   const {cookieValue, csrfToken}= await createCSRFToken()
   res.cookies.set('csrf-token', cookieValue, {
     path: '/',
     secure: true,
     sameSite: 'lax',
     httpOnly: true,
-    maxAge: 60*60, // 1 hour
+    maxAge: maxAge ?? 60*60, // 1 hour
   })
   res.headers.set('X-CSRF-Token', csrfToken)
   return res
@@ -80,15 +81,12 @@ export async function verifyCSRFToken({
   cookieValue: string
   bodyValue: string
 }) {
-  console.log('verifyCSRFToken')
-  console.log('cookieValue', cookieValue)
-  console.log('bodyValue', bodyValue)
+
   const [csrfToken, csrfTokenHash] = cookieValue.split('|')
 
   const expectedCsrfTokenHash = await createHash(
     `${csrfToken}${process.env.AUTH_SECRET}`,
   )
-  console.log('expectedCsrfTokenHash', expectedCsrfTokenHash)
   if (csrfTokenHash === expectedCsrfTokenHash) {
     // If hash matches then we trust the CSRF token value
     // If this is a POST request and the CSRF Token in the POST request matches

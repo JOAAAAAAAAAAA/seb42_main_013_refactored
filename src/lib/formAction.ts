@@ -5,20 +5,30 @@ import { FormState } from '@/types'
 import { addPillSchema } from '@/zodSchema/addPills'
 import { FieldValue } from 'firebase-admin/firestore'
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import z from 'zod'
 import { verifySessionCookie } from './auth'
+import { verifyCSRFToken } from './csrf'
 
 export const createData = async (
   prevFormState: FormState,
   formData: FormData,
 ) => {
-  console.log('실행중')
-  //https://github.com/remix-run/remix/discussions/1298
+
+  const cookieValue = cookies().get('csrf-token')?.value || ''
+  const bodyValue = formData.get('csrfToken') || ''
+  const csrfTokenVerified = await verifyCSRFToken({
+    cookieValue: cookieValue,
+    bodyValue: bodyValue.toString(),
+  })
+
+  if(!csrfTokenVerified) redirect('/create?error=invalidCSRFToken')
+
+  // https://github.com/remix-run/remix/discussions/1298
   switch (formData.get('type')) {
     case 'update_ingredients': {
-      console.log('update_ingredients 실행중')
+
       try {
         const ingredient = formData.get('ingredients')
         //중복체크
@@ -26,7 +36,7 @@ export const createData = async (
           return !prevFormState.ingredients.includes(val)
         })
         const parsedIngredient = updatIngredientsSchema.safeParse(ingredient)
-        console.log('parsedIngredient', parsedIngredient)
+
         if (!parsedIngredient.success) {
           return {
             ...prevFormState,
@@ -37,10 +47,6 @@ export const createData = async (
             },
           }
         } else {
-          console.log('리턴', {
-            ...prevFormState,
-            ingredients: [...prevFormState.ingredients, ingredient],
-          })
           return {
             ...prevFormState,
             ingredients: [...prevFormState.ingredients, ingredient],
@@ -114,7 +120,6 @@ export const createData = async (
       const updatedFormState = Object.fromEntries(updated)
 
       //유효성 검사
-      console.log('updatedFormState', updatedFormState)
       const parsedData = addPillSchema.safeParse(updatedFormState)
 
       if (!parsedData.success) {
@@ -122,16 +127,12 @@ export const createData = async (
           message: issue.message,
           errorCode: issue.code,
         })).fieldErrors
-        console.log('실패')
         return { ...updatedFormState, errorMessage: flattenMessage }
       }
-      console.log('parsedData.data', parsedData.data)
-      console.log('유효성 검사 통과')
       try {
         const decodedClaims = await verifySessionCookie()
         if (!decodedClaims) redirect('/create?error=invalidToken')
         const { uid } = decodedClaims
-        console.log('uid', uid)
         const pillRef = adminFirestore
           .collection('users')
           .doc(uid)
@@ -155,7 +156,6 @@ export const createData = async (
 
     case 'update': {
       //타입 이슈 해결
-      console.log('update 실행중')
       const prev = Object.entries(prevFormState)
       const updated = prev.map(([key, prevValue]) => {
         const newValue =
@@ -182,18 +182,18 @@ export const createData = async (
       }
       try {
         const decodedClaims = await verifySessionCookie()
-        if (!decodedClaims) redirect('/create?session=expired')
-        const { uid } = decodedClaims
-        const pillRef = adminFirestore
-          .collection('users')
-          .doc(uid)
-          .collection('pills')
-          .doc()
-        //pillRef에 createdAt 추가
-        await pillRef.set(
-          { ...parsedData.data, createdAt: FieldValue.serverTimestamp() },
-          { merge: true },
-        )
+        if(decodedClaims && prevFormState.id){
+          const { uid } = decodedClaims
+          const pillRef = adminFirestore
+            .collection('users')
+            .doc(uid)
+            .collection('pills')
+            .doc(prevFormState.id)
+          //pillRef에 createdAt 추가
+          await pillRef.update(
+            { ...parsedData.data, createdAt: FieldValue.serverTimestamp() },
+          )
+        }
       } catch (e) {
         console.error(e)
       } finally {
