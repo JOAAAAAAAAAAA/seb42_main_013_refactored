@@ -27,9 +27,7 @@ async function Login({
         <div className="ml-[10px] text-[40px]">Welcome!</div>
         <LoginForm csrfToken={csrfToken} />
         <SignupButtons csrfToken={csrfToken} />
-        {isError === "email-not-verified" && <AlertModal redirect="/login" msg="이메일 인증을 완료되지 않았습니다." severity="error" />}
-        {isError === "session-cookie-expired" && <AlertModal redirect="/login" msg={<>세션이 만료되었습니다. <br /> 다시 로그인해주세요.</>} severity="error" />}
-        {isError === "no-session-cookie" && <AlertModal redirect="/login" msg="로그인을 해주세요." severity="error" />}
+        {isError && <AlertModal redirect="/login" severity="error" msgCode={isError}/>}
       </div>
   )
 }

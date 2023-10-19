@@ -3,7 +3,7 @@
 import { adminAuth } from '@/firebase/firebaseAdmin'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { DecodedIdToken } from 'firebase-admin/auth'
+import { FirebaseError } from 'firebase/app'
 
 export const sessionLogout = () => {
   cookies().delete('csrf-token')
@@ -22,8 +22,10 @@ export const verifySessionCookie = async () => {
     )
     return decodedClaims
   } catch (error: any) {
-    if (error.code === 'auth/session-cookie-expired') redirect('/login?error=session-cookie-expired')
-    console.error(error)
+    if (error instanceof FirebaseError){
+      if (error.code === 'auth/session-cookie-expired') redirect('/login?error=session-cookie-expired')
+      console.error(error)
+    }
   }
 }
 

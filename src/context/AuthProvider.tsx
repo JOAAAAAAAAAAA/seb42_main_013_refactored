@@ -6,6 +6,7 @@ import { auth, googleAuthProvider } from "../firebase/firebaseApp";
 import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/context/loading";
 import { getSessionCookie } from "./helper";
+import { FirebaseError } from "firebase/app";
 
 
 //context 에는 전달할 값만 loading 필요없음
@@ -150,10 +151,10 @@ export default function AuthProvider({
         router.push("/signup?success=true")
       }
     } catch (error) {
-      if ((error as any).code === "auth/email-already-in-use") {
-        router.push("/signup?error=email-already-in-use")
+      if (error instanceof FirebaseError){
+        error.code === "auth/email-already-in-use" && router.push("/signup?error=email-already-in-use")
+        console.error(error.code)
       }
-      console.error(error as Error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
     }
@@ -178,7 +179,11 @@ export default function AuthProvider({
         }
       }
     } catch (error) {
-      console.error(error)
+      if (error instanceof FirebaseError){
+        if(error.code === "auth/user-not-found") router.push("/login?error=user-not-found")
+        if(error.code === "auth/wrong-password") router.push("/login?error=wrong-password")
+        console.log(error.code)
+      }
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
     }
