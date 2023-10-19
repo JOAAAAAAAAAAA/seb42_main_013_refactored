@@ -66,13 +66,13 @@ export default function CreateForm() {
     formAction(formData)
     router.push(pathname)
   }
-  const addChip = async (e) => {
-    e.preventDefault()
-    const form = e.currentTarget
-    const formData = new FormData(form)
-    await formAction(formData)
-    router.back()
-  }
+  const addChip = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    await formAction(formData);
+    router.back();
+  };
 
 
   return (
@@ -247,12 +247,12 @@ export default function CreateForm() {
         error={!!formState?.errorMessage?.servingSize}
         helperText={formState?.errorMessage?.servingSize?.[0]?.message || " "}
       />
-      <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
+      <input type="hidden" name="csrfToken" defaultValue={csrfToken ?? ''} />
       <input name="type" type="hidden" defaultValue={searchParams.has('edit') ? "update" : "create"} />
       <input name="id" type="hidden" defaultValue={initialData?.id} />
       <SubmitButton sx={{ paddingY: "16px" }}>등록하기</SubmitButton>
     </form >
-      {showModal && <CreateModal addChip={addChip} csrfToken={csrfToken}/>}
+      {showModal && <CreateModal addChip={addChip} csrfToken={csrfToken ?? ''}/>}
       {isError && <ErrorModal />}
     </>
   )

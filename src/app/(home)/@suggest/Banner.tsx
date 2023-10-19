@@ -37,8 +37,8 @@ export default function Banner(){
     <SwiperSlide className="bg-[#e6e3f4]">
       <Link href="/summary">
         <div className="text-center">
-          <p>너무 많아 관리하기 힘든 내 영양제...</p>
-          <p>'알약관리'에 등록해 보셨나요?</p>
+          <p>{`너무 많아 관리하기 힘든 내 영양제...`}</p>
+          <p>{`'알약관리'에 등록해 보셨나요?`}</p>
         </div>
         <div>
           <Image fill sizes="100%" className="object-contain" src="/images/icon-suggest2.png" alt="slide-icon" />

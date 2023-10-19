@@ -34,7 +34,7 @@ export default async function Mypage({ params }: { params: { [key: string]: stri
             LinkComponent={Link}
             href={"/mypage/edit"}
             variant="outlined">건강 고민 수정</Button>}
-          {isEdit && <UserInfoForm authUser={authUser} />}
+          {isEdit && authUser && <UserInfoForm authUser={authUser} />}
         </Card>
       </Paper>
     </section>

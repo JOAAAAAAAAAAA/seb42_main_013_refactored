@@ -109,7 +109,7 @@ export default function AuthProvider({
         //!3. 먼저 검증을 위해 idToken을 서버로 보내자.
         //!4. csrf      
         //! 병렬처리
-        const idToken = await userCredential._tokenResponse?.idToken
+        const idToken = await userCredential.user.getIdToken()
         // const [idToken, csrfToken] = await Promise.all([
         //   userCredential.user.getIdToken(),
         //   fetch("/auth/csrf"),
@@ -150,8 +150,10 @@ export default function AuthProvider({
         router.push("/signup?success=true")
       }
     } catch (error) {
-      error.code === "auth/email-already-in-use" && router.push("/signup?error=email-already-in-use")
-      console.error(error)
+      if ((error as any).code === "auth/email-already-in-use") {
+        router.push("/signup?error=email-already-in-use")
+      }
+      console.error(error as Error)
     } finally {
       dispatch({ type: "setLoading", isLoading: false })
     }
@@ -165,7 +167,7 @@ export default function AuthProvider({
         router.push("/login?error=email-not-verified")
       }
       if (userCredential && auth.currentUser) {
-        const idToken = await userCredential._tokenResponse?.idToken
+        const idToken = await userCredential.user.getIdToken()
         const response = await getSessionCookie(idToken, csrfToken)
         if (response.status === 200) {
           const res = await response.json()
