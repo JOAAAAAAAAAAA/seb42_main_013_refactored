@@ -180,8 +180,7 @@ export default function AuthProvider({
       }
     } catch (error) {
       if (error instanceof FirebaseError){
-        if(error.code === "auth/user-not-found") router.push("/login?error=user-not-found")
-        if(error.code === "auth/wrong-password") router.push("/login?error=wrong-password")
+        router.push(`/login?=${error.code}`)
         console.log(error.code)
       }
     } finally {
