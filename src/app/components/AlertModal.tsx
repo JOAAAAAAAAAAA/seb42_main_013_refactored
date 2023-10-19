@@ -9,10 +9,12 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 export default function AlertModal({
   msg,
   redirect,
+  severity,
   ...props}:
   {
     msg: JSX.Element | string
     redirect?: string
+    severity?: AlertProps['severity']
     props?: AlertProps
   }) {
   const searchParams = useSearchParams()
