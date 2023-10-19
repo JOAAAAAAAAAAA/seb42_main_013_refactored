@@ -21,11 +21,12 @@ export const verifySessionCookie = async () => {
       true,
     )
     return decodedClaims
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 'auth/session-cookie-expired') redirect('/login?error=session-cookie-expired')
     console.error(error)
+  }
 }
-}
+
 
 // form 을 통해서 trigger 되지 않은 function 은 serverActionXX -> cookie 변경이 안됨
 // const sessionCookie = cookies().get('session')?.value || ''

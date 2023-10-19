@@ -1,30 +1,6 @@
 import healthconcernUrl from '@/../public/svg/health_concerns.svg?url';
+import { HealthSvgSpriteID } from '@/types'
 
-
-type HealthSvgSpriteID =
-  | "all"
-  | "anti_oxidant"
-  | "blood_glucose_control"
-  | "blood_improvement"
-  | "blood_pressure_control"
-  | "body_fat_reduction"
-  | "bone_health"
-  | "cholesterol"
-  | "climacteric"
-  | "eye_health"
-  | "fatigue_recovery"
-  | "growth_and_development"
-  | "immunity"
-  | "improve_memory"
-  | "improve_sleep_quality"
-  | "intestinal_health"
-  | "liquid"
-  | "liver_health"
-  | "nutritional_supplement"
-  | "prostate"
-  | "relaxation_of_tension"
-  | "skin_health"
-  | "stomach_health"
 
 
 interface HealthSvgSpriteProps extends React.SVGAttributes<HTMLOrSVGElement> {

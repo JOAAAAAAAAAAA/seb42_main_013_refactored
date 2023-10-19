@@ -70,7 +70,6 @@ export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
  
 
   const health = data
-
   return (
 
     <div className='container'>

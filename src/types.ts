@@ -63,41 +63,30 @@ export type Supplement = {
 }
 
 export type HealthSvgSpriteID =
-  | 'all'
-  | 'anti_oxidant'
-  | 'blood_glucose_control'
-  | 'blood_improvement'
-  | 'blood_pressure_control'
-  | 'body_fat_reduction'
-  | 'bone_health'
-  | 'capsule'
-  | 'chewable'
-  | 'cholesterol'
-  | 'climacteric'
-  | 'eye_health'
-  | 'family'
-  | 'fatigue_recovery'
-  | 'female'
-  | 'growth_and_development'
-  | 'gummy'
-  | 'immunity'
-  | 'improve_memory'
-  | 'improve_sleep_quality'
-  | 'infant_youth'
-  | 'intestinal_health'
-  | 'liquid'
-  | 'liver_health'
-  | 'male'
-  | 'male_and_female'
-  | 'nutritional_supplement'
-  | 'powder'
-  | 'pregnant_woman'
-  | 'prostate'
-  | 'relaxation_of_tension'
-  | 'senior'
-  | 'skin_health'
-  | 'stomach_health'
-  | 'tablet'
+  | "all"
+  | "anti_oxidant"
+  | "blood_glucose_control"
+  | "blood_improvement"
+  | "blood_pressure_control"
+  | "body_fat_reduction"
+  | "bone_health"
+  | "cholesterol"
+  | "climacteric"
+  | "eye_health"
+  | "fatigue_recovery"
+  | "growth_and_development"
+  | "immunity"
+  | "improve_memory"
+  | "improve_sleep_quality"
+  | "intestinal_health"
+  | "liquid"
+  | "liver_health"
+  | "nutritional_supplement"
+  | "prostate"
+  | "relaxation_of_tension"
+  | "skin_health"
+  | "stomach_health"
+
 
 export interface Concern {
   id: HealthSvgSpriteID

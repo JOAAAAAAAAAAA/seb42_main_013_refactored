@@ -8,12 +8,12 @@ export const addPillSchema = z.object({
   //https://blog.herodevs.com/web-fundamentals-avoid-these-javascript-date-object-pitfalls-b9df24fa55e1
   startDate:z.string().default(new Date().toISOString().slice(0,10))
   //input empty 면 ''로 받아짐. null 로 변환
-  .transform((val) => (val === '' ? null : val)).nullable()
+  // .transform((val) => (val === '' ? null : val)) // default 적용
   // new Date() 적용
-  .pipe(z.coerce.date({errorMap:()=> {return {message: "유효한 날짜를 입력해주세요."}}}))
+  .pipe(z.coerce.date({errorMap:()=> {return {message: "유효한 날짜를 입력해주세요."}}})),
   // new Date(null) 오류 방지
   // .transform( v => v === new Date(0) ?null :v) XXX false 뜸
-  .transform( v => v.getTime()===0 ?null :v), 
+  // .transform( v => v.getTime()===0 ?null :v), 
   endDate: z.string()
   .transform((val) => (val === '' ? null : val)).nullable()
   .pipe(z.coerce.date({errorMap:()=> {return {message: "유효한 날짜를 입력해주세요."}}}))

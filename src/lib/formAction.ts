@@ -144,7 +144,7 @@ export const createData = async (
           createdAt: FieldValue.serverTimestamp(),
         })
         revalidatePath('/summary')
-      } catch (error) {
+      } catch (error:any) {
         if (error.code === 'auth/session-cookie-expired')
           redirect('/create?error=sessionExpired')
         else redirect('/create?error=unknown')
@@ -207,13 +207,13 @@ export const createData = async (
   }
 }
 
-const validateFormData = (formData, schema) => {
-  const parsedData = schema.safeParse(formData)
-  if (!parsedData.success) {
-    const flattenMessage = parsedData.error.flatten((issue) => ({
-      message: issue.message,
-      errorCode: issue.code,
-    })).fieldErrors
-    throw new Error({ ...formData, errorMessage: flattenMessage })
-  }
-}
+// const validateFormData = (formData, schema) => {
+//   const parsedData = schema.safeParse(formData)
+//   if (!parsedData.success) {
+//     const flattenMessage = parsedData.error.flatten((issue) => ({
+//       message: issue.message,
+//       errorCode: issue.code,
+//     })).fieldErrors
+//     throw new Error({ ...formData, errorMessage: flattenMessage })
+//   }
+// }
