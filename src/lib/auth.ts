@@ -1,31 +1,43 @@
-"use server"
-import { AuthUser } from "@/types";
-import { User, getRedirectResult, inMemoryPersistence, onAuthStateChanged, setPersistence, signInWithRedirect } from "firebase/auth";
-import React, { createContext, use, useEffect, useReducer, useState } from "react";
-import { app, auth, googleAuthProvider } from "../firebase/firebaseApp";
-import { addUserToFirestore } from "../firebase/userController";
-import { useRouter } from "next/navigation";
-import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
-import { revalidatePath } from "next/cache";
-import Loading from "@/context/loading";
-import { redirect } from 'next/navigation'
-import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
-import { cookies } from "next/headers";
+'use server'
 
+import { adminAuth } from '@/firebase/firebaseAdmin'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { DecodedIdToken } from 'firebase-admin/auth'
 
 export const sessionLogout = () => {
-  console.log('로그아웃')
+  cookies().delete('csrf-token')
   cookies().delete('session')
-  redirect("/login")
 }
+
+
 
 export const verifySessionCookie = async () => {
   const sessionCookie = cookies().get('session')?.value || ''
+  if (!sessionCookie) redirect('/login?error=no-session-cookie')
   try {
-    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+    const decodedClaims = await adminAuth.verifySessionCookie(
+      sessionCookie,
+      true,
+    )
     return decodedClaims
   } catch (error) {
     if (error.code === 'auth/session-cookie-expired') redirect('/login?error=session-cookie-expired')
-  }
+    console.error(error)
+}
 }
 
+// form 을 통해서 trigger 되지 않은 function 은 serverActionXX -> cookie 변경이 안됨
+// const sessionCookie = cookies().get('session')?.value || ''
+// if(!sessionCookie)redirect('/login?error=no-session-cookie')
+// try {
+  //   const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true)
+  //   return decodedClaims
+  // } catch (error) {
+    //   if (error.code === 'auth/session-cookie-expired') {
+      //     console.log('session-cookie-expired')
+      //     cookies().delete('csrf-token')
+      //     cookies().delete('session')
+      //     redirect('/login?error=session-cookie-expired')
+      //   }
+      // }

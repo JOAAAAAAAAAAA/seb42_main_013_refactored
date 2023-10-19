@@ -8,22 +8,17 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { SyntheticEvent, useState } from "react";
 import { cookies } from "next/headers";
+import { usePathname } from "next/navigation";
 
 
 function Navigation() {
-  const [value, setValue] = useState("home");
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-
-
+  const pathname = usePathname()
 
 
   return (
     <BottomNavigation
     showLabels
-    value={value}
-    onChange={handleChange}
+    value={pathname}
     sx={{height:64}}
     className="fixed bottom-0 w-full max-w-[428px]"
   >
@@ -31,21 +26,21 @@ function Navigation() {
       LinkComponent={Link}
       href={"/"}
       label={"홈"}
-      value={"home"}
+      value={"/"}
       icon={<FontAwesomeIcon icon={faHouse}/>}
     />
     <BottomNavigationAction
       LinkComponent={Link}
       href={"/summary"}
       label={"알약관리"}
-      value={"summary"}
+      value={"/summary"}
       icon={<FontAwesomeIcon icon={faPills}/>}
     />
     <BottomNavigationAction
       LinkComponent={Link}
       href={"/mypage"}
       label={"마이페이지"}
-      value={"mypage"}
+      value={"/mypage"}
       icon={<FontAwesomeIcon icon={faUser}/>}
     />
   </BottomNavigation>

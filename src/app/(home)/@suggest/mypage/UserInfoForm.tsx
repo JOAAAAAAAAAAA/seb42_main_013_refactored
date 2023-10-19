@@ -1,15 +1,9 @@
 
-import Card from "@mui/material/Card"
 import Button from "@mui/material/Button"
-import Image from "next/image"
-import Link from "next/link"
-import { useContext } from "react"
-import { AuthContext } from "@/context/AuthProvider"
 import { updateUserConcerns } from "@/lib/user"
-import CheckChip from "../components/CheckChip"
+import CheckChip from "@/app/components/CheckChip"
 import { getHealthData } from "@/lib/health"
-import Fieldset from "../create/components/Fieldset"
-import { AuthUser, Concern } from "@/types"
+import { AuthUser } from "@/types"
 
 export default async function UserInfoForm({ authUser }: { authUser: AuthUser }) {
   async function create(formData: FormData) {

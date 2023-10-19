@@ -3,8 +3,6 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Fab from "@mui/material/Fab";
 import Link from "next/link";
 import { getPills } from "@/lib/pills";
-import DataLists from "../components/DataLists";
-import { PillData, PillDataSort } from "@/types";
 import Dashboard from "../components/Dashboard";
 
 

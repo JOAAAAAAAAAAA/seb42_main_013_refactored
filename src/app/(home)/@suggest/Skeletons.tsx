@@ -1,8 +1,104 @@
 "use client"
+import OthersSVGSprite from "@/app/components/OthersSVGSprite";
 import { Box, Card, Paper, Skeleton } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 
-
+function DataListSkeleton() {
+  return (
+    <ul className="relative flex h-full flex-col items-center gap-[--gap-sm]">
+      <li className="
+    relative flex w-full rounded-[5px] px-[8px] py-[16px]
+    shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <div className="mr-[8px] flex h-full w-[auto] items-center justify-center text-center">
+          <Skeleton variant="rounded" width={80} height={80} />
+        </div>
+        <div className="flex flex-col justify-center gap-[--gap-sm]">
+          <div className="flex items-center gap-[4px]">
+            <Skeleton height={24} width={40} />
+            <Skeleton height={21} width={40} />
+          </div>
+          <Skeleton height={21} width={240} />
+          <Skeleton height={21} width={120} />
+        </div>
+        <div className="absolute right-[8px] top-[16px]">
+          <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
+        </div>
+      </li>
+      <li className="
+    relative flex w-full rounded-[5px] px-[8px] py-[16px]
+    shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <div className="mr-[8px] flex h-full w-[auto] items-center justify-center text-center">
+          <Skeleton variant="rounded" width={80} height={80} />
+        </div>
+        <div className="flex flex-col justify-center gap-[--gap-sm]">
+          <div className="flex items-center gap-[4px]">
+            <Skeleton height={24} width={40} />
+            <Skeleton height={21} width={40} />
+          </div>
+          <Skeleton height={21} width={240} />
+          <Skeleton height={21} width={120} />
+        </div>
+        <div className="absolute right-[8px] top-[16px]">
+          <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
+        </div>
+      </li>
+      <li className="
+    relative flex w-full rounded-[5px] px-[8px] py-[16px]
+    shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <div className="mr-[8px] flex h-full w-[auto] items-center justify-center text-center">
+          <Skeleton variant="rounded" width={80} height={80} />
+        </div>
+        <div className="flex flex-col justify-center gap-[--gap-sm]">
+          <div className="flex items-center gap-[4px]">
+            <Skeleton height={24} width={40} />
+            <Skeleton height={21} width={40} />
+          </div>
+          <Skeleton height={21} width={240} />
+          <Skeleton height={21} width={120} />
+        </div>
+        <div className="absolute right-[8px] top-[16px]">
+          <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
+        </div>
+      </li>
+      <li className="
+    relative flex w-full rounded-[5px] px-[8px] py-[16px]
+    shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <div className="mr-[8px] flex h-full w-[auto] items-center justify-center text-center">
+          <Skeleton variant="rounded" width={80} height={80} />
+        </div>
+        <div className="flex flex-col justify-center gap-[--gap-sm]">
+          <div className="flex items-center gap-[4px]">
+            <Skeleton height={24} width={40} />
+            <Skeleton height={21} width={40} />
+          </div>
+          <Skeleton height={21} width={240} />
+          <Skeleton height={21} width={120} />
+        </div>
+        <div className="absolute right-[8px] top-[16px]">
+          <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
+        </div>
+      </li>
+      <li className="
+    relative flex w-full rounded-[5px] px-[8px] py-[16px]
+    shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <div className="mr-[8px] flex h-full w-[auto] items-center justify-center text-center">
+          <Skeleton variant="rounded" width={80} height={80} />
+        </div>
+        <div className="flex flex-col justify-center gap-[--gap-sm]">
+          <div className="flex items-center gap-[4px]">
+            <Skeleton height={24} width={40} />
+            <Skeleton height={21} width={40} />
+          </div>
+          <Skeleton height={21} width={240} />
+          <Skeleton height={21} width={120} />
+        </div>
+        <div className="absolute right-[8px] top-[16px]">
+          <OthersSVGSprite id="menu" color="black" width="18px" height="18px" />
+        </div>
+      </li>
+    </ul>
+  )
+}
 
 function UserConcernSkeleton() {
   return (
@@ -84,7 +180,7 @@ function ConcernTabSkeleton() {
               <Skeleton variant="text" sx={{ fontSize: '14px' }} width={50} className="mt-[4px]" />
             </Paper>
           </Grid>
-      
+
         </Grid>
       </Box>
 
@@ -93,4 +189,4 @@ function ConcernTabSkeleton() {
 }
 
 
-export { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton };
+export { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton, DataListSkeleton };

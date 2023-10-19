@@ -1,10 +1,31 @@
-import { getCsrfTokenWithCookie } from '@/lib/csrf'
+import { createCSRFToken, getCsrfTokenWithCookie, setCSRFCookie } from '@/lib/csrf'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  const csrfToken = await getCsrfTokenWithCookie()
-  if (csrfToken) {
-    console.log('csrf 생성 완료')
-    return NextResponse.json({ 'csrf-token': csrfToken }, { status: 200 })
-  }
+  const {cookieValue, csrfToken}= await createCSRFToken()
+  const res = new NextResponse(JSON.stringify({'csrfToken': csrfToken }), { status: 200 })
+  res.cookies.set('csrf-token', cookieValue, {
+    path: '/',
+    secure: true,
+    sameSite: 'lax',
+    httpOnly: true,
+    maxAge: 60* 60 * 24, // 1 day 
+  })
+  return res
 }
+
+
+// const {cookieValue, csrfToken}= await createCSRFToken()
+// const res = new NextResponse(JSON.stringify({'csrfToken': csrfToken }), {
+//   status: 200,
+//   headers: { 'Content-Type': 'application/json' },
+// })
+// res.cookies.set('csrf-token', cookieValue, {
+//   path: '/',
+//   secure: true,
+//   sameSite: 'lax',
+//   httpOnly: true,
+//   maxAge: 60 * 60 * 24, // 1 day 
+// })
+// return res

@@ -1,18 +1,13 @@
 import { Item } from "@/types"
 import Image from "next/image"
-import { title } from "process";
-
 
 export default function SearchItem({ item }: { item: Item }) {
 
   let title = [item.title.replace(item.brand, '').trim()]
   if (title[0].includes("<b>" && "</b>")) {
-    console.log(title[0])
     const regex = /(.*?)(<b>.+<\/b>)(.*)/
     const parts = title[0].match(regex) as RegExpMatchArray
-    console.log(parts)
     title = [parts[1].trim(), parts[2].replace(/<\/?b>/g, '').trim(), parts[3].trim()]
-    console.log(title)
   }
   const price = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(Number(item.lprice))
 

@@ -1,17 +1,16 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Nanum_Gothic, Roboto } from 'next/font/google'
-import WebAside from './components/WebAside'
+import WebAside from '@/app/components/WebAside'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import { Suspense } from 'react'
-import Loading from '../context/loading'
+
 import { cookies } from 'next/headers'
 import AuthProvider from '@/context/AuthProvider'
 import ThemeRegistry from '@/mui/ThemeRegistry/ThemeRegistry'
 import Header from './components/Header'
-import { usePathname } from 'next/navigation'
 import Navigation from './components/Nav'
+
 
 
 
@@ -36,12 +35,12 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  nav,
   header,
+  nav,
   children,
 }: {
-  nav: React.ReactNode
-  header: React.ReactNode
+  header: React.ReactNode;
+  nav: React.ReactNode;
   children: React.ReactNode;
 }) {
 
@@ -56,9 +55,7 @@ export default function RootLayout({
             {/* <Suspense fallback={<Loading />}> */}
             <div className='app-container'>
               <AuthProvider>
-                {isLogin && header}
                 {children}
-                {isLogin && nav}
               </AuthProvider>
             </div>
             {/* </Suspense> */}

@@ -14,15 +14,14 @@ export async function GET(request: NextRequest) {
   const session = request.cookies.get('session')?.value || ''
   // 아래 리다이렉트는 server-side redirect 만 발생한다
   if (!session) {
-    console.log('session cookie not found')
-    return NextResponse.redirect(new URL('/login', request.url))
+    return NextResponse.redirect(new URL('/login?error=no-session-cookie', request.url))
   }
   const decodedClaims = await adminAuth.verifySessionCookie(session, true)
   if (!decodedClaims) {
-    console.log('session cookie expired')
     return NextResponse.json(
-      { message: 'session cookie expired' },
-      { status: 401 },
+      null,
+      { status: 401,
+        statusText: 'session cookie expired' },
     )
   }
   // const userRef = adminFirestore.collection('users').doc(decodedClaims.uid);
@@ -39,11 +38,12 @@ export async function GET(request: NextRequest) {
   const userRef = adminFirestore.collection('users').doc(decodedClaims.uid)
   const doc = await userRef.get()
   if(!doc.exists){
-    return NextResponse.json({ message: 'user not found' }, { status: 404 })
+    return NextResponse.json(null,{ status: 404,
+      statusText: 'user not found'
+     })
   }
   const snapshot = doc.data() as AuthUser
   const { uid, email, displayName, photoURL, concerns } = snapshot
-
   const user = {
     uid,
     email,

@@ -1,8 +1,6 @@
 "use client";
 import { PillDataSort } from "@/types.js";
-import { Dispatch, SetStateAction, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
@@ -26,7 +24,6 @@ function SortbyModalWindow({
       shadow-md"
       onClick={(e) => e.stopPropagation()}>
       {[...sortName.keys()].map((key) => {
-        console.log(key)
         return <li
           onClick={() => {
             setSort(key)

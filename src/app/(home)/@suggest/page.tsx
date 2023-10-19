@@ -5,10 +5,10 @@ import ConcernTab from './ConcernTab';
 import Grid from '@mui/material/Unstable_Grid2';
 import { UserConcernSkeleton, BannerSkeleton, ConcernTabSkeleton } from './Skeletons';
 import { Suspense } from 'react';
-import card1 from '../../../../public/cards/card1.jpg'
-import card2 from '../../../../public/cards/card2.jpg'
-import card3 from '../../../../public/cards/card3.jpg'
-import card4 from '../../../../public/cards/card4.jpg'
+import card1 from '@/../public/cards/card1.jpg'
+import card2 from '@/../public/cards/card2.jpg'
+import card3 from '@/../public/cards/card3.jpg'
+import card4 from '@/../public/cards/card4.jpg'
 import Await from '@/app/components/Await';
 import { getHealth } from '@/lib/health';
 import UserConcern from './UserConcern';
@@ -17,9 +17,9 @@ import SearchForm from './SearchForm';
 
 export default async function Suggest() {
   return (
-    <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-0 font-nanumGothic">
+    <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-[48px] font-nanumGothic">
       <Paper square elevation={0} className="flex flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
-        <SearchForm/>
+        <SearchForm />
         <Suspense fallback={<UserConcernSkeleton />}>
           <UserConcern />
         </Suspense>
@@ -31,7 +31,7 @@ export default async function Suggest() {
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>
         <Suspense fallback={<ConcernTabSkeleton />} >
           <Await promise={getHealth()}>
-            {(dataWithbase64) => <ConcernTab data={dataWithbase64}/>}
+            {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
           </Await>
         </Suspense>
 
@@ -104,6 +104,5 @@ export default async function Suggest() {
         </Grid>
       </Paper>
     </section>
-
   )
 }

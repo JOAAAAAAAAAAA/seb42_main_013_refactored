@@ -1,13 +1,11 @@
 "use client"
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
 import { useState } from "react";
 import OthersSVGSprite from "@/app/components/OthersSVGSprite";
 import { PillData } from "@/types";
 import Link from "next/link";
 import { deletePill } from "@/lib/pills";
-import { Backdrop } from "@mui/material";
 import PillSVGSprite from "@/app/components/PillSVGSprite";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -23,18 +21,16 @@ export default function DataList({
   const modalOpen = searchParams.get('modal')
   const id = searchParams.get('id')
   const router = useRouter()
-  const [showModal, setShowModal] = useState(false)
-
 
   return (
     <li className="
     relative flex w-full rounded-[5px] px-[8px] py-[16px]
     shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-      <div className="relative mr-[8px] flex h-full w-[auto] flex-none items-center justify-center pb-[5px] text-center">
+      <div className="relative mr-[8px] flex h-full w-[auto] flex-none items-center justify-center text-center">
         <PillSVGSprite id="capsule" color="black" width="80px" height="80px" />
-        <FontAwesomeIcon className="absolute bottom-[11px] left-[6px] w-[13px] text-[rgb(240,86,86)]" icon={faCircleExclamation} />
+        {pill.pillsLeft<10 &&<FontAwesomeIcon className="absolute bottom-[11px] left-[6px] w-[13px] text-[rgb(240,86,86)]" icon={faCircleExclamation} />}
       </div>
-      <div className="flex flex-auto flex-col gap-[--gap-sm] overflow-hidden">
+      <div className="flex flex-auto flex-col justify-center gap-[--gap-sm] overflow-hidden">
         <div className="flex max-w-[90%] items-center gap-[4px] text-[14px] text-[--black-200]">
           <span className="shrink-0 text-[16px] text-black">{pill.supplementName}</span>
           <span className=" truncate	text-center text-[14px] text-[--balck-200]">{pill.ingredients?.join(", ")}</span>

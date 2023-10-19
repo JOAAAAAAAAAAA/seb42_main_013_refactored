@@ -6,10 +6,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { ConcernWithBase64 } from '@/types';
-import HealthSvgSprite from './HealthSvgSprite';
 import { FallbackImage } from './FallbackImage';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
+import HealthSvgSprite from '@/app/components/HealthSvgSprite'
 
 
 interface CustomTabPanelProps{

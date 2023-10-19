@@ -13,7 +13,7 @@ export default function ErrorModal() {
 
   return (
     <Backdrop
-      className="z-10"
+      className="z-[1000]"
       open={true} onClick={() => {errorMsg ? router.back() :router.push('/login')}}>
       <div
         className="[@media(min-width:1024px)]:ml-[420px]"
@@ -24,6 +24,8 @@ export default function ErrorModal() {
           <MuiAlert severity="warning">유효하지 않은 토큰입니다.<br />로그인 후 다시 시도해주세요.</MuiAlert>}
         {errorMsg === 'unknown' &&
          <MuiAlert severity="warning">데이터 생성에 실패하였습니다.<br />잠시 후 다시 시도해주세요.</MuiAlert>} 
+        {errorMsg === 'invalidCSRFToken' &&
+         <MuiAlert severity="warning">유효하지 않은 토큰입니다.<br />새로고침 후 다시 시도해주세요.</MuiAlert>} 
       </div>
     </Backdrop>
   )

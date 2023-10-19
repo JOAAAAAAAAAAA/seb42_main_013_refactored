@@ -1,4 +1,4 @@
-import healthconcernUrl from '../../../../public/svg/health_concerns.svg?url'
+import healthconcernUrl from '@/../public/svg/health_concerns.svg?url';
 
 
 type HealthSvgSpriteID =

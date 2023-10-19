@@ -7,6 +7,7 @@ export default function CreateInput({
   label,
   placeholder,
   error,
+  required,
   helperText,
   defaultValue,
   ...props
@@ -17,8 +18,9 @@ export default function CreateInput({
   label?: string
   placeholder?: string
   error?: boolean
+  required?: boolean
   helperText?: string
-  defaultValue?: string | number
+  defaultValue?: string | number | boolean
   props?: React.HTMLAttributes<HTMLInputElement>
 }) {
   return (
@@ -28,6 +30,7 @@ export default function CreateInput({
       name={name}
       label={label}
       error={error}
+      required={required}
       helperText={helperText}
       defaultValue={defaultValue}
       variant="standard"

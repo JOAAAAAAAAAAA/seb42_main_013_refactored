@@ -1,18 +1,13 @@
-// "use client"
-
 import  Card  from "@mui/material/Card"
 import  Button  from "@mui/material/Button"
 import Image from "next/image"
 import Link from "next/link"
-import { useContext } from "react"
-import { AuthContext } from "@/context/AuthProvider"
 import { getUserInServer } from "@/lib/user"
 
 
 export default async function UserConcern() {
 
   // const { authUser } = useContext(AuthContext);
-  // console.log('authUser', authUser)
   const authUser = await getUserInServer()
   
   return (

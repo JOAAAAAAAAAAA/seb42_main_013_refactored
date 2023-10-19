@@ -1,26 +1,17 @@
 
-import { Button, Chip, Divider, IconButton, InputBase, Paper, Typography } from "@mui/material";
-import { Suspense } from "react";
-import { z } from "zod";
-import UserConcern from "../../(home)/@suggest/UserConcern";
-import { UserConcernSkeleton } from "../../(home)/@suggest/Skeletons";
-import UserInfo from "../UserInfoForm";
+import { Button, Chip, Divider, Paper} from "@mui/material";
 import Card from "@mui/material/Card"
 import Image from "next/image"
 import Link from "next/link"
-import { useContext } from "react"
-import { AuthContext } from "@/context/AuthProvider"
 import { getUserInServer } from "@/lib/user"
-import CheckChip from "../../components/CheckChip";
 import UserInfoForm from "../UserInfoForm";
-import { getHealthData } from "@/lib/health";
 
 export default async function Mypage({ params }: { params: { [key: string]: string | undefined } }) {
   const isEdit = params?.edit
-  const authUser = await getUserInServer()
+  const authUser = await getUserInServer();
 
   return (
-    <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-0 font-nanumGothic">
+    <section className="main gap-[--gap-md] bg-[--black-500] px-0 pt-[48px] font-nanumGothic">
       <Paper square elevation={0} className="flex h-full flex-col  gap-[--gap-sm] px-[--gap-sm] py-[--gap-md]">
         <Card variant='outlined' className="flex w-full flex-col items-center justify-center gap-[8px] p-[--gap-md]">
           <Image priority src={authUser?.photoURL ?? 'https://source.boringavatars.com/beam'} alt="profile" width={100} height={100}

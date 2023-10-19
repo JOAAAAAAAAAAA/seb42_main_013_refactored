@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Suspense, useEffect, useState } from 'react'
 
 export const FallbackImage = ({ src, alt, blur, ...rest }: {
   src: string

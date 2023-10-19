@@ -8,9 +8,7 @@ import nodata from '@/../public/images/no-result-data-found.png'
 
 export default async function Search({ searchParams }: { searchParams: { query: string } }) {
   const { query } = searchParams
-  console.log(searchParams)
   const items = await getItem(query) as Item[]
-  console.log(items)
   // const items = query && await searchItem(query) as Item[]
   return (
     <div className="main">

@@ -1,15 +1,16 @@
 "use client"
 
 import { Backdrop, Button, TextField } from "@mui/material";
-import { revalidatePath } from "next/cache";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import SubmitButton from "./SubmitButton";
 
 
 export default function CreateModal({
+  csrfToken,
   addChip,
 }: {
+  csrfToken: string;
   addChip: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }) {
   const searchParams = useSearchParams()
@@ -28,6 +29,7 @@ export default function CreateModal({
         onClick={(e) => e.stopPropagation()}>
         <form
           // action={formAction} 
+          noValidate
           //! revalidate & routerback처리 위해 custom onsubmit
           onSubmit={(e) => addChip(e)}
           className="m-auto flex max-w-[300px] flex-col gap-[4px] rounded-[5px] bg-white p-[16px] px-[20px]">
@@ -45,6 +47,7 @@ export default function CreateModal({
             name={fieldName}
             inputRef={inputRef}
           />
+          <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
           <input name="type" type="hidden" defaultValue={`update_${fieldName}`} />
           <div className="flex gap-[4px]">
             <Button className="w-full" variant="outlined" onClick={() => {
