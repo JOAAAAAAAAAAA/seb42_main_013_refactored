@@ -1,9 +1,7 @@
 import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
 import { AuthUser } from '@/types'
-import { doc } from 'firebase/firestore/lite'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import nodata from '@/../public/images/NoSupplementData.png'
 
 interface Concern {
   stringValue: string

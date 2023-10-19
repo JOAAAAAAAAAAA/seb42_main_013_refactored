@@ -1,5 +1,4 @@
-import { createCSRFToken, getCsrfTokenWithCookie, setCSRFCookie } from '@/lib/csrf'
-import { cookies } from 'next/headers'
+import { createCSRFToken} from '@/lib/csrf'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {

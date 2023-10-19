@@ -2,7 +2,6 @@ import { adminAuth, adminFirestore } from '@/firebase/firebaseAdmin'
 import { verifySessionCookie } from '@/lib/auth'
 import { setCSRFCookie } from '@/lib/csrf'
 import { FieldValue } from 'firebase-admin/firestore'
-import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 //api documents from
@@ -12,7 +11,6 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // TODO: 최적화하기 너무 오래걸림
 export async function POST(req: NextRequest) {
-  console.log('test')
   try {
     //!idToken 검증
     const authorization = req.headers.get('Authorization')
