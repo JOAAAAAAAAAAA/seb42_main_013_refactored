@@ -35,12 +35,8 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({
-  header,
-  nav,
   children,
 }: {
-  header: React.ReactNode;
-  nav: React.ReactNode;
   children: React.ReactNode;
 }) {
 
