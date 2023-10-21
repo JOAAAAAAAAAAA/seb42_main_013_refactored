@@ -92,8 +92,6 @@ export default function Dashboard({ data }: { data?: PillData[] }) {
       {!!modalOpen && <div onClick={() => router.push('/summary', { scroll: false })} className="fixed inset-0 z-10 flex justify-center" />}
       <Suspense fallback={<DataListSkeleton />}>
         <ul className="relative flex h-full flex-col items-center gap-[--gap-sm]">
-
-
           {optimisticData && optimisticData.length > 0
             ? (optimisticData.map((pill) => {
               return <DataList key={pill.id} pill={pill} deleteOptimisticData={deleteOptimisticData} />;

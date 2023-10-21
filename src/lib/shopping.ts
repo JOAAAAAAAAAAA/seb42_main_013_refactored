@@ -4,6 +4,7 @@
 import { Item } from "@/types"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { getBase64 } from "./base64"
 
 
 
@@ -19,7 +20,7 @@ export const searchItem = (formData:FormData) => {
   redirect('/search')
 }
 
-export const getItem = async (query:string) => {
+export const getItems = async (query:string) => {
   // https://rapidapi.com/guides/query-parameters-fetch
   const params = new URLSearchParams({
     query: query,
@@ -39,4 +40,16 @@ export const getItem = async (query:string) => {
     const filteredData = data.items.filter((item:Item)=>item.category2 === '건강식품')
     return filteredData
   }
+}
+
+export const getItemsWithBase64 = async (query:string) => {
+  const items = await getItems(query)
+  const itemPromises = items.map(async (item:Item) => {
+    const base64 = await getBase64(item.image)
+    return {
+      ...item,
+      base64
+    }})
+  const itemsWithBase64 = await Promise.all(itemPromises)
+  return itemsWithBase64
 }

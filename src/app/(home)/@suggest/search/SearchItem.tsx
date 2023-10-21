@@ -22,6 +22,8 @@ export default function SearchItem({ item }: { item: Item }) {
           width={80}
           height={80}
           className="rounded-[5px]"
+          blurDataURL={item.base64}
+          placeholder="blur"
         />
       </div>
       <div className="flex flex-auto flex-col gap-[--gap-sm] overflow-hidden">

@@ -118,4 +118,5 @@ export interface Item {
   category2: string, 
   category3: string, 
   category4: string, 
+  base64?: string
 }
