@@ -6,8 +6,6 @@ import { Concern, Supplement } from "@/types"
 import ConcernTab from "./ConcernTab"
 import { getBase64 } from "@/lib/base64"
 import { ConcernTabSkeleton } from "../Skeletons"
-import List from "./List"
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript"
 
 export interface ConcernWithBase64 extends Concern {
   supplementsList: {
