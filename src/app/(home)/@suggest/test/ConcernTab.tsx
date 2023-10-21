@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useState } from 'react';
+import { useState, SyntheticEvent } from 'react';
 import { Concern } from '@/types';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -68,8 +68,9 @@ export interface ConcernWithBase64 extends Concern {
 }
 
 export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
-  const [value, setValue] = useState<number>(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number)=> {
+  const [value, setValue] = useState(0);
+  const handleChange = (event: SyntheticEvent, newValue: number)=> {
+    console.log(newValue)
     setValue(newValue);
   };
 
@@ -90,7 +91,7 @@ export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
           scrollButtons
           allowScrollButtonsMobile
         >
-          {health?.map((el, idx) => {
+          {health && health.map((el, idx) => {
             return (
               <Tab
                 key={el.id}
@@ -104,7 +105,7 @@ export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
           })}
         </Tabs>
       </Box>
-      {health?.map((el, idx) => {
+      {health && health.map((el, idx) => {
         return (
           <CustomTabPanel key={el.id} value={value} index={idx}>
             <Grid container spacing={2}>
