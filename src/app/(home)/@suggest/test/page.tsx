@@ -32,7 +32,7 @@ export default async function Page() {
     );
     return fulfilled;
   };
-  const data = await getHealth()
+  const data = await getHealth() as ConcernWithBase64[];
 
   return (
     <div className="main">
