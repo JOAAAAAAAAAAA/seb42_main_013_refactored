@@ -1,91 +1,56 @@
 import Image from "next/image"
 import { Item } from "@/types"
 import { getPlaiceholder } from "plaiceholder"
+import { Suspense } from "react"
+import Await from "@/app/components/Await"
+import { getHealthData } from "@/lib/health"
+import { Concern, Supplement, ConcernWithBase64 } from "@/types"
+import ConcernTab from "./ConcernTab"
+import { getBase64 } from "@/lib/base64"
+import { FallbackImage } from "../FallbackImage"
 
 
 export default async function Page() {
-  
-  const getItems = async (query: string) => {
-    // https://rapidapi.com/guides/query-parameters-fetch
-    const params = new URLSearchParams({
-      query: query,
-      display: '10'
-    }) //encoded UTF-8
-  
-    const res = await fetch(`https://openapi.naver.com/v1/search/shop?${params.toString()}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-NAVER-CLIENT-ID': `${process.env.NAVER_CLIENT_ID}`,
-        'X-NAVER-CLIENT-SECRET': `${process.env.NAVER_CLIENT_SECRET}`,
-      },
-    })
-    if (res.status === 200) {
-      const data = await res.json()
-      const filteredData = data.items.filter((item: Item) => item.category2 === '건강식품')
-      return filteredData
-    }
-  }
-  
-  const getBase64 = async (imgUrl: string)=> {
-    let base64 =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
-    try {
-      const res = await fetch(imgUrl)
-      if (!res.ok) {
-        console.error('Failed to fetch image for base64')
-        return base64
-      }
-      const buffer = await res.arrayBuffer()
-      const result = await getPlaiceholder(Buffer.from(buffer), { size: 10 })
-      base64 = result.base64
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-    return base64
-  }
-  const items = await getItems('비타민') as Item[]
-  const parsed = await Promise.all(items.map(async (item) => {
-    const base64 = await getBase64(item.image)
-    return {
-      ...item,
-      base64,
-    }
-  }))
+  const getHealth = async () => {
+    const data = await getHealthData();
+    // base64 병렬처리
+    const base64Promises = data.map(async (concern: Concern) => {
+      const supplementsWithBase64 = await Promise.all(
+        concern.supplementsList.map(async (supplement: Supplement) => {
+          const base64 = await getBase64(supplement.imageURL);
+          return { ...supplement, base64 };
+        }),
+      );
+      return { ...concern, supplementsList: supplementsWithBase64 };
+    });
+    console.log('1111')
+    const result = await Promise.allSettled(base64Promises);
+    console.log('22222')
+    const fulfilled = result.map((res, idx) => res.status === 'fulfilled'
+      ? res.value
+      : data[idx]
+    );
+    return fulfilled;
+  };
+  const data = await getHealth()
 
-  const blurforone = await getBase64('https://shopping-phinf.pstatic.net/main_3129732/31297322631.20220314114144.jpg')
   return (
     <div className="main">
-      <ul className="gap-[8px]">
-        하나
-        <Image
-          src="https://shopping-phinf.pstatic.net/main_3129732/31297322631.20220314114144.jpg"
-          alt="item image"
-          width={80}
-          height={80}
-          placeholder="blur"
-          blurDataURL={blurforone}
-        />
-        묶음
-        {parsed.length > 0
-          ? parsed.map((item, idx) => <Image
-            key={idx}
-            src={item.image}
-            alt="item image"
-            width={80}
-            height={80}
-            placeholder="blur"
-            blurDataURL={item.base64}
-            className="rounded-[5px]"
-          />)
-          : (<div className="relative flex h-full flex-col items-center gap-[--gap-sm]">
-            <span>검색결과가 없습니다.</span>
-          </div>)
-        }
-      </ul>
-    </div>
+      <ConcernTab data={data} />
 
+      {data.map((concern) =>
+        concern.supplementsList.map((ele,idx) => {
+          return (
+            <FallbackImage
+              key={idx}
+              src={ele.imageURL}
+              alt="supplement-img"
+              blur={ele.base64}
+            />
+          )
+        })
+      )}
+    </div>
 
   )
 }
