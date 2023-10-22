@@ -57,6 +57,20 @@ export default async function Page() {
     console.log('half',now2-now)
     return result;
   };
+  
+  const getHealthall = async () => {
+    const data = await getHealthData();
+    const half = data.slice(0, 7)
+    // base64 병렬처리
+    const base64Promises = half.map( (concern: Concern) => {
+      const supplementsWithBase64 = 
+        concern.supplementsList.map((supplement: Supplement) => {
+          return { ...supplement, base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg==' };
+        })
+      return { ...concern, supplementsList: supplementsWithBase64 };
+    });
+    return base64Promises;
+  };
   // const data = await getHealth();
 
   return (
@@ -64,6 +78,11 @@ export default async function Page() {
       <Suspense fallback={<ConcernTabSkeleton />} >
         <Await promise={getHealthhalf()}>
           {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
+        </Await>
+      </Suspense>
+      <Suspense fallback={<ConcernTabSkeleton />} >
+        <Await promise={getHealthall()}>
+        {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
         </Await>
       </Suspense>
     </div>
