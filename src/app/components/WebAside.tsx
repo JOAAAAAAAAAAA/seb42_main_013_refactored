@@ -3,6 +3,7 @@ import styles from "./WebAside.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import Link from "next/link"
+import logo from "@/../public/images/logo1.png"
 
 
 function WebAside() {
@@ -11,7 +12,7 @@ function WebAside() {
     <div className={styles.container}>
       <div className={styles.logo}>
         <Link href="/">
-        <Image src="/images/logo1.png" alt="logo" width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }} />
+        <Image src={logo} alt="logo" width={150} height={38.28}/>
         </Link>
       </div>
     <div className={styles.IntroAsideCard}>
