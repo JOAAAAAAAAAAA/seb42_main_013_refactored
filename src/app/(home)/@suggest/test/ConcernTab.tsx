@@ -70,11 +70,9 @@ export interface ConcernWithBase64 extends Concern {
 export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
   const [value, setValue] = useState(0);
   const handleChange = (event: SyntheticEvent, newValue: number)=> {
-    console.log(newValue)
     setValue(newValue);
   };
 
- 
 
   const health = data
   return (

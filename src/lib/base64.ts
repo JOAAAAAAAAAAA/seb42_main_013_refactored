@@ -15,7 +15,7 @@ export async function getBase64(imgUrl: string) {
       return base64
     }
     const buffer = await res.arrayBuffer()
-    const result = await getPlaiceholder(Buffer.from(buffer), { size: 10 })
+    const result = await getPlaiceholder(Buffer.from(buffer))
     base64 = result.base64
   } catch (error) {
     console.error(error)
