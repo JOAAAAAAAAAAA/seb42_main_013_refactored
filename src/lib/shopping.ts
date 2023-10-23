@@ -16,7 +16,7 @@ export const searchItem = (formData:FormData) => {
     })
     revalidatePath('/search')
     redirect(`/search?${params.toString()}`)
-  }  
+  } 
   redirect('/search')
 }
 
@@ -42,7 +42,7 @@ export const getItems = async (query:string) => {
   }
 }
 
-export const getItemsWithBase64 = async (query:string) => {
+export const getItemsWithBase64 = async (query:string):Promise<Item[]> => {
   const items = await getItems(query)
   const itemPromises = items.map(async (item:Item) => {
     const base64 = await getBase64(item.image)
