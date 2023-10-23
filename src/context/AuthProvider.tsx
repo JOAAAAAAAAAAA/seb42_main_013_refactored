@@ -180,7 +180,7 @@ export default function AuthProvider({
       }
     } catch (error) {
       if (error instanceof FirebaseError){
-        router.push(`/login?=${error.code}`)
+        router.push(`/login?error=${error.code}`)
         console.log(error.code)
       }
     } finally {
