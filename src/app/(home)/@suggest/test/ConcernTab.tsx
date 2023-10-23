@@ -74,7 +74,7 @@ export default function ConcernTab({ data }: { data :ConcernWithBase64[]}) {
   };
 
 
-  const health = data
+  const health = data.slice(0, 7);
   return (
 
     <div className='container'>
