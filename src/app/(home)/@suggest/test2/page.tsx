@@ -44,31 +44,25 @@ async function getBase64(imgUrl: string) {
 }
 
 export default async function Page() {
-  const getHealthchunk = async (): Promise<ConcernWithBase64[]> => {
+  
+  const getHealth4 = async (): Promise<ConcernWithBase64[]> => {
     const data = await getHealthData();
-    const processChunk = async (chunk: Concern[]): Promise<ConcernWithBase64[]> => {
-      const base64Promises = chunk.map(async (concern: Concern) => {
-        const supplementsWithBase64 = await Promise.all(
-          concern.supplementsList.map(async (supplement: Supplement) => {
-            const base64 = await getBase64(supplement.imageURL);
-            return { ...supplement, base64 };
-          }),
-        );
-        return { ...concern, supplementsList: supplementsWithBase64 };
-      });
-      return await Promise.all(base64Promises);
-    };
-  
-    const chunks = chunkArray(data, 7);
-    let result: ConcernWithBase64[] = [];
-  
+
+    // base64 병렬처리
+    const base64Promises = data.map(async (concern: Concern) => {
+      const supplementsWithBase64 = await Promise.all(
+        concern.supplementsList.map(async (supplement: Supplement) => {
+          const base64 = await getBase64(supplement.imageURL);
+          return { ...supplement, base64 };
+        }),
+      );
+      return { ...concern, supplementsList: supplementsWithBase64 };
+    });
     const now= Date.now()
     console.log(now)
-    for (const chunk of chunks) {
-      const chunkResult = await processChunk(chunk);
-      result = [...result, ...chunkResult];
-    }  const now2= Date.now()
-    console.log('chink',now2-now)
+    const result = await Promise.all(base64Promises);
+    const now2= Date.now()
+    console.log('all',now2-now)
     return result;
   };
 
@@ -76,8 +70,8 @@ export default async function Page() {
   return (
     <div className="main">
       <Suspense fallback={<ConcernTabSkeleton />} >
-        <Await promise={getHealthchunk()}>
-          {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
+        <Await promise={getHealth4()}>
+        {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
         </Await>
       </Suspense>
     </div>
