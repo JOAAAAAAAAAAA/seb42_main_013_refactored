@@ -24,7 +24,7 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 
 
 
-export async function getBase64(imgUrl: string) {
+async function getBase64(imgUrl: string) {
   let base64 =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
   try {
