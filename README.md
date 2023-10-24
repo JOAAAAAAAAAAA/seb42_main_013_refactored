@@ -11,7 +11,7 @@
 
 ## 🛠️ 기술 스택
 <p>
-<img src="https://img.shields.io/badge/Next.Js-000000?style=flat&logo=Git&logoColor=white">  <img src="https://img.shields.io/badge/Typescript-3178C6?style=flat&logo=Typescript&logoColor=white"> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=Firebase&logoColor=black"> <img src="https://img.shields.io/badge/Tailwindcss-06B6D4?style=flat&logo=Tailwindcss&logoColor=white"> <img src="https://img.shields.io/badge/Mui-007FFF?style=flat&logo=Mui&logoColor=white">
+<img src="https://img.shields.io/badge/Next.Js-000000?style=flat&logo=Git&logoColor=white">  <img src="https://img.shields.io/badge/Typescript-3178C6?style=flat&logo=Typescript&logoColor=white"> <img src="https://img.shields.io/badge/Firestore-F2AC3C?style=flat&logo=Firebase&logoColor=black"> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=Firebase&logoColor=black"> <img src="https://img.shields.io/badge/Tailwindcss-06B6D4?style=flat&logo=Tailwindcss&logoColor=white"> <img src="https://img.shields.io/badge/Mui-007FFF?style=flat&logo=Mui&logoColor=white"> 
  
 </p>
 
@@ -48,25 +48,26 @@ types.ts
 <br/>   
 
 
-## 시연 영상
+## 📺 시연 영상
 
-|구글 회원가입|구글 로그인|로그아웃|
-|---|---|---|
-|![구글회원가입_세션생성](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/ce5d74d0-4bf7-4cd6-84af-7471c80f7bde)|![구글로그인](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/11427e2e-001d-407c-b8ab-4e4233d53563)|![로그아웃](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/79adf95c-3e65-4b57-af93-9189674c66f4)|
+|구글 회원가입|구글 로그인|로그아웃|세션 만료|
+|---|---|---|---|
+|![signupwithGoogle](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/19b02cad-bf3d-4181-b847-f2c46b9f3f2c)|![signinwithGoogle](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/8d920456-2a9d-4768-a2f9-291db16f5883)|![logout](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/8634baae-d4b6-4bad-b205-51f52ab8278b)|![세션만료](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/27ec9cc7-392c-4114-ba03-0defdea4d5cb)|
+
 
 |이메일 회원가입|인증 전 로그인|인증 후 로그인|
 |---|---|---|
-|![이메일회원가입withoutclick](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/164b7627-1e03-48b6-98eb-d4bda5b87597)|![회원가입후 노인증](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/bde73b65-5159-4f3a-bfb5-360aea206474)|![인증후로그인](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/34a2fc2f-6138-4fa4-8660-4564a15b6c8d)|
+|![signInwithEmail](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/2ae46225-bcb5-4813-b3ee-15cd38d782a8)|![loginError=email-not-verified](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/d5e8b8c5-202c-4708-928d-6ac080435597)|![emailLogin_afterVerifiing](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/10d365f9-dc2c-4123-90e3-0935e3f7e518)|
 
-|세션 만료|회원정보 수정|검색|
+|메인 페이지|회원정보 수정|검색|
 |---|---|---|
-![세션만료](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/27ec9cc7-392c-4114-ba03-0defdea4d5cb)|![useupdate](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/6ac8e345-fd35-4539-82d8-eebd71e801f7)|![검색](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/f026b72d-760b-4046-b2d1-855115ca8742)|
+|![main](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/1b2785fa-f669-44bd-ae9c-06f0cff16c9c)|![userUpdate](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/74315374-de00-404d-a671-78da6a1607cc)|![search](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/5c56cff9-e059-4567-ab4b-6a75565513d8)|
+
 
 
 |영양제 조회|영양제 생성|영양제 수정|영양제 삭제|
 |---|---|---|---|
 |![filter sort](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/77b84f9e-fd39-4a6b-ac77-d821000c2d92)|![create2](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/f499402b-069d-4330-9f9c-d71801d671a9)|![updatepill](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/eceb9420-afa5-4d9b-9e09-49438efcbe4c)|![delete](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/d71b8180-95e0-4b89-b93b-3e9f3a88e4a1)|
-
 
 
 <br>
