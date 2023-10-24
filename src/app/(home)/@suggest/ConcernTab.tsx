@@ -13,15 +13,18 @@ import HealthSvgSprite from '@/app/components/HealthSvgSprite'
 import TabScrollButton, { TabScrollButtonProps } from '@mui/material/TabScrollButton';
 import { experimental_useFormState as useFormState } from 'react-dom'
 import { loadData } from '@/lib/health';
+import CircularProgress from '@mui/material/CircularProgress';
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import TabSubmitBtn from '@/app/components/TabSubmitBtn';
 
 
-interface CustomTabPanelProps{
+interface CustomTabPanelProps {
   children: React.ReactNode;
   value: number;
   index: number;
-  other?: React.HTMLAttributes<HTMLDivElement>; 
+  other?: React.HTMLAttributes<HTMLDivElement>;
 }
-function CustomTabPanel(props:CustomTabPanelProps) {
+function CustomTabPanel(props: CustomTabPanelProps) {
   const { children, value, index, ...other } = props;
   return (
     <div
@@ -55,7 +58,7 @@ export const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-function a11yProps(index:number) {
+function a11yProps(index: number) {
   return {
     id: `concern-tab-${index}`,
     'aria-controls': `concern-tabpanel-${index}`,
@@ -64,39 +67,31 @@ function a11yProps(index:number) {
 
 
 
-export default function ConcernTab({ initialData }: { initialData :ConcernWithBase64[]}) {
+export default function ConcernTab({ initialData }: { initialData: ConcernWithBase64[] }) {
   const [value, setValue] = useState<number>(0);
   const [loadedData, loadAction] = useFormState<ConcernWithBase64[], FormData>(loadData, initialData)
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number)=> {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-   interface customTabScrollButtonProps extends TabScrollButtonProps {
+  interface customTabScrollButtonProps extends TabScrollButtonProps {
     onClick: () => void
   }
 
-  const CustomButton = (props:customTabScrollButtonProps) => {
-    const { onClick, direction, ...other } = props;
-    const fetchNScroll = (e:SyntheticEvent) => {
-      if (direction === 'right'&& loadedData.length < 20) {
-        const formData = new FormData();
-        formData.append('curLength', `${loadedData.length}`);
-        loadAction(formData);
-      }
-      onClick()
-    }
-  return (
-    <TabScrollButton
-      onClick={fetchNScroll}
-      direction={direction}
-      {...other}
-    />
-  );
+  const CustomButton = (props: customTabScrollButtonProps) => {
+    const isDone = loadedData.length === 20
+    return (
+      isDone || props.direction === 'left'
+        ? <TabScrollButton {...props} />
+        : 
+        <form action={loadAction}>
+          <input name="curLength" defaultValue={loadedData.length} hidden />
+          <TabSubmitBtn {...props} />
+        </form>
+    );
   }
-
   return (
-
     <div className='container'>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
@@ -113,7 +108,7 @@ export default function ConcernTab({ initialData }: { initialData :ConcernWithBa
           {loadedData && loadedData.map((el, idx) => {
             return (
               <Tab
-                key={el.id}
+                key={idx}
                 icon={<HealthSvgSprite id={el.id} width="32.51" height="32.51" color="black" />}
                 color="secondary"
                 className="flex flex-col gap-[4px]"

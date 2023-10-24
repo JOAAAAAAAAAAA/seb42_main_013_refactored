@@ -2,6 +2,7 @@
 import { Concern, Supplement, ConcernWithBase64 } from "@/types"
 import { adminFirestore } from "@/firebase/firebaseAdmin"
 import { getBase64 } from "./base64"
+import { revalidatePath } from "next/cache"
 
 
 //server action으로 대체
@@ -82,19 +83,18 @@ export const getBase64withSlicedHealth = async (slicedData:Concern[]): Promise<C
     );
     return { ...concern, supplementsList: supplementsWithBase64 };
   });
-  const now= Date.now()
   const result = await Promise.all(base64Promises);
-  const now2= Date.now()
   return result;
 };
 
 export const loadData = async ( prev: ConcernWithBase64[], formData: FormData,) => {
-  const page = formData.get('curLength') as number | null
-  if(!page) return prev
-  const data = await getHealthData();
-  const sliceStart = Number(page) + 1;
-  const sliceEnd = sliceStart + 6;
-  const sliced = data.slice(sliceStart, sliceEnd); 
+  const curLength = formData.get('curLength') as number | null
+  if(!curLength) return prev
+  const data = await getHealthData()
+  const sliceStart = Number(curLength)
+  const sliceEnd = sliceStart + 6
+  const sliced = data.slice(sliceStart, sliceEnd) 
   const newData = await getBase64withSlicedHealth(sliced)
+  // revalidatePath('/')
   return [...prev, ...newData]
 }
