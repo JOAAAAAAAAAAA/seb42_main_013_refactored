@@ -1,7 +1,6 @@
 import AlertModal from "@/app/components/AlertModal";
 import LoginForm from "./LoginForm";
 import { headers } from "next/headers";
-import Header from "@/app/components/Header";
 import { SignupButtons } from "@/app/components/SignupButtons";
 
 

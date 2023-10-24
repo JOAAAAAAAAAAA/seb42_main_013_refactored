@@ -166,6 +166,7 @@ export default function AuthProvider({
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if (!userCredential.user.emailVerified) {
         router.push("/login?error=email-not-verified")
+        return;
       }
       if (userCredential && auth.currentUser) {
         const idToken = await userCredential.user.getIdToken()
