@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import  IconButton  from "@mui/material/IconButton";
 import { searchItem } from "@/lib/shopping";
+import Loading from "./search/loading";
 
 export default function SearchForm() {
 
+  
   return (
     <form className='flex w-full border-b border-[#999999]'
       action={searchItem}
@@ -16,6 +18,7 @@ export default function SearchForm() {
       <IconButton type="submit" aria-label="search" size="small">
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </IconButton>
+      <Loading />
     </form>
   )
 }

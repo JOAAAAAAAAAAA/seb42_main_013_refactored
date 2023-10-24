@@ -31,7 +31,7 @@ export default async function Suggest() {
         <h1 className="font-semibold"><span className="text-[--blue-100]">건강고민</span>별 영양제 찾기</h1>
         <Suspense fallback={<ConcernTabSkeleton />} >
           <Await promise={getHealth()}>
-            {(dataWithbase64) => <ConcernTab data={dataWithbase64} />}
+            {(dataWithbase64) => <ConcernTab initialData={dataWithbase64} />}
           </Await>
         </Suspense>
       </Paper>

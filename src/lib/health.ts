@@ -1,7 +1,6 @@
 "use server"
 import { Concern, Supplement, ConcernWithBase64 } from "@/types"
 import { adminFirestore } from "@/firebase/firebaseAdmin"
-import {  DocumentData } from "firebase-admin/firestore"
 import { getBase64 } from "./base64"
 
 
@@ -71,3 +70,31 @@ export const getHealth = async (): Promise<ConcernWithBase64[]> => {
   const result = await Promise.all(base64Promises);
   return result;
 };
+
+
+export const getBase64withSlicedHealth = async (slicedData:Concern[]): Promise<ConcernWithBase64[]> => {
+  const base64Promises = slicedData.map(async (concern: Concern) => {
+    const supplementsWithBase64 = await Promise.all(
+      concern.supplementsList.map(async (supplement: Supplement) => {
+        const base64 = await getBase64(supplement.imageURL);
+        return { ...supplement, base64 };
+      }),
+    );
+    return { ...concern, supplementsList: supplementsWithBase64 };
+  });
+  const now= Date.now()
+  const result = await Promise.all(base64Promises);
+  const now2= Date.now()
+  return result;
+};
+
+export const loadData = async ( prev: ConcernWithBase64[], formData: FormData,) => {
+  const page = formData.get('curLength') as number | null
+  if(!page) return prev
+  const data = await getHealthData();
+  const sliceStart = Number(page) + 1;
+  const sliceEnd = sliceStart + 6;
+  const sliced = data.slice(sliceStart, sliceEnd); 
+  const newData = await getBase64withSlicedHealth(sliced)
+  return [...prev, ...newData]
+}
