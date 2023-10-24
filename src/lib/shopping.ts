@@ -24,7 +24,7 @@ export const getItems = async (query:string) => {
   // https://rapidapi.com/guides/query-parameters-fetch
   const params = new URLSearchParams({
     query: query,
-    display: '20'
+    display: '10'
   }) //encoded UTF-8
 
   const res = await fetch(`https://openapi.naver.com/v1/search/shop?${params.toString()}`,{
