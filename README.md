@@ -1,3 +1,4 @@
+
 ## 📌 개요
 
 
@@ -15,7 +16,8 @@
  
 </p>
 
-<br/>   
+<br/>  
+
 
 ## 📂 폴더 구조
 
@@ -49,28 +51,61 @@ types.ts
 
 
 ## 📺 시연 영상
-
 |구글 회원가입|구글 로그인|로그아웃|세션 만료|
-|---|---|---|---|
+|:---:|:---:|:---:|:---:|
 |![signupwithGoogle](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/19b02cad-bf3d-4181-b847-f2c46b9f3f2c)|![signinwithGoogle](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/8d920456-2a9d-4768-a2f9-291db16f5883)|![logout](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/8634baae-d4b6-4bad-b205-51f52ab8278b)|![세션만료](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/27ec9cc7-392c-4114-ba03-0defdea4d5cb)|
+|<span>`firebase`</span> `CSRFToken` `useForm` `zod` `API`|<span>`firebase`</span> `CSRFToken` `useForm` `zod` `API`|<span>`RCC`</span></br>`server action`</br>`useFormstate`|<span>`firebase`</span> `session cookie`|
+
+
+
 
 
 |이메일 회원가입|인증 전 로그인|인증 후 로그인|
-|---|---|---|
+|:---:|:---:|:---:|
 |![signInwithEmail](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/2ae46225-bcb5-4813-b3ee-15cd38d782a8)|![loginError=email-not-verified](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/d5e8b8c5-202c-4708-928d-6ac080435597)|![emailLogin_afterVerifiing](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/10d365f9-dc2c-4123-90e3-0935e3f7e518)|
+|<span>`firebase`</span> `CSRFToken` `useForm` `zod`| `Error handling`|`Error handling`|
 
-|메인 페이지|회원정보 수정|검색|
-|---|---|---|
-|![main](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/1b2785fa-f669-44bd-ae9c-06f0cff16c9c)|![userUpdate](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/74315374-de00-404d-a671-78da6a1607cc)|![search](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/5c56cff9-e059-4567-ab4b-6a75565513d8)|
+|메인페이지|건강고민 탭|회원정보 수정|검색|
+|:---:|:---:|:---:|:---:|
+|![main22](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/4e806d03-beea-4537-bb5b-9c46f71df40f)|![main](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/1b2785fa-f669-44bd-ae9c-06f0cff16c9c)|![userUpdate](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/74315374-de00-404d-a671-78da6a1607cc)|![search](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/5c56cff9-e059-4567-ab4b-6a75565513d8)|
+|<span>`ParallelRoutes` `skeleton`</span>|<span>`dynamic load` `placehold` `blurDataURL` `PlacierHolder`</span>|<span>`RCC` `server action` `useOptimistic`</br>`Optimistic-UI` `.bind`</span>|<span>`RCC` `SSR`</br>`NAVER API`</span>|
 
 
 
 |영양제 조회|영양제 생성|영양제 수정|영양제 삭제|
 |---|---|---|---|
 |![filter sort](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/77b84f9e-fd39-4a6b-ac77-d821000c2d92)|![create2](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/f499402b-069d-4330-9f9c-d71801d671a9)|![updatepill](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/eceb9420-afa5-4d9b-9e09-49438efcbe4c)|![delete](https://github.com/JOAAAAAAAAAAA/seb42_main_013_refactored/assets/116185146/d71b8180-95e0-4b89-b93b-3e9f3a88e4a1)|
+|`RSC` `SSR`<img width=1300 style="opacity:0"/>|`CSRFToken API`</br>`server action`</br>`useFormstate`</br>`server-onlyForm`</br>`zod` `stateless modal`|`CSRFToken API`</br>`server action`</br>`useContext`|`server action`</br>`useOptimistic`</br>`Optimistic-UI`|
 
 
-<br>
+<br/>
+
+
+## 🔐 Auth 순서도
+```mermaid
+sequenceDiagram
+participant User
+participant App Client
+participant App Server
+participant Firebase Client SDK
+participant Firebase Server SDK
+participant OAuth Provider
+User->>App Client:구글로 로그인하기 클릭
+App Client->>Firebase Client SDK:SignInWithGoogle()
+Firebase Client SDK->>App Client:Reirect to Sign in page
+App Client->>OAuth Provider:[POST]Email & Password
+OAuth Provider-->>Firebase Client SDK:User Credential
+Firebase Client SDK-->>App Client:ID Token
+App Client->>App Server: [POST]/auth/sessionlogin ID Token
+App Server->>App Server:Csrf verified !
+App Server->>Firebase Admin SDK:VerifyIdToken(ID Token)
+Firebase Admin SDK-->>App Server:OK
+App Server->>Firebase Admin SDK:createSessionCookie()
+Firebase Admin SDK-->>App Server:SessionCookie
+App Server-->>App Client:SessionCookie
+App Client->>Firebase Client SDK:Sign out()
+Firebase Client SDK-xFirebase Client SDK:Sign out()
+```
 
 ## :pencil2: 커밋 & 코드 컨벤션
 ```
