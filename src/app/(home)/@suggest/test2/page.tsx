@@ -1,12 +1,13 @@
 import SearchForm from "@/app/(home)/@suggest/SearchForm"
-import { getItemsWithBase64 } from "@/lib/shopping"
+import { getItems, getItemsWithBase64 } from "@/lib/shopping"
 import SearchItem from "./SearchItem"
+import { Item } from "@/types"
 import Image from "next/image"
 import nodata from '@/../public/images/no-result-data-found.png'
 import { Suspense } from "react"
 import { DataListSkeleton } from "../Skeletons"
 import Await from "@/app/components/Await"
-
+import SearchLists from "./SearchLists"
 
 
 export default async function Search({ searchParams }: { searchParams: { query: string } }) {
@@ -16,6 +17,7 @@ export default async function Search({ searchParams }: { searchParams: { query: 
   return (
     <div className="main">
       <SearchForm />
+      서버
       <Suspense fallback={<DataListSkeleton />}>
         <Await promise={getItemsWithBase64(query)}>
           {(items) =>
@@ -34,6 +36,8 @@ export default async function Search({ searchParams }: { searchParams: { query: 
             </ul>}
         </Await>
       </Suspense>
+
+
     </div>
   )
 }

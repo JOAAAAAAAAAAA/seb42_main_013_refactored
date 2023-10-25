@@ -24,7 +24,7 @@ export const getItems = async (query:string):Promise<Item[]|undefined> => {
   // https://rapidapi.com/guides/query-parameters-fetch
   const params = new URLSearchParams({
     query: query,
-    display: '2'
+    display: '20'
   }) //encoded UTF-8
 
   const res = await fetch(`https://openapi.naver.com/v1/search/shop?${params.toString()}`,{
@@ -48,10 +48,10 @@ export const getItemsWithBase64 = async (query:string):Promise<Item[]> => {
     return []
   }
   const itemPromises = items.map(async (item:Item) => {
-    // const base64 = await getBase64(item.image)
+    const base64 = await getBase64(item.image)
     //TODO : Serverless Function Execution Timeout. ERR
     //TODO : temporary solution
-    const base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
+    // const base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
     return {
       ...item,
       base64

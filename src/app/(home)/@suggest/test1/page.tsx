@@ -1,12 +1,13 @@
 import SearchForm from "@/app/(home)/@suggest/SearchForm"
-import { getItemsWithBase64 } from "@/lib/shopping"
+import { getItems, getItemsWithBase64 } from "@/lib/shopping"
 import SearchItem from "./SearchItem"
+import { Item } from "@/types"
 import Image from "next/image"
 import nodata from '@/../public/images/no-result-data-found.png'
 import { Suspense } from "react"
 import { DataListSkeleton } from "../Skeletons"
 import Await from "@/app/components/Await"
-
+import SearchLists from "./SearchLists"
 
 
 export default async function Search({ searchParams }: { searchParams: { query: string } }) {
@@ -16,22 +17,10 @@ export default async function Search({ searchParams }: { searchParams: { query: 
   return (
     <div className="main">
       <SearchForm />
+      클라이언트
       <Suspense fallback={<DataListSkeleton />}>
-        <Await promise={getItemsWithBase64(query)}>
-          {(items) =>
-            <ul className="gap-[8px]">
-              {items && items.length > 0
-                ? items.map((item, idx) => <SearchItem item={item} key={idx} />)
-                : (<div className="relative flex h-full flex-col items-center gap-[--gap-sm]">
-                  <Image src={nodata} alt="no data" sizes="100vw"
-                    style={{
-                      width: '50%',
-                      height: 'auto',
-                    }} />
-                  <span>검색결과가 없습니다.</span>
-                </div>)
-              }
-            </ul>}
+        <Await promise={getItems(query)}>
+          {(items) => <SearchLists items={items} />}
         </Await>
       </Suspense>
     </div>
