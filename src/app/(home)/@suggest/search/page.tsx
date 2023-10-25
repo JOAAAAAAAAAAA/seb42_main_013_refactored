@@ -11,7 +11,7 @@ import Await from "@/app/components/Await"
 
 export default async function Search({ searchParams }: { searchParams: { query: string } }) {
   const { query } = searchParams
-  const items = await getItemsWithBase64(query) as Item[]
+  // const items = await getItemsWithBase64(query) as Item[]
   // const items = query && await searchItem(query) as Item[]
   return (
     <div className="main">
