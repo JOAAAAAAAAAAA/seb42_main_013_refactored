@@ -47,17 +47,16 @@ export const getItemsWithBase64 = async (query:string):Promise<Item[]> => {
   if (!items) {
     return []
   }
-  const itemPromises = items.map(async (item:Item) => {
-    const base64 = await getBase64(item.image)
+  const itemPromises = items.map(async (item:Item, idx) => {
+    // const base64 = await getBase64(item.image)
     //TODO : Serverless Function Execution Timeout. ERR
     //TODO : temporary solution
-    // const base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
+    const base64 = idx<8 ? await getBase64(item.image) :'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8++TddwAI/QOoDfU+RQAAAABJRU5ErkJggg=='
     return {
       ...item,
       base64
     }})
   const itemsWithBase64 = await Promise.all(itemPromises)
-
   return itemsWithBase64
 }
 
